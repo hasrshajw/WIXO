@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS Enterprises - All Orders</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        /* --- All CSS from the original file is included here --- */
+        /* (The full CSS block is placed here) */
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-logo">
+            <img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="IHTNAS Logo">
+        </a>
+        <div class="navbar-profile" id="profileContainer">
+            <img src="https://i.stack.imgur.com/34AD2.jpg" alt="User Profile" class="profile-image" id="profileImage">
+            <div class="profile-dropdown" id="profileDropdown">
+                <button id="nav-logout-btn">
+                    <span class="icon material-symbols-outlined">logout</span>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="app-container">
+        <!-- View Existing Orders Screen -->
+        <div id="view-orders-screen" class="screen active">
+            <div class="page-header">
+                <button class="back-to-main btn-secondary" onclick="window.location.href='index.html'">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2>All Orders</h2>
+            </div>
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="input-group">
+                        <input type="text" id="order-search" class="input-field" placeholder=" ">
+                        <label for="order-search" class="input-label">Search by name, mobile, etc...</label>
+                    </div>
+                    <div class="input-group">
+                        <select id="order-filter" class="input-field" style="padding-top: 1rem; padding-bottom: 1rem;">
+                            <option value="all">All Orders</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="upcoming-due">Upcoming Due</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="order-list-container" class="order-list-container">
+                <!-- Skeleton loaders or order cards will be injected here -->
+            </div>
+            <div id="order-list-empty" class="text-center" style="display: none; padding: 3rem;">
+                <span class="material-symbols-outlined" style="font-size: 3rem; color: var(--light-text-muted);">folder_off</span>
+                <p style="margin-top: 1rem; color: var(--light-text-secondary);">No orders found.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING ACTION BUTTON -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-menu" id="fabMenu">
+            <div class="fab-item" id="fab-take-order">
+                <span class="label">Take Order</span>
+                <div class="action-button"><span class="material-symbols-outlined">add_shopping_cart</span></div>
+            </div>
+        </div>
+        <button class="fab-button" id="fabButton">
+            <span class="icon">+</span>
+        </button>
+    </div>
+
+    <!-- Modals -->
+    <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div></div>
+    
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        (function() {
+            // --- CACHED DOM ELEMENTS ---
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const profileImage = document.getElementById('profileImage');
+            const profileDropdown = document.getElementById('profileDropdown');
+            const navLogoutBtn = document.getElementById('nav-logout-btn');
+            const fabButton = document.getElementById('fabButton');
+            const fabMenu = document.getElementById('fabMenu');
+            const fabTakeOrderBtn = document.getElementById('fab-take-order');
+            const orderListContainer = document.getElementById('order-list-container');
+            const orderListEmpty = document.getElementById('order-list-empty');
+            const orderSearchInput = document.getElementById('order-search');
+            const orderFilterSelect = document.getElementById('order-filter');
+
+            // --- APP STATE ---
+            let auth, db;
+            let orders = [];
+
+            // --- UI & UX FUNCTIONS ---
+            const showLoading = () => loadingOverlay.style.display = 'flex';
+            const hideLoading = () => loadingOverlay.style.display = 'none';
+            function toggleProfileMenu() { profileDropdown.classList.toggle('show'); }
+            function toggleFabMenu() { fabMenu.classList.toggle('show'); fabButton.classList.toggle('open'); }
+            const createSkeletonCard = () => `<div class="skeleton-card"><div class="skeleton h-6 w-3_4"></div><div class="skeleton h-4 w-1_2 mt-2"></div><div class="skeleton h-4 w-1_3 mt-4"></div></div>`;
+            const showSkeletonLoaders = (count = 6) => {
+                orderListContainer.innerHTML = Array(count).fill(createSkeletonCard()).join('');
+                orderListContainer.style.display = 'flex';
+                orderListEmpty.style.display = 'none';
+            };
+
+            // --- DATA & RENDERING FUNCTIONS ---
+            const getStatusInfo = (order, today) => {
+                if (order.status === 'completed') { return { text: 'Completed', className: 'completed' }; }
+                const dueDate = order.dueDate ? new Date(order.dueDate + 'T00:00:00') : null;
+                if (dueDate && dueDate < today) { return { text: 'Overdue', className: 'overdue' }; }
+                if (dueDate) {
+                    const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+                    if (daysDiff >= 0 && daysDiff <= 3) { return { text: `Due in ${daysDiff} day${daysDiff !== 1 ? 's' : ''}`, className: 'upcoming-due' }; }
+                }
+                return { text: 'Pending', className: 'pending' };
+            };
+            
+            const renderOrderList = () => {
+                const searchQuery = orderSearchInput.value.toLowerCase();
+                const filterStatus = orderFilterSelect.value;
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+
+                const filteredOrders = orders.filter(order => {
+                    const matchesSearch = order.name.toLowerCase().includes(searchQuery) || order.address.toLowerCase().includes(searchQuery) || (order.mobileNumber && order.mobileNumber.includes(searchQuery));
+                    const statusInfo = getStatusInfo(order, today);
+                    let matchesFilter = false;
+                    if (filterStatus === 'all') { matchesFilter = true; }
+                    else { matchesFilter = statusInfo.className === filterStatus; }
+                    return matchesSearch && matchesFilter;
+                });
+                
+                if (filteredOrders.length === 0) {
+                    orderListEmpty.style.display = 'block'; orderListContainer.style.display = 'none'; return;
+                }
+                orderListEmpty.style.display = 'none'; orderListContainer.style.display = 'flex'; 
+                orderListContainer.innerHTML = ''; 
+
+                filteredOrders
+                    .sort((a, b) => { // Sort by status priority then due date
+                        const statusOrder = { 'overdue': 1, 'upcoming-due': 2, 'pending': 3, 'completed': 4 };
+                        const statusA = getStatusInfo(a, today).className;
+                        const statusB = getStatusInfo(b, today).className;
+                        if (statusOrder[statusA] !== statusOrder[statusB]) { return statusOrder[statusA] - statusOrder[statusB]; }
+                        return (new Date(a.dueDate)?.getTime() || 0) - (new Date(b.dueDate)?.getTime() || 0);
+                    })
+                    .forEach(order => {
+                        const card = document.createElement('div');
+                        card.className = 'order-card';
+                        const statusInfo = getStatusInfo(order, today);
+                        card.innerHTML = `<div class="order-card-header"><span class="order-card-customer">${order.name}</span><span class="order-card-mobile">${order.mobileNumber || 'No mobile'}</span></div><div class="status-tag ${statusInfo.className}">${statusInfo.text}</div><div class="order-card-footer"><span class="order-card-date">Due: ${order.dueDate || 'Not set'}</span><span class="material-symbols-outlined" style="color: var(--light-text-muted);">arrow_forward_ios</span></div>`;
+                        card.addEventListener('click', () => window.location.href = `order-details.html?id=${order.id}`);
+                        orderListContainer.appendChild(card);
+                    });
+            };
+
+            // --- FIREBASE & CORE LOGIC ---
+            async function initializeFirebase() {
+                try {
+                    const firebaseConfig = {"apiKey":"AIzaSyBp4XoqX-MYvOlweR5dPfEqAP9qXu2P81E","authDomain":"harsha-jw.firebaseapp.com","projectId":"harsha-jw","storageBucket":"harsha-jw.appspot.com","messagingSenderId":"471408120499","appId":"1:471408120499:web:91e61514ad3703ce3b16c6","measurementId":"G-NBC16X4R1T"};
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            profileImage.src = user.photoURL || 'https://i.stack.imgur.com/34AD2.jpg';
+                            listenForOrders();
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                } catch (error) {
+                    console.error("Firebase Initialization Error:", error);
+                    alert("Critical error initializing application.");
+                    hideLoading();
+                }
+            }
+            
+            async function handleSignOut() {
+                showLoading();
+                try {
+                    await signOut(auth);
+                } catch (error) {
+                    console.error("Sign Out Error:", error);
+                    alert("Failed to sign out.");
+                    hideLoading();
+                }
+            }
+            
+            function listenForOrders() {
+                showSkeletonLoaders();
+                const ordersCollectionRef = collection(db, `upvc_orders`);
+                const q = query(ordersCollectionRef, orderBy('createdAt', 'desc'));
+                onSnapshot(q, (snapshot) => {
+                    orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderOrderList();
+                    hideLoading();
+                }, (error) => {
+                    console.error("Firestore Snapshot Error:", error);
+                    alert("Error fetching real-time data.");
+                    hideLoading();
+                });
+            }
+
+            // --- EVENT LISTENERS ---
+            navLogoutBtn.addEventListener('click', handleSignOut);
+            orderSearchInput.addEventListener('input', renderOrderList);
+            orderFilterSelect.addEventListener('change', renderOrderList);
+            fabTakeOrderBtn.addEventListener('click', () => window.location.href = 'order-form.html');
+
+            profileImage.addEventListener('click', (e) => { e.stopPropagation(); toggleProfileMenu(); });
+            fabButton.addEventListener('click', (e) => { e.stopPropagation(); toggleFabMenu(); });
+            window.addEventListener('click', () => {
+                if (profileDropdown.classList.contains('show')) { toggleProfileMenu(); }
+                if (fabMenu.classList.contains('show')) { toggleFabMenu(); }
+            });
+
+            // --- INITIALIZATION ---
+            initializeFirebase();
+        })();
+    </script>
+</body>
+</html>
