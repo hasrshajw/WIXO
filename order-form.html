@@ -307,7 +307,6 @@
                 }
                 
                 let windowsToLoad = Array.isArray(order.windows) ? order.windows : JSON.parse(order.windows || '[]');
-                
                 const windowsWithGlass = windowsToLoad.filter(w => w.hasGlass);
                 const firstGlassName = windowsWithGlass.length > 0 ? windowsWithGlass[0].glassName : null;
                 const allSame = windowsWithGlass.every(w => w.glassName === firstGlassName);
@@ -368,11 +367,38 @@
                 }
             }
 
-            const openLocationPicker = async () => { /* ... (Same as previous correct version) ... */ };
-            const confirmSelectedLocation = () => { /* ... (Same as previous correct version) ... */ };
+            const openLocationPicker = async () => {
+                locationPickerModal.style.display = 'flex'; showLoading();
+                let initialLat = customerLatInput.value || 20.5937; let initialLon = customerLonInput.value || 78.9629;
+                let initialZoom = customerLatInput.value ? 16 : 5;
+                const setupMap = (lat, lon, zoom) => {
+                    if (!map) {
+                        map = L.map('map-container').setView([lat, lon], zoom);
+                        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }).addTo(map);
+                    } else { map.setView([lat, lon], zoom); }
+                    setTimeout(() => { map.invalidateSize() }, 10); hideLoading();
+                };
+                if ("geolocation" in navigator && !customerLatInput.value) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => { setupMap(position.coords.latitude, position.coords.longitude, 18); },
+                        (error) => { console.warn(`Geolocation error: ${error.message}`); setupMap(initialLat, initialLon, initialZoom); },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                } else { setupMap(initialLat, initialLon, initialZoom); }
+            };
+
+            const confirmSelectedLocation = () => {
+                const center = map.getCenter();
+                customerLatInput.value = center.lat.toFixed(6); customerLonInput.value = center.lng.toFixed(6);
+                getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                getLocationBtn.classList.remove('btn-secondary');
+                getLocationBtn.classList.add('btn-success');
+                locationPickerModal.style.display = 'none';
+                saveDraft();
+            };
             
             async function logHistory(orderId, action, details = {}) {
-                 if (!orderId) return;
+                if (!orderId) return;
                 try {
                     const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
                     await addDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
@@ -385,12 +411,9 @@
                 simpleFields.forEach(field => {
                     if (original[field] !== newData[field]) { changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`; }
                 });
-
-                const oldWindows = JSON.parse(original.windows || '[]');
+                const oldWindows = Array.isArray(original.windows) ? original.windows : JSON.parse(original.windows || '[]');
                 const newWindows = JSON.parse(newData.windows || '[]');
-                if (JSON.stringify(oldWindows) !== JSON.stringify(newWindows)) {
-                    changes['Windows'] = 'Details updated'; // Simplified for brevity, can be expanded
-                }
+                if (JSON.stringify(oldWindows) !== JSON.stringify(newWindows)) { changes['Windows'] = 'Details updated'; }
                 return changes;
             };
 
@@ -400,23 +423,16 @@
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
-
                     onAuthStateChanged(auth, async (user) => {
                         if (user) {
                             profileImage.src = user.photoURL || 'https://i.stack.imgur.com/34AD2.jpg';
                             const userDoc = await getDoc(doc(db, `artifacts/default-app-id/user_profiles`, user.uid));
                             if (userDoc.exists()) currentUserName = userDoc.data().userName;
-                            
                             const urlParams = new URLSearchParams(window.location.search);
                             const orderId = urlParams.get('id');
-                            if (orderId) {
-                                await loadOrderForEditing(orderId);
-                            } else {
-                                setupFormForCreate();
-                            }
-                        } else {
-                            window.location.href = 'login.html';
-                        }
+                            if (orderId) { await loadOrderForEditing(orderId); } 
+                            else { setupFormForCreate(); }
+                        } else { window.location.href = 'login.html'; }
                     });
                 } catch (error) { console.error("Firebase Init Error:", error); hideLoading(); }
             }
@@ -438,23 +454,19 @@
                 e.preventDefault(); showLoading();
                 const orderId = orderIdInput.value;
                 const isUpdating = !!orderId;
-                
                 const isSameGlass = sameGlassAllCheckbox.checked;
                 const globalGlass = globalGlassNameInput.value.trim();
-
                 const windowsData = Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => {
                     const hasGlass = entry.querySelector('.has-glass-checkbox').checked;
                     let glassName = '';
                     if (hasGlass) { glassName = isSameGlass ? globalGlass : entry.querySelector('.individual-glass-name').value.trim(); }
                     return { itemType: entry.querySelector('.item-type-select').value, height: entry.querySelector('.window-height-input').value, width: entry.querySelector('.window-width-input').value, hasGlass, glassName };
                 });
-
                 const orderData = {
                     name: customerNameInput.value.trim(), address: customerAddressInput.value.trim(),
                     mobileNumber: customerMobileInput.value.trim(), dueDate: dueDateInput.value,
                     windows: JSON.stringify(windowsData), latitude: customerLatInput.value, longitude: customerLonInput.value
                 };
-
                 let finalOrderId = orderId;
                 try {
                     const collectionRef = collection(db, `upvc_orders`);
@@ -471,7 +483,7 @@
                     }
                     showMessageModal(`Order successfully ${isUpdating ? 'updated' : 'saved'}!`);
                     window.location.href = `order-details.html?id=${finalOrderId}`;
-                } catch (error) { console.error("Error saving order:", error); hideLoading(); }
+                } catch (error) { console.error("Error saving order:", error); showMessageModal("Failed to save order."); hideLoading(); }
             }
             
             async function handleSignOut() { showLoading(); try { await signOut(auth); } catch (e) { hideLoading(); } }
@@ -485,14 +497,19 @@
             confirmLocationBtn.addEventListener('click', confirmSelectedLocation);
             locationPickerCloseBtn.addEventListener('click', () => locationPickerModal.style.display = 'none');
             cancelLocationBtn.addEventListener('click', () => locationPickerModal.style.display = 'none');
-            sameGlassAllCheckbox.addEventListener('change', () => { updateAllWindowGlassUIs(); saveDraft(); });
+            
+            // CORRECTED: The event listener that fixes the bug.
+            sameGlassAllCheckbox.addEventListener('change', () => {
+                globalGlassNameContainer.style.display = sameGlassAllCheckbox.checked ? 'block' : 'none';
+                updateAllWindowGlassUIs();
+                saveDraft();
+            });
             
             customerNameInput.addEventListener('input', saveDraft);
             customerMobileInput.addEventListener('input', saveDraft);
             customerAddressInput.addEventListener('input', saveDraft);
             dueDateInput.addEventListener('change', saveDraft);
             globalGlassNameInput.addEventListener('input', saveDraft);
-
             profileImage.addEventListener('click', (e) => { e.stopPropagation(); toggleProfileMenu(); });
             window.addEventListener('click', (e) => {
                 if (profileDropdown.classList.contains('show') && !profileContainer.contains(e.target)) {
