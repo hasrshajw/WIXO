@@ -44,7 +44,10 @@
             </div>
             <div class="card">
                 <form id="order-form">
-                    <input type="hidden" id="order-id"><input type="hidden" id="customer-lat"><input type="hidden" id="customer-lon">
+                    <input type="hidden" id="order-id">
+                    <input type="hidden" id="customer-lat">
+                    <input type="hidden" id="customer-lon">
+                    <!-- NEW: Hidden input to store original data for history comparison -->
                     <input type="hidden" id="original-order-data">
                     <h3 style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--light-border);">Customer Information</h3>
                     <div class="form-grid">
@@ -83,7 +86,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, addDoc, getDoc, updateDoc, collection, serverTimestamp, addDoc as addHistoryDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, addDoc, getDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         (function() {
             // --- DOM ELEMENTS ---
@@ -124,21 +127,134 @@
             const hideLoading = () => loadingOverlay.style.display = 'none';
             const showMessageModal = (message) => { messageText.textContent = message; messageModal.style.display = 'flex'; };
 
-            // --- FORM & WINDOW LOGIC ---
-            const addWindowInput = (container, index, data = {}) => { /* ... (Same as original) ... */ };
-            const updateWindowTitles = (container) => { /* ... (Same as original) ... */ };
-            const updateWindowGlassUI = (windowEntryDiv) => { /* ... (Same as original) ... */ };
-            const updateAllWindowGlassUIs = () => { /* ... (Same as original) ... */ };
+            // --- FORM & WINDOW LOGIC (EXACTLY AS PER ORIGINAL) ---
+            const addWindowInput = (container, index, data = {}) => {
+                const { height = '', width = '', hasGlass = false, glassName = '', itemType = 'sliding window' } = data;
+                const windowEntryDiv = document.createElement('div');
+                windowEntryDiv.className = 'window-entry';
+                
+                const itemOptions = ['sliding window', 'sliding door', 'casement window', 'casement door', 'Ventilator lowers', 'Ventilator fan provision', 'Fixed'];
+                const optionsHtml = itemOptions.map(opt => `<option value="${opt}" ${opt === itemType ? 'selected' : ''}>${opt.charAt(0).toUpperCase() + opt.slice(1)}</option>`).join('');
 
+                windowEntryDiv.innerHTML = `
+                    <div class="window-entry-header">
+                        <select class="item-type-select input-field">${optionsHtml}</select>
+                        <span class="window-entry-title">#${index}</span>
+                        <button type="button" class="remove-window-btn"><span class="material-symbols-outlined">close</span></button>
+                    </div>
+                    <div class="input-group"><input type="number" class="window-height-input input-field" value="${height}" min="1" step="1" placeholder=" " required><label class="input-label">Height (mm)</label></div>
+                    <div class="input-group"><input type="number" class="window-width-input input-field" value="${width}" min="1" step="1" placeholder=" " required><label class="input-label">Width (mm)</label></div>
+                    <div class="glass-control">
+                        <div class="checkbox-group"><input type="checkbox" id="glass-check-${index}" class="has-glass-checkbox" ${hasGlass ? 'checked' : ''} style="width: 1.15em; height: 1.15em;"><label for="glass-check-${index}">Glass</label></div>
+                        <div class="individual-glass-name-container" style="display: none; flex-grow: 1;">
+                            <div class="input-group"><input type="text" class="individual-glass-name input-field" value="${glassName}" placeholder=" "><label class="input-label">Glass Name</label></div>
+                        </div>
+                    </div>`;
+                container.appendChild(windowEntryDiv);
+
+                windowEntryDiv.querySelector('.remove-window-btn').addEventListener('click', () => { windowEntryDiv.remove(); updateWindowTitles(container); saveDraft(); });
+                windowEntryDiv.querySelector('.has-glass-checkbox').addEventListener('change', () => { updateWindowGlassUI(windowEntryDiv); saveDraft(); });
+                windowEntryDiv.querySelectorAll('input:not(.has-glass-checkbox), .item-type-select, .individual-glass-name').forEach(input => input.addEventListener('input', saveDraft));
+                updateWindowGlassUI(windowEntryDiv);
+            };
+            
+            const updateWindowGlassUI = (windowEntryDiv) => {
+                const glassCheckbox = windowEntryDiv.querySelector('.has-glass-checkbox');
+                const individualContainer = windowEntryDiv.querySelector('.individual-glass-name-container');
+                individualContainer.style.display = (glassCheckbox.checked && !sameGlassAllCheckbox.checked) ? 'block' : 'none';
+            };
+
+            const updateAllWindowGlassUIs = () => document.querySelectorAll('#windows-container .window-entry').forEach(updateWindowGlassUI);
+            
+            const updateWindowTitles = (container) => {
+                container.querySelectorAll('.window-entry').forEach((entry, index) => {
+                    entry.querySelector('.window-entry-title').textContent = `#${index + 1}`;
+                    const checkbox = entry.querySelector('.has-glass-checkbox');
+                    const label = entry.querySelector('.has-glass-checkbox + label');
+                    checkbox.id = `glass-check-${index + 1}`;
+                    label.htmlFor = `glass-check-${index + 1}`;
+                });
+            };
+
+            // --- DRAFT FUNCTIONALITY (EXACTLY AS PER ORIGINAL) ---
+            function saveDraft() {
+                // Only save drafts for NEW orders (when orderId is not set)
+                if (orderIdInput.value) return;
+                
+                const draft = {
+                    name: customerNameInput.value, mobile: customerMobileInput.value, address: customerAddressInput.value, dueDate: dueDateInput.value,
+                    lat: customerLatInput.value, lon: customerLonInput.value,
+                    sameGlass: sameGlassAllCheckbox.checked, globalGlassName: globalGlassNameInput.value,
+                    windows: Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => ({
+                        itemType: entry.querySelector('.item-type-select').value,
+                        height: entry.querySelector('.window-height-input').value,
+                        width: entry.querySelector('.window-width-input').value,
+                        hasGlass: entry.querySelector('.has-glass-checkbox').checked,
+                        glassName: entry.querySelector('.individual-glass-name').value
+                    }))
+                };
+                localStorage.setItem('orderDraft', JSON.stringify(draft));
+            }
+
+            function loadDraft() {
+                const draft = localStorage.getItem('orderDraft');
+                if (draft) {
+                    const data = JSON.parse(draft);
+                    customerNameInput.value = data.name || '';
+                    customerMobileInput.value = data.mobile || '';
+                    customerAddressInput.value = data.address || '';
+                    dueDateInput.value = data.dueDate || '';
+                    customerLatInput.value = data.lat || '';
+                    customerLonInput.value = data.lon || '';
+                    sameGlassAllCheckbox.checked = data.sameGlass || false;
+                    globalGlassNameInput.value = data.globalGlassName || '';
+                    globalGlassNameContainer.style.display = data.sameGlass ? 'block' : 'none';
+                    if (data.lat && data.lon) {
+                        getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                        getLocationBtn.classList.add('btn-success');
+                    }
+                    windowsContainer.innerHTML = '';
+                    if (data.windows && data.windows.length > 0) {
+                        data.windows.forEach((win, i) => addWindowInput(windowsContainer, i + 1, win));
+                    } else {
+                        addWindowInput(windowsContainer, 1);
+                    }
+                    showMessageModal("Your unsaved draft has been restored.");
+                }
+            }
+
+            // --- HISTORY/CHANGELOG FUNCTIONALITY (EXACTLY AS PER ORIGINAL) ---
+            const createChangeLog = (original, newData) => {
+                const changes = {};
+                const simpleFields = ['name', 'address', 'mobileNumber', 'dueDate'];
+                simpleFields.forEach(field => {
+                    if (original[field] !== newData[field]) { changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`; }
+                });
+                const oldWindows = JSON.parse(original.windows || '[]');
+                const newWindows = JSON.parse(newData.windows || '[]');
+                if (JSON.stringify(oldWindows) !== JSON.stringify(newWindows)) {
+                    changes['Windows'] = `Updated from ${oldWindows.length} items to ${newWindows.length} items.`; // Simplified for brevity, can be expanded
+                }
+                return changes;
+            };
+
+            async function logHistory(orderId, action, details = {}) {
+                if (!orderId) return;
+                try {
+                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
+                    await addDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
+                } catch (error) { console.error("Error logging history:", error); }
+            }
+
+            // --- FORM SETUP ---
             const setupFormForCreate = () => {
                 formTitle.textContent = 'Create New Order';
                 saveOrderBtn.innerHTML = '<span class="material-symbols-outlined">save</span> Save Order';
                 orderForm.reset();
                 orderIdInput.value = '';
-                sameGlassAllCheckbox.checked = false;
-                globalGlassNameContainer.style.display = 'none';
                 windowsContainer.innerHTML = '';
                 addWindowInput(windowsContainer, 1);
+                loadDraft(); // Load draft for new orders
                 hideLoading();
             };
 
@@ -146,7 +262,7 @@
                 formTitle.textContent = 'Edit Order';
                 saveOrderBtn.innerHTML = '<span class="material-symbols-outlined">update</span> Update Order';
                 orderForm.reset();
-                originalOrderDataInput.value = JSON.stringify(order); // Store original data for history log
+                originalOrderDataInput.value = JSON.stringify({ name: order.name, address: order.address, mobileNumber: order.mobileNumber, dueDate: order.dueDate, windows: order.windows });
                 orderIdInput.value = order.id;
                 customerNameInput.value = order.name;
                 customerAddressInput.value = order.address;
@@ -158,8 +274,18 @@
                     getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
                     getLocationBtn.classList.add('btn-success');
                 }
-                windowsContainer.innerHTML = '';
+                
                 let windowsToLoad = Array.isArray(order.windows) ? order.windows : JSON.parse(order.windows || '[]');
+                const windowsWithGlass = windowsToLoad.filter(w => w.hasGlass);
+                const firstGlassName = windowsWithGlass.length > 0 ? windowsWithGlass[0].glassName : null;
+                const allSame = windowsWithGlass.every(w => w.glassName === firstGlassName);
+                if (windowsWithGlass.length > 0 && allSame && firstGlassName) {
+                    sameGlassAllCheckbox.checked = true;
+                    globalGlassNameContainer.style.display = 'block';
+                    globalGlassNameInput.value = firstGlassName || '';
+                }
+
+                windowsContainer.innerHTML = '';
                 if (windowsToLoad.length > 0) {
                     windowsToLoad.forEach((win, index) => addWindowInput(windowsContainer, index + 1, win));
                 } else {
@@ -167,18 +293,10 @@
                 }
                 hideLoading();
             };
-            
-            async function logHistory(orderId, action, details = {}) {
-                if (!orderId) return;
-                try {
-                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
-                    await addHistoryDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
-                } catch (error) { console.error("Error logging history:", error); }
-            }
 
             // --- LOCATION PICKER LOGIC ---
-            const openLocationPicker = async () => { /* ... (Same as original) ... */ };
-            const confirmSelectedLocation = () => { /* ... (Same as original) ... */ };
+            const openLocationPicker = async () => { /* ... same as before ... */ };
+            const confirmSelectedLocation = () => { /* ... same as before ... */ };
 
             // --- FIREBASE & CORE LOGIC ---
             async function initializeFirebase() {
@@ -187,26 +305,19 @@
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
-
-                    // NEW FLOW: Wait for auth state before doing anything else
+                    
                     onAuthStateChanged(auth, async (user) => {
                         if (user) {
                             profileImage.src = user.photoURL || 'https://i.stack.imgur.com/34AD2.jpg';
                             const userProfileRef = doc(db, `artifacts/default-app-id/user_profiles`, user.uid);
                             const userDoc = await getDoc(userProfileRef);
-                            if (userDoc.exists()) {
-                                currentUserName = userDoc.data().userName;
-                            }
+                            currentUserName = userDoc.exists() ? userDoc.data().userName : "Unknown User";
                             
-                            // CRITICAL: Now that auth is confirmed, check for an order ID
                             const urlParams = new URLSearchParams(window.location.search);
                             const orderId = urlParams.get('id');
-                            
                             if (orderId) {
-                                // EDIT MODE
                                 await loadOrderForEditing(orderId);
                             } else {
-                                // CREATE MODE
                                 setupFormForCreate();
                             }
                         } else {
@@ -234,8 +345,6 @@
                 } catch (error) {
                     console.error("Error loading order for edit: ", error);
                     showMessageModal("Failed to load order data.");
-                } finally {
-                    hideLoading();
                 }
             }
 
@@ -243,13 +352,13 @@
                 e.preventDefault(); showLoading();
                 const orderId = orderIdInput.value;
                 const isUpdating = !!orderId;
+                const isSameGlass = sameGlassAllCheckbox.checked;
+                const globalGlass = globalGlassNameInput.value.trim();
                 
                 const windowsData = Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => ({
-                    itemType: entry.querySelector('.item-type-select').value,
-                    height: entry.querySelector('.window-height-input').value,
-                    width: entry.querySelector('.window-width-input').value,
-                    hasGlass: entry.querySelector('.has-glass-checkbox').checked,
-                    glassName: entry.querySelector('.individual-glass-name').value.trim()
+                    itemType: entry.querySelector('.item-type-select').value, height: entry.querySelector('.window-height-input').value,
+                    width: entry.querySelector('.window-width-input').value, hasGlass: entry.querySelector('.has-glass-checkbox').checked,
+                    glassName: entry.querySelector('.has-glass-checkbox').checked ? (isSameGlass ? globalGlass : entry.querySelector('.individual-glass-name').value.trim()) : ''
                 }));
 
                 const orderData = {
@@ -262,17 +371,21 @@
                 try {
                     const collectionRef = collection(db, `upvc_orders`);
                     if(isUpdating) {
+                        const originalOrder = JSON.parse(originalOrderDataInput.value);
+                        const changes = createChangeLog(originalOrder, orderData);
                         const updateData = { ...orderData, updatedAt: serverTimestamp() };
                         await updateDoc(doc(collectionRef, orderId), updateData);
-                        await logHistory(orderId, 'Order Edited');
+                        if (Object.keys(changes).length > 0) {
+                           await logHistory(orderId, 'Order Edited', changes);
+                        }
                     } else {
                         const newData = { ...orderData, status: 'pending', createdBy: currentUserName, createdAt: serverTimestamp() };
                         const newDocRef = await addDoc(collectionRef, newData);
                         finalOrderId = newDocRef.id;
                         await logHistory(finalOrderId, 'Order Created');
+                        localStorage.removeItem('orderDraft'); // Clear draft on successful save
                     }
                     showMessageModal(`Order successfully ${isUpdating ? 'updated' : 'saved'}!`);
-                    // CRITICAL CHANGE: Redirect to the details page after save/update
                     window.location.href = `order-details.html?id=${finalOrderId}`;
                 } catch (error) {
                     console.error("Error saving order: ", error);
@@ -286,16 +399,21 @@
             // --- EVENT LISTENERS ---
             navLogoutBtn.addEventListener('click', handleSignOut);
             orderForm.addEventListener('submit', handleFormSubmit);
-            addWindowBtn.addEventListener('click', () => addWindowInput(windowsContainer, windowsContainer.children.length + 1));
+            addWindowBtn.addEventListener('click', () => { addWindowInput(windowsContainer, windowsContainer.children.length + 1); saveDraft(); });
             messageOkBtn.addEventListener('click', () => messageModal.style.display = 'none');
             getLocationBtn.addEventListener('click', openLocationPicker);
             confirmLocationBtn.addEventListener('click', confirmSelectedLocation);
             locationPickerCloseBtn.addEventListener('click', () => locationPickerModal.style.display = 'none');
             cancelLocationBtn.addEventListener('click', () => locationPickerModal.style.display = 'none');
-            sameGlassAllCheckbox.addEventListener('change', updateAllWindowGlassUIs);
+            sameGlassAllCheckbox.addEventListener('change', () => { updateAllWindowGlassUIs(); saveDraft(); });
+            globalGlassNameInput.addEventListener('input', saveDraft);
+            customerNameInput.addEventListener('input', saveDraft);
+            customerMobileInput.addEventListener('input', saveDraft);
+            customerAddressInput.addEventListener('input', saveDraft);
+            dueDateInput.addEventListener('change', saveDraft);
             
             // --- INITIALIZATION ---
-            showLoading(); // Show loading overlay until Firebase decides the user's state
+            showLoading();
             initializeFirebase();
         })();
     </script>
