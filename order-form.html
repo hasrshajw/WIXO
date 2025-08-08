@@ -390,15 +390,48 @@
                 } catch (error) { console.error("Error logging history:", error); }
             }
 
+                        
             const createChangeLog = (original, newData) => {
                 const changes = {};
                 const simpleFields = ['name', 'address', 'mobileNumber', 'dueDate'];
                 simpleFields.forEach(field => {
-                    if (original[field] !== newData[field]) { changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`; }
+                    if (original[field] !== newData[field]) {
+                        changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`;
+                    }
                 });
-                const oldWindows = Array.isArray(original.windows) ? original.windows : JSON.parse(original.windows || '[]');
+
+                const oldWindows = JSON.parse(original.windows || '[]');
                 const newWindows = JSON.parse(newData.windows || '[]');
-                if (JSON.stringify(oldWindows) !== JSON.stringify(newWindows)) { changes['Windows'] = 'Details updated'; }
+                const windowChanges = {};
+                const maxLen = Math.max(oldWindows.length, newWindows.length);
+
+                for (let i = 0; i < maxLen; i++) {
+                    const oldW = oldWindows[i];
+                    const newW = newWindows[i];
+                    const changeDetails = [];
+
+                    if (oldW && !newW) {
+                        windowChanges[`Item ${i + 1} (Deleted)`] = `(was ${oldW.width}x${oldW.height})`;
+                    } else if (!oldW && newW) {
+                        windowChanges[`Item ${i + 1} (Added)`] = `${newW.itemType}: ${newW.width}x${newW.height}, Glass: ${newW.hasGlass ? (newW.glassName || 'Yes') : 'No'}`;
+                    } else if (oldW && newW) {
+                        if (oldW.itemType !== newW.itemType) changeDetails.push(`Type: "${oldW.itemType}"→"${newW.itemType}"`);
+                        if (oldW.width !== newW.width) changeDetails.push(`W: ${oldW.width}→${newW.width}`);
+                        if (oldW.height !== newW.height) changeDetails.push(`H: ${oldW.height}→${newW.height}`);
+                        if (oldW.hasGlass !== newW.hasGlass) {
+                            changeDetails.push(`Glass: ${oldW.hasGlass ? 'On' : 'Off'}→${newW.hasGlass ? 'On' : 'Off'}`);
+                        }
+                        if (oldW.glassName !== newW.glassName) {
+                            changeDetails.push(`Glass Name: "${oldW.glassName || ''}"→"${newW.glassName || ''}"`);
+                        }
+                        if (changeDetails.length > 0) {
+                            windowChanges[`Item ${i + 1}`] = changeDetails.join(', ');
+                        }
+                    }
+                }
+                if (Object.keys(windowChanges).length > 0) {
+                    changes['Windows'] = windowChanges;
+                }
                 return changes;
             };
 
