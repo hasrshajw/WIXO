@@ -10,758 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
-        /* --- 0. NEW NAVBAR & FAB STYLES --- */
-.navbar {
-    background-color: var(--light-bg-primary);
-    padding: 10px 5%;
-    box-shadow: var(--shadow-md);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    height: 70px;
-}
-
-.navbar-logo img {
-    height: 40px;
-    display: block;
-}
-
-.navbar-profile {
-    position: relative;
-}
-
-.navbar-profile .profile-image {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid #e0e0e0;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.navbar-profile .profile-image:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.profile-dropdown {
-    position: absolute;
-    top: calc(100% + 12px);
-    right: 0;
-    background: var(--light-bg-primary);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
-    padding: 8px;
-    min-width: 160px;
-    z-index: 1001;
-    visibility: hidden;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.2s ease-out;
-}
-
-.profile-dropdown.show {
-    visibility: visible;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.profile-dropdown button {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 10px 12px;
-    border: none;
-    background: none;
-    text-align: left;
-    font-size: 15px;
-    color: var(--light-text-primary);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.profile-dropdown button:hover {
-    background-color: var(--light-bg-tertiary);
-}
-
-.profile-dropdown .icon {
-    font-size: 18px;
-}
-
-.fab-container {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 999;
-}
-
-.fab-button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    box-shadow: var(--shadow-lg);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-}
-
-.fab-button .icon {
-    font-size: 32px;
-    font-weight: 300;
-    line-height: 1;
-    transition: transform 0.3s ease;
-}
-
-.fab-button:hover {
-    background: var(--color-primary-hover);
-    transform: translateY(-2px);
-}
-
-.fab-button.open .icon {
-    transform: rotate(45deg);
-}
-
-.fab-menu {
-    position: absolute;
-    bottom: 75px;
-    right: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 15px;
-    visibility: hidden;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.fab-menu.show {
-    visibility: visible;
-    opacity: 1;
-}
-
-.fab-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.fab-menu.show .fab-item {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.fab-menu.show .fab-item:nth-child(1) { transition-delay: 0.1s; }
-
-.fab-item .label {
-    padding: 6px 12px;
-    border-radius: var(--radius-sm);
-    background: var(--light-bg-primary);
-    color: var(--light-text-primary);
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: var(--shadow-sm);
-    white-space: nowrap;
-}
-
-.fab-item .action-button {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: var(--light-bg-primary);
-    border: none;
-    color: var(--color-primary);
-    box-shadow: var(--shadow-sm);
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease-in-out;
-}
-
-.fab-item:hover .action-button {
-    transform: scale(1.1);
-    background-color: #f5f5f5;
-}
-
-/* --- 1. MODERN DESIGN SYSTEM & UI PALETTE --- */
-:root {
-    --font-main: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-    --font-icon: "Material Symbols Outlined";
-    
-    --light-bg-primary: #ffffff;
-    --light-bg-secondary: #f7f9fc;
-    --light-bg-tertiary: #f1f3f6;
-
-    --light-text-primary: #012726; /* Dark Teal */
-    --light-text-secondary: #52616b;
-    --light-text-muted: #9ca3af;
-
-    --light-border: #e5e7eb;
-    --light-border-hover: #d1d5db;
-
-    --color-primary: #012726; /* Dark Teal */
-    --color-primary-hover: #023d3c;
-    --color-primary-text: #ffffff;
-
-    --color-accent: #33C375; /* Green Accent */
-    --color-accent-hover: #2CAC66;
-    --color-accent-text: #012726;
-
-    --color-danger: #ef4444;
-    --color-danger-hover: #dc2626;
-    --color-danger-text: #ffffff;
-    
-    --color-warning: #f59e0b; /* Amber 500 */
-    --color-warning-hover: #d97706; /* Amber 600 */
-    --color-warning-text: #ffffff;
-
-    --color-reopen: #6f42c1;
-    --color-reopen-hover: #5a3d9a;
-    --color-reopen-text: #ffffff;
-
-    --status-pending-bg: #eef2ff;
-    --status-pending-text: #4338ca;
-    --status-completed-bg: #f0fdf4;
-    --status-completed-text: #166534;
-    --status-overdue-bg: #fef2f2; /* Lighter Red */
-    --status-overdue-text: #be123c;
-    --status-overdue-border: #fecaca; /* Light Red Border */
-    --status-upcoming-bg: #fffbeb; /* Lighter Yellow */
-    --status-upcoming-text: #b45309; /* Darker Yellow/Brown for text */
-    --status-upcoming-border: #fde68a; /* Light Yellow/Amber Border */
-    
-    --color-focus-ring: rgba(51, 195, 117, 0.35);
-    --radius-sm: 0.25rem; /* 4px */
-    --radius-md: 0.5rem;  /* 8px */
-    --radius-lg: 1rem;    /* 16px */
-    
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-    --shadow-lg: 0 10px 20px -3px rgb(0 0 0 / 0.07), 0 4px 8px -4px rgb(0 0 0 / 0.07);
-    --ease: cubic-bezier(.4,0,.2,1);
-}
-
-/* --- 2. BASE STYLES & ANIMATIONS --- */
-*, *::before, *::after { box-sizing: border-box; }
-html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-body {
-    font-family: var(--font-main);
-    background-color: var(--light-bg-secondary);
-    color: var(--light-text-secondary);
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 1rem;
-    padding-top: calc(70px + 1rem); /* Make space for fixed navbar */
-}
-.app-container {
-    max-width: 72rem;
-    margin: 2rem auto;
-    padding: 0;
-    width: 100%;
-}
-h1, h2, h3 { font-weight: 600; color: var(--light-text-primary); margin: 0; }
-h1 { font-size: 1.875rem; line-height: 2.25rem; }
-h2 { font-size: 1.5rem; line-height: 2rem; }
-h3 { font-size: 1.25rem; line-height: 1.75rem; }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes popIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
-
-.screen { display: none; }
-.screen.active { display: block; animation: fadeUp 0.5s var(--ease) forwards; }
-
-/* --- 3. GLOBAL COMPONENTS (Buttons, Tags) --- */
-button, .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-weight: 600; font-size: 0.875rem;
-    transition: all 0.2s var(--ease);
-    border: 1px solid transparent; cursor: pointer;
-    -webkit-user-select: none; user-select: none;
-}
-button:hover:not(:disabled), .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-button:active:not(:disabled), .btn:active:not(:disabled) { transform: translateY(0); box-shadow: var(--shadow-sm); }
-button:disabled, .btn:disabled { opacity: 0.6; cursor: not-allowed; }
-button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
-
-.btn-primary { background-color: var(--color-primary); color: var(--color-primary-text); }
-.btn-primary:hover:not(:disabled) { background-color: var(--color-primary-hover); }
-
-.btn-secondary { background-color: var(--light-bg-primary); color: var(--light-text-secondary); border-color: var(--light-border); box-shadow: var(--shadow-sm); }
-.btn-secondary:hover:not(:disabled) { background-color: var(--light-bg-tertiary); border-color: var(--light-border-hover); color: var(--light-text-primary); }
-
-.btn-danger { background-color: var(--color-danger); color: var(--color-danger-text); }
-.btn-danger:hover:not(:disabled) { background-color: var(--color-danger-hover); }
-
-.btn-warning { background-color: var(--color-warning); color: var(--color-warning-text); }
-.btn-warning:hover:not(:disabled) { background-color: var(--color-warning-hover); }
-
-.btn-success { background-color: var(--color-accent); color: var(--color-accent-text); }
-.btn-success:hover:not(:disabled) { background-color: var(--color-accent-hover); }
-
-.btn-reopen { background-color: var(--color-reopen); color: var(--color-reopen-text); }
-.btn-reopen:hover:not(:disabled) { background-color: var(--color-reopen-hover); }
-
-.status-tag {
-    display: inline-flex; align-items: center; gap: 0.375rem;
-    padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;
-}
-.status-tag::before { content: ''; display: block; width: 0.5rem; height: 0.5rem; border-radius: 50%; }
-.status-tag.pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
-.status-tag.pending::before { background-color: var(--status-pending-text); }
-.status-tag.completed { background-color: var(--status-completed-bg); color: var(--status-completed-text); }
-.status-tag.completed::before { background-color: var(--status-completed-text); }
-.status-tag.overdue { background-color: var(--status-overdue-bg); color: var(--status-overdue-text); }
-.status-tag.overdue::before { background-color: var(--status-overdue-text); }
-.status-tag.upcoming-due { background-color: var(--status-upcoming-bg); color: var(--status-upcoming-text); }
-.status-tag.upcoming-due::before { background-color: var(--status-upcoming-text); }
-
-/* --- 4. LAYOUT & CARDS --- */
-.page-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 2rem; padding: 0 1.5rem;
-}
-.card {
-    background-color: var(--light-bg-primary);
-    border: 1px solid var(--light-border);
-    border-radius: var(--radius-lg);
-    padding: 2.5rem;
-    box-shadow: var(--shadow-sm);
-}
-
-/* --- 5. FORM & INPUT STYLES --- */
-.form-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-@media (min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr; } .form-grid .grid-col-span-2 { grid-column: span 2 / span 2; } }
-
-.input-group { position: relative; }
-.input-field {
-    width: 100%; background-color: var(--light-bg-primary);
-    border: 1px solid var(--light-border); border-radius: var(--radius-md);
-    font-size: 1rem; padding: 1rem; color: var(--light-text-primary);
-    transition: all 0.2s; outline: none;
-}
-.input-label {
-    position: absolute; top: 1rem; left: 1rem;
-    color: var(--light-text-secondary); pointer-events: none;
-    transition: all 0.2s var(--ease);
-    background-color: var(--light-bg-primary); padding: 0 0.25rem;
-}
-.input-field:focus + .input-label,
-.input-field:not(:placeholder-shown) + .input-label {
-    top: -0.625rem; font-size: 0.75rem; color: var(--color-primary);
-}
-.input-field:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-focus-ring); }
-
-.window-entry {
-    border: 1px solid var(--light-border); padding: 1.5rem;
-    margin-bottom: 1rem; border-radius: var(--radius-md);
-    background-color: var(--light-bg-secondary); position: relative;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
-    align-items: center;
-}
-.window-entry-header {
-    grid-column: span 2; display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--light-border);
-    gap: 1rem;
-}
-.window-entry-title { font-size: 1rem; font-weight: 600; color: var(--light-text-primary); flex-grow: 1; }
-.remove-window-btn {
-    background: none; border: none; padding: 0.25rem;
-    color: var(--light-text-muted); cursor: pointer; border-radius: 9999px;
-    display: flex; align-items: center; justify-content: center;
-    transition: color 0.2s, background-color 0.2s;
-    position: static;
-}
-.remove-window-btn:hover { background-color: var(--light-bg-tertiary); color: var(--color-danger); }
-
-.glass-options {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background-color: var(--light-bg-secondary);
-    border-radius: var(--radius-md);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.checkbox-group label {
-    font-weight: 500;
-    color: var(--light-text-primary);
-    cursor: pointer;
-}
-.glass-control {
-    grid-column: span 2;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--light-border);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-/* --- 6. ORDER LIST & SKELETON LOADER --- */
-.order-list-container {
-    display: flex; flex-direction: column; gap: 1.5rem; padding: 0 1rem;
-}
-.order-card {
-    background-color: white; border: 1px solid var(--light-border);
-    border-radius: var(--radius-md); padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s var(--ease); cursor: pointer;
-    display: flex; flex-direction: column; gap: 1rem;
-}
-.order-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--light-border-hover); }
-
-.order-card-header { display: flex; flex-direction: column; gap: 0.25rem; }
-.order-card-customer { font-size: 1.125rem; font-weight: 600; color: var(--light-text-primary); }
-.order-card-mobile { font-size: 0.875rem; color: var(--light-text-secondary); }
-.order-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 1rem; border-top: 1px dashed var(--light-border); }
-.order-card-date { font-size: 0.875rem; font-weight: 500; color: var(--light-text-primary); }
-
-.skeleton-card {
-    background-color: var(--light-bg-primary); border: 1px solid var(--light-border);
-    border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-sm);
-}
-.skeleton {
-    background-color: var(--light-bg-tertiary); border-radius: var(--radius-sm);
-    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-@keyframes pulse { 50% { opacity: .5; } }
-.skeleton.h-6 { height: 1.5rem; } .skeleton.w-3_4 { width: 75%; }
-.skeleton.h-4 { height: 1rem; } .skeleton.w-1_2 { width: 50%; } .skeleton.w-1_3 { width: 33.33%; }
-.skeleton.mt-4 { margin-top: 1rem; } .skeleton.mt-2 { margin-top: 0.5rem; }
-
-.upcoming-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-}
-.upcoming-order-card {
-    border: 1px solid;
-    border-radius: var(--radius-md);
-    padding: 0.75rem 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s var(--ease);
-    cursor: pointer;
-}
-.upcoming-order-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-.upcoming-order-card .card-info {
-    flex-grow: 1;
-    min-width: 0;
-}
-.upcoming-order-card .customer-name {
-    font-weight: 600;
-    color: var(--light-text-primary);
-    font-size: 0.9rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.upcoming-order-card .due-status {
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-.upcoming-order-card .view-btn {
-    padding: 0.375rem 0.75rem;
-    font-size: 0.75rem;
-    flex-shrink: 0;
-}
-.upcoming-order-card .view-btn .material-symbols-outlined {
-    font-size: 1rem;
-}
-.upcoming-order-card.overdue {
-    background-color: var(--status-overdue-bg);
-    border-color: var(--status-overdue-border);
-}
-.upcoming-order-card.upcoming-due {
-    background-color: var(--status-upcoming-bg);
-    border-color: var(--status-upcoming-border);
-}
-
-
-/* --- 7. MODAL & OVERLAY STYLES --- */
-.modal {
-    display: none; position: fixed; z-index: 1000; inset: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(17, 24, 39, 0.6); backdrop-filter: blur(4px);
-    align-items: center; justify-content: center;
-    animation: fadeIn 0.3s var(--ease);
-}
-.modal-content {
-    background-color: white; padding: 2rem; border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg); width: 90%; max-width: 420px;
-    text-align: center; animation: popIn 0.3s var(--ease);
-}
-.modal-message { font-size: 1.125rem; font-weight: 500; margin-bottom: 1.5rem; color: var(--light-text-primary); }
-.modal-buttons { display: flex; justify-content: center; gap: 1rem; }
-
-.loading-overlay {
-    position: fixed; inset: 0; width: 100%; height: 100%;
-    background-color: rgba(255, 255, 255, 0.9); z-index: 1001;
-    display: flex; align-items: center; justify-content: center;
-}
-.spinner {
-    border: 6px solid var(--light-bg-tertiary); border-top: 6px solid var(--color-primary);
-    border-radius: 50%; width: 50px; height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-/* --- 8. HISTORY MODAL STYLES --- */
-.history-item { padding: 1rem; border-bottom: 1px solid var(--light-border); }
-.history-item:last-child { border-bottom: none; }
-.history-item-meta { font-size: 0.8rem; color: var(--light-text-muted); margin-bottom: 0.25rem; }
-.history-item-action { font-weight: 500; color: var(--light-text-primary); }
-.history-detail {
-    font-size: 0.85rem; color: var(--light-text-secondary);
-    padding-left: 1rem; margin-top: 0.5rem;
-    list-style-type: none;
-}
-.history-detail ul {
-    padding-left: 1.25rem;
-    margin-top: 0.25rem;
-}
-
-/* --- 9. QUOTE, MAP & DETAILS LIST STYLES --- */
-.detail-window-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.75rem;
-    background-color: var(--light-bg-tertiary);
-    border-radius: var(--radius-md);
-    margin-bottom: 0.5rem;
-}
-.item-number {
-    flex-shrink: 0;
-    width: 2.25rem;
-    height: 2.25rem;
-    background-color: var(--color-primary);
-    color: var(--color-primary-text);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-.item-info {
-    font-size: 0.9rem;
-    color: var(--light-text-primary);
-    line-height: 1.4;
-}
-.item-info small {
-    display: block;
-    color: var(--light-text-secondary);
-    font-size: 0.8rem;
-    margin-top: 0.25rem;
-}
-
-#quote-screen { background: #e9e9e9; padding: 20px; font-size: 14px; }
-#quote-screen .quote-controls { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 20px; }
-#quote-screen .btn { width: auto; }
-
-#quote-screen .invoice-box {
-    max-width: 794px; 
-    margin: auto;
-    background: #fff; 
-    border-radius: 6px;
-    color: #2d3748; 
-    display: flex; 
-    flex-direction: column;
-    padding: 30px;
-}
-
-#quote-screen .header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    border-bottom: 2px solid #e2e8f0; padding-bottom: 20px;
-}
-#quote-screen .logo-img { max-width: 160px; height: auto; }
-#quote-screen .invoice-details { text-align: right; font-size: 13px; line-height: 1.5; color: #718096; }
-#quote-screen .invoice-details strong { color: #2d3748; }
-#quote-screen .bill-to { margin-top: 25px; }
-#quote-screen .bill-to h3 { font-weight: 600; font-size: 16px; margin-bottom: 8px; }
-#quote-screen .bill-to p { font-size: 13px; color: #718096; margin: 3px 0; line-height: 1.6; }
-#quote-screen table { width: 100%; margin-top: 25px; border-collapse: collapse; font-size: 13px; }
-#quote-screen table th {
-    background-color: #535456; color: #fff; font-weight: 600;
-    padding: 12px 8px; text-align: left; border-bottom: none;
-}
-#quote-screen table td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; color: #718096; }
-#quote-screen table td:nth-child(2) { color: #2d3748; font-weight: 500; }
-#quote-screen tbody tr:nth-child(even) { background-color: #f8f8f7; }
-#quote-screen tbody tr:nth-child(odd) { background-color: #FFFFFF; }
-#quote-screen table th:not(:first-child):not(:nth-child(2)),
-#quote-screen table td:not(:first-child):not(:nth-child(2)) { text-align: right; }
-
-#quote-screen .invoice-summary { 
-    margin-top: auto;
-    padding-top: 20px; 
-    display: flex; 
-    justify-content: flex-end; 
-}
-#quote-screen .invoice-summary table { width: 40%; font-size: 14px; margin-top:0; }
-#quote-screen .invoice-summary table td { border-bottom: 1px solid #e2e8f0; padding: 8px; background-color: #fff !important; }
-#quote-screen .invoice-summary table tr:last-child { font-weight: 700; font-size: 18px; color: #2d3748; }
-#quote-screen .invoice-summary table tr:last-child td { background-color: #f7fafc !important; border-bottom: none; padding: 12px 8px; }
-
-#quote-screen .terms { margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #888; line-height: 1.5; }
-#quote-screen .terms strong { color: #718096; font-weight: 600; font-size: 12px; }
-#quote-screen .terms ol { padding-left: 15px; margin-top: 8px; }
-#quote-screen .terms ol li { margin-bottom: 8px; }
-
-#quote-screen .footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #718096; }
-#quote-screen .signature p { margin-top: 0; font-weight: 600; color: #2d3748; }
-
-#map-container { background-color: var(--light-bg-tertiary); }
-.map-pin {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -100%); width: 40px; height: 40px;
-    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ef4444" width="40px" height="40px"><path d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Z"/></svg>');
-    background-size: contain; pointer-events: none; z-index: 1000;
-}
-
-/* --- 10. RESPONSIVE ADJUSTMENTS (WITH UI/UX FIX) --- */
-@media (max-width: 640px) {
-    body { 
-        padding: 0; 
-        padding-top: 70px; 
-        background-color: var(--light-bg-primary); 
-    }
-    .app-container { margin: 0; padding: 0; }
-    h1 { font-size: 1.5rem; } h2 { font-size: 1.25rem; } h3 { font-size: 1.1rem; }
-    .page-header { flex-direction: row; justify-content: flex-start; align-items: center; gap: 1rem; padding: 1.5rem; background-color: var(--light-bg-secondary); border-bottom: 1px solid var(--light-border); }
-    .page-header h2 { text-align: left; }
-    .page-header .btn-secondary { width: auto; padding: 0.5rem; }
-    
-    .card { padding: 1.5rem; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
-    .card:first-of-type { border-top: 0; }
-    
-    .modal-content { width: calc(100% - 2rem); }
-    #login-screen, #main-menu { padding: 1.5rem; }
-    #main-menu .card { border-radius: var(--radius-lg); }
-    .main-menu-actions { display: flex; flex-direction: column; gap: 1rem; }
-    .main-menu-actions .btn { width: 100%; }
-    #form-screen .card { padding-top: 0; }
-    .form-grid { grid-template-columns: 1fr; }
-    .window-entry { grid-template-columns: 1fr 1fr; }
-    .window-entry-header { grid-column: span 2; }
-    #order-form button[type="submit"] { width: calc(100% - 3rem); position: fixed; bottom: 1.5rem; left: 1.5rem; right: 1.5rem; z-index: 10; }
-    #order-form { padding-bottom: 6rem; }
-    #view-orders-screen .card { margin-bottom: 0; }
-    .order-list-container { padding: 1rem 1.5rem; gap: 1rem; background-color: var(--light-bg-secondary); }
-    .order-card { margin: 0; }
-
-    #detail-info-grid { grid-template-columns: 1fr !important; }
-    .details-action-buttons { flex-direction: column; align-items: stretch !important; gap: 0.75rem; }
-    .details-action-buttons .btn { width: 100%; margin: 0; }
-    
-    #quote-screen { padding: 0; background-color: #fff; }
-    #quote-screen .quote-controls { margin: 15px; }
-    #quote-screen .invoice-box { padding: 15px; min-height: unset; border-radius: 0; box-shadow: none; }
-    #quote-screen .header { padding-bottom: 10px; }
-    #quote-screen .logo-img { max-width: 100px; }
-    #quote-screen .invoice-details, #quote-screen .bill-to p, #quote-screen table { font-size: 10px; }
-    #quote-screen .bill-to h3 { font-size: 12px; }
-    #quote-screen table th, #quote-screen table td { padding: 5px 4px; }
-    #quote-screen .invoice-summary { margin-top: 15px; padding-top: 15px; }
-    #quote-screen .invoice-summary table { width: 80%; font-size: 10px; }
-    #quote-screen .invoice-summary table tr:last-child { font-size: 12px; }
-    #quote-screen .terms { font-size: 8px; margin-top: 15px; padding-top: 15px;}
-    #quote-screen .terms strong, #quote-screen .terms li { font-size: 8px; }
-    #quote-screen .terms ol li { margin-bottom: 4px; }
-    #quote-screen .footer { font-size: 8px; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 15px; padding-top: 15px;}
-}
-
-/* --- Print-specific styles (REVISED) --- */
-@media print {
-    @page {
-        size: A4;
-        margin: 0;  /* KEY CHANGE: Removes browser's default print margins */
-    }
-
-    body {
-        background: #fff !important;
-        padding: 0 !important; /* KEY CHANGE: Remove all padding, especially the top padding */
-        margin: 0 !important;
-    }
-
-    .navbar, .fab-container, body > *:not(.app-container) { 
-        display: none !important; 
-    }
-    
-    .app-container {
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .app-container > *:not(#quote-screen) { display: none !important; }
-    
-    #quote-screen { 
-        display: block !important; 
-        padding: 0 !important; 
-        background: #fff !important;
-    }
-    #quote-screen-printable { display: block !important; }
-    #quote-screen .quote-controls { display: none !important; }
-    
-    #quote-screen .invoice-box {
-        box-shadow: none !important;
-        border: none !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        padding: 10mm !important; /* KEY CHANGE: Set a reasonable internal padding for the content */
-        max-width: 100% !important;
-        width: 100% !important;
-        min-height: initial !important;
-    }
-    
-    #quote-screen table th {
-        background-color: #535456 !important;
-        color: #fff !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-    #quote-screen tbody tr:nth-child(even) {
-        background-color: #f8f8f7 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-    }
-}
+        /* --- All CSS from the original file is included here --- */
+        :root{--font-main:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;--font-icon:"Material Symbols Outlined";--light-bg-primary:#fff;--light-bg-secondary:#f7f9fc;--light-bg-tertiary:#f1f3f6;--light-text-primary:#012726;--light-text-secondary:#52616b;--light-text-muted:#9ca3af;--light-border:#e5e7eb;--light-border-hover:#d1d5db;--color-primary:#012726;--color-primary-hover:#023d3c;--color-primary-text:#fff;--color-accent:#33c375;--color-accent-hover:#2cac66;--color-accent-text:#012726;--color-danger:#ef4444;--color-danger-hover:#dc2626;--color-danger-text:#fff;--color-warning:#f59e0b;--color-warning-hover:#d97706;--color-warning-text:#fff;--color-reopen:#6f42c1;--color-reopen-hover:#5a3d9a;--color-reopen-text:#fff;--status-pending-bg:#eef2ff;--status-pending-text:#4338ca;--status-completed-bg:#f0fdf4;--status-completed-text:#166534;--status-overdue-bg:#fef2f2;--status-overdue-text:#be123c;--status-overdue-border:#fecaca;--status-upcoming-bg:#fffbeb;--status-upcoming-text:#b45309;--status-upcoming-border:#fde68a;--color-focus-ring:rgba(51,195,117,.35);--radius-sm:0.25rem;--radius-md:0.5rem;--radius-lg:1rem;--shadow-sm:0 1px 2px 0 rgba(0,0,0,.04);--shadow-md:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.07);--shadow-lg:0 10px 20px -3px rgba(0,0,0,.07),0 4px 8px -4px rgba(0,0,0,.07);--ease:cubic-bezier(.4,0,.2,1)}*,:after,:before{box-sizing:border-box}html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{font-family:var(--font-main);background-color:var(--light-bg-secondary);color:var(--light-text-secondary);margin:0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1rem;padding-top:calc(70px + 1rem)}.app-container{max-width:72rem;margin:2rem auto;padding:0;width:100%}h1,h2,h3{font-weight:600;color:var(--light-text-primary);margin:0}h1{font-size:1.875rem;line-height:2.25rem}h2{font-size:1.5rem;line-height:2rem}h3{font-size:1.25rem;line-height:1.75rem}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes popIn{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}.screen{display:none}.screen.active{display:block;animation:fadeUp .5s var(--ease) forwards}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:var(--radius-md);font-weight:600;font-size:.875rem;transition:all .2s var(--ease);border:1px solid transparent;cursor:pointer;-webkit-user-select:none;user-select:none}button:hover:not(:disabled),.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-md)}button:active:not(:disabled),.btn:active:not(:disabled){transform:translateY(0);box-shadow:var(--shadow-sm)}button:disabled,.btn:disabled{opacity:.6;cursor:not-allowed}button:focus-visible,.btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}.btn-primary{background-color:var(--color-primary);color:var(--color-primary-text)}.btn-primary:hover:not(:disabled){background-color:var(--color-primary-hover)}.btn-secondary{background-color:var(--light-bg-primary);color:var(--light-text-secondary);border-color:var(--light-border);box-shadow:var(--shadow-sm)}.btn-secondary:hover:not(:disabled){background-color:var(--light-bg-tertiary);border-color:var(--light-border-hover);color:var(--light-text-primary)}.btn-danger{background-color:var(--color-danger);color:var(--color-danger-text)}.btn-danger:hover:not(:disabled){background-color:var(--color-danger-hover)}.btn-success{background-color:var(--color-accent);color:var(--color-accent-text)}.btn-success:hover:not(:disabled){background-color:var(--color-accent-hover)}.btn-reopen{background-color:var(--color-reopen);color:var(--color-reopen-text)}.btn-reopen:hover:not(:disabled){background-color:var(--color-reopen-hover)}.status-tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:600}.status-tag:before{content:"";display:block;width:.5rem;height:.5rem;border-radius:50%}.status-tag.pending{background-color:var(--status-pending-bg);color:var(--status-pending-text)}.status-tag.pending:before{background-color:var(--status-pending-text)}.status-tag.completed{background-color:var(--status-completed-bg);color:var(--status-completed-text)}.status-tag.completed:before{background-color:var(--status-completed-text)}.status-tag.overdue{background-color:var(--status-overdue-bg);color:var(--status-overdue-text)}.status-tag.overdue:before{background-color:var(--status-overdue-text)}.status-tag.upcoming-due{background-color:var(--status-upcoming-bg);color:var(--status-upcoming-text)}.status-tag.upcoming-due:before{background-color:var(--status-upcoming-text)}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding:0 1.5rem}.card{background-color:var(--light-bg-primary);border:1px solid var(--light-border);border-radius:var(--radius-lg);padding:2.5rem;box-shadow:var(--shadow-sm)}.modal{display:none;position:fixed;z-index:1000;inset:0;width:100%;height:100%;background-color:rgba(17,24,39,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:center;justify-content:center;animation:fadeIn .3s var(--ease)}.modal-content{background-color:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:90%;max-width:420px;text-align:center;animation:popIn .3s var(--ease)}.modal-message{font-size:1.125rem;font-weight:500;margin-bottom:1.5rem;color:var(--light-text-primary)}.modal-buttons{display:flex;justify-content:center;gap:1rem}.loading-overlay{position:fixed;inset:0;width:100%;height:100%;background-color:rgba(255,255,255,.9);z-index:1001;display:flex;align-items:center;justify-content:center}.spinner{border:6px solid var(--light-bg-tertiary);border-top:6px solid var(--color-primary);border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}.history-item{padding:1rem;border-bottom:1px solid var(--light-border)}.history-item:last-child{border-bottom:none}.history-item-meta{font-size:.8rem;color:var(--light-text-muted);margin-bottom:.25rem}.history-item-action{font-weight:500;color:var(--light-text-primary)}.history-detail{font-size:.85rem;color:var(--light-text-secondary);padding-left:1rem;margin-top:.5rem;list-style-type:none}.history-detail ul{padding-left:1.25rem;margin-top:.25rem}.detail-window-item{display:flex;align-items:center;gap:1rem;padding:.75rem;background-color:var(--light-bg-tertiary);border-radius:var(--radius-md);margin-bottom:.5rem}.item-number{flex-shrink:0;width:2.25rem;height:2.25rem;background-color:var(--color-primary);color:var(--color-primary-text);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.875rem}.item-info{font-size:.9rem;color:var(--light-text-primary);line-height:1.4}.item-info small{display:block;color:var(--light-text-secondary);font-size:.8rem;margin-top:.25rem}.navbar{background-color:var(--light-bg-primary);padding:10px 5%;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:1000;height:70px}.navbar-logo img{height:40px;display:block}.navbar-profile{position:relative}.navbar-profile .profile-image{height:45px;width:45px;border-radius:50%;-o-object-fit:cover;object-fit:cover;cursor:pointer;border:2px solid #e0e0e0;transition:transform .2s ease,box-shadow .2s ease}.navbar-profile .profile-image:hover{transform:scale(1.1);box-shadow:0 0 10px rgba(0,0,0,.2)}.profile-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:var(--light-bg-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:8px;min-width:160px;z-index:1001;visibility:hidden;opacity:0;transform:translateY(-10px);transition:all .2s ease-out}.profile-dropdown.show{visibility:visible;opacity:1;transform:translateY(0)}.profile-dropdown button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:0 0;text-align:left;font-size:15px;color:var(--light-text-primary);border-radius:var(--radius-sm);cursor:pointer;transition:background-color .2s ease}.profile-dropdown button:hover{background-color:var(--light-bg-tertiary)}.profile-dropdown .icon{font-size:18px}
     </style>
 </head>
 <body>
@@ -791,7 +41,6 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-
                  <h2>Order Details</h2>
             </div>
             <div class="card">
-                <!-- Content is populated by JS -->
                 <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
                     <div>
                         <p id="detail-customer-name" style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary);"></p>
@@ -799,8 +48,13 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-
                     </div>
                     <div id="detail-status-tag" class="status-tag" style="align-self: flex-start;"></div>
                 </div>
-                <div id="detail-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
-                    <!-- Details here -->
+                <div id="detail-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; font-size: 0.875rem;">
+                    <p><strong>Mobile:</strong> <span id="detail-customer-mobile"></span></p>
+                    <p><strong>Placed:</strong> <span id="detail-order-taken-date"></span></p>
+                    <p><strong>Due Date:</strong> <span id="detail-due-date"></span></p>
+                    <p id="detail-completed-date-row" style="display: none;"><strong>Completed:</strong> <span id="detail-completed-date"></span></p>
+                    <p id="detail-created-by-row" style="display: none;"><strong>Created By:</strong> <span id="detail-created-by"></span></p>
+                    <p id="detail-completed-by-row" style="display: none;"><strong>Completed By:</strong> <span id="detail-completed-by"></span></p>
                 </div>
                 <h3 style="margin-bottom: 1rem;">Windows (<span id="detail-window-count"></span>)</h3>
                 <div id="detail-windows-list"></div>
@@ -816,36 +70,223 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-
         </div>
     </div>
 
-    <!-- All required modals for this page -->
-    <div id="confirmation-modal" class="modal">...</div>
-    <div id="message-modal" class="modal">...</div>
-    <div id="history-modal" class="modal">...</div>
-    <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div></div>
-    <div id="price-modal" class="modal">...</div>
-
+    <!-- Modals -->
+    <div id="confirmation-modal" class="modal"><div class="modal-content"><p id="modal-message" class="modal-message"></p><div class="modal-buttons"><button id="cancel-action-btn" class="btn-secondary">Cancel</button><button id="confirm-action-btn" class="btn-danger">Confirm</button></div></div></div>
+    <div id="message-modal" class="modal"><div class="modal-content"><p id="message-text" class="modal-message"></p><button id="message-ok-btn" class="btn-primary" style="min-width: 120px;">OK</button></div></div>
+    <div id="history-modal" class="modal"><div class="modal-content" style="max-width: 600px; text-align: left;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;"><h3 id="history-modal-title">Order History</h3><button id="history-close-btn" class="remove-window-btn" style="position: static; border-radius: 50%;"><span class="material-symbols-outlined">close</span></button></div><ul id="history-list" style="list-style-type: none; padding: 0; max-height: 60vh; overflow-y: auto;"></ul></div></div>
+    <div id="loading-overlay" class="loading-overlay" style="display: none;"><div class="spinner"></div></div>
+    
     <script type="module">
-        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // ... other necessary imports like getAuth, getFirestore, doc, getDoc, updateDoc, etc.
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, getDocs, updateDoc, deleteDoc, collection, serverTimestamp, deleteField, query, orderBy, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         (function() {
-            // --- All JS from the original file is included here, with modifications for MPA ---
+            // --- CACHED DOM ELEMENTS (Subset needed for this page) ---
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const profileImage = document.getElementById('profileImage');
+            const navLogoutBtn = document.getElementById('nav-logout-btn');
+            const detailCustomerName = document.getElementById('detail-customer-name');
+            const detailCustomerAddress = document.getElementById('detail-customer-address');
+            const detailCustomerMobile = document.getElementById('detail-customer-mobile');
+            const detailOrderTakenDate = document.getElementById('detail-order-taken-date');
+            const detailDueDate = document.getElementById('detail-due-date');
+            const detailStatusTag = document.getElementById('detail-status-tag');
+            const detailCompletedDateRow = document.getElementById('detail-completed-date-row');
+            const detailCompletedDate = document.getElementById('detail-completed-date');
+            const detailCreatedByRow = document.getElementById('detail-created-by-row');
+            const detailCreatedBy = document.getElementById('detail-created-by');
+            const detailCompletedByRow = document.getElementById('detail-completed-by-row');
+            const detailCompletedBy = document.getElementById('detail-completed-by');
+            const detailWindowsList = document.getElementById('detail-windows-list');
+            const detailWindowCount = document.getElementById('detail-window-count');
+            const detailEditBtn = document.getElementById('detail-edit-btn');
+            const detailDeleteBtn = document.getElementById('detail-delete-btn');
+            const detailViewQuoteBtn = document.getElementById('detail-view-quote-btn');
+            const detailCompleteBtn = document.getElementById('detail-complete-btn');
+            const detailShowHistoryBtn = document.getElementById('detail-show-history-btn');
+            const detailGetDirectionsBtn = document.getElementById('detail-get-directions-btn');
+
+            // Modals
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const modalMessage = document.getElementById('modal-message');
+            const confirmActionBtn = document.getElementById('confirm-action-btn');
+            const cancelActionBtn = document.getElementById('cancel-action-btn');
+            const messageModal = document.getElementById('message-modal');
+            const messageText = document.getElementById('message-text');
+            const messageOkBtn = document.getElementById('message-ok-btn');
+            const historyModal = document.getElementById('history-modal');
+            const historyList = document.getElementById('history-list');
+            const historyCloseBtn = document.getElementById('history-close-btn');
+
+            // --- APP STATE ---
+            let db, auth;
+            let currentAction = { type: null, id: null, callback: null };
+            let currentUserName = "Unknown User";
+
+            // --- UI & UX FUNCTIONS ---
+            const showLoading = () => loadingOverlay.style.display = 'flex';
+            const hideLoading = () => loadingOverlay.style.display = 'none';
+            const showMessageModal = (message) => { messageText.textContent = message; messageModal.style.display = 'flex'; };
+            const showConfirmationModal = (message, confirmClass, confirmText, actionType, orderId, callback) => {
+                modalMessage.textContent = message;
+                confirmActionBtn.className = 'btn';
+                confirmActionBtn.classList.add(confirmClass);
+                confirmActionBtn.textContent = confirmText;
+                currentAction = { type: actionType, id: orderId, callback: callback };
+                confirmationModal.style.display = 'flex';
+            };
+            const hideConfirmationModal = () => { confirmationModal.style.display = 'none'; };
+
+            // --- DATA & RENDERING FUNCTIONS ---
+            const getStatusInfo = (order, today) => {
+                if (order.status === 'completed') { return { text: 'Completed', className: 'completed' }; }
+                const dueDate = order.dueDate ? new Date(order.dueDate + 'T00:00:00') : null; 
+                if (dueDate && dueDate < today) { return { text: 'Overdue', className: 'overdue' }; }
+                return { text: 'Pending', className: 'pending' };
+            };
             
-            // --- PAGE-SPECIFIC INITIALIZATION LOGIC ---
-            let currentViewedOrderId = null;
-            
-            document.addEventListener('DOMContentLoaded', () => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const orderId = urlParams.get('id');
-                currentViewedOrderId = orderId;
+            function showOrderDetails(order) {
+                detailCustomerName.textContent = order.name;
+                detailCustomerAddress.textContent = order.address;
+                detailCustomerMobile.textContent = order.mobileNumber || 'N/A';
+                detailOrderTakenDate.textContent = order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                detailDueDate.textContent = order.dueDate || 'N/A';
                 
-                if (orderId) {
-                    loadAndDisplayOrder(orderId);
-                } else {
-                    showMessageModal("No order specified. Redirecting...");
-                    setTimeout(() => window.location.href = 'view-orders.html', 2000);
+                const today = new Date(); today.setHours(0,0,0,0);
+                const statusInfo = getStatusInfo(order, today);
+                detailStatusTag.className = 'status-tag ' + statusInfo.className;
+                detailStatusTag.textContent = statusInfo.text;
+                
+                detailCompletedDateRow.style.display = (order.status === 'completed' && order.completedAt) ? 'block' : 'none';
+                detailCompletedDate.textContent = (order.status === 'completed' && order.completedAt?.toDate) ? new Date(order.completedAt.toDate()).toLocaleDateString() : '';
+
+                detailCreatedByRow.style.display = order.createdBy ? 'block' : 'none';
+                detailCreatedBy.textContent = order.createdBy || '';
+                detailCompletedByRow.style.display = (order.completedBy && order.status === 'completed') ? 'block' : 'none';
+                detailCompletedBy.textContent = order.completedBy || '';
+
+                let windowsToDisplay = [];
+                if (typeof order.windows === 'string') { try { windowsToDisplay = JSON.parse(order.windows); } catch(e) {} }
+                else if (Array.isArray(order.windows)) { windowsToDisplay = order.windows; }
+                
+                detailWindowsList.innerHTML = '';
+                if(windowsToDisplay.length > 0) {
+                    windowsToDisplay.forEach((win, i) => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'detail-window-item';
+                        let glassInfo = win.hasGlass ? `<small>Glass: ${win.glassName || 'Not specified'}</small>` : '<small>No Glass</small>';
+                        const itemName = win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Window';
+                        itemDiv.innerHTML = `<div class="item-number">${i + 1}</div><div class="item-info"><strong>${itemName}:</strong> H: ${win.height} mm, W: ${win.width} mm ${glassInfo}</div>`;
+                        detailWindowsList.appendChild(itemDiv);
+                    });
+                } else { 
+                    detailWindowsList.innerHTML = 'No window details available.';
                 }
-            });
+                detailWindowCount.textContent = windowsToDisplay.length;
+
+                detailEditBtn.dataset.id = order.id;
+                detailViewQuoteBtn.dataset.id = order.id;
+                detailCompleteBtn.dataset.id = order.id;
+                detailShowHistoryBtn.dataset.id = order.id;
+                detailDeleteBtn.dataset.id = order.id;
+                detailGetDirectionsBtn.style.display = (order.latitude && order.longitude) ? 'inline-flex' : 'none';
+                detailGetDirectionsBtn.dataset.lat = order.latitude;
+                detailGetDirectionsBtn.dataset.lon = order.longitude;
+
+                const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
+                detailDeleteBtn.style.display = (currentUserEmail === 'harshavardhanjw@gmail.com') ? 'inline-flex' : 'none';
+                
+                if (order.status === 'completed') {
+                    detailCompleteBtn.innerHTML = '<span class="material-symbols-outlined">refresh</span>Reopen Order';
+                    detailCompleteBtn.className = 'btn btn-reopen';
+                    detailEditBtn.disabled = true;
+                } else {
+                    detailCompleteBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span>Mark as Complete';
+                    detailCompleteBtn.className = 'btn btn-success';
+                    detailEditBtn.disabled = false;
+                }
+            }
+            
+            async function logHistory(orderId, action, details = {}) {
+                if (!orderId) return;
+                try {
+                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
+                    await addDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
+                } catch (error) { console.error("Error logging history:", error); }
+            }
+            
+            async function performConfirmedAction() {
+                hideConfirmationModal(); showLoading();
+                try {
+                    await currentAction.callback(doc(db, 'upvc_orders', currentAction.id));
+                } catch (error) {
+                    console.error(`Error performing action '${currentAction.type}':`, error);
+                    showMessageModal(`Action failed.`);
+                } finally {
+                    currentAction = { type: null, id: null, callback: null };
+                    hideLoading();
+                }
+            }
+
+            async function showHistoryModal(orderId) {
+                showLoading();
+                historyList.innerHTML = '<li>Loading history...</li>';
+                historyModal.style.display = 'flex';
+                try {
+                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
+                    const q = query(historyCollectionRef, orderBy('timestamp', 'desc'));
+                    const snapshot = await getDocs(q);
+                    const historyData = snapshot.docs.map(doc => doc.data());
+                    historyList.innerHTML = historyData.length === 0 ? '<li>No history found.</li>' : historyData.map(entry => {
+                        const timestamp = entry.timestamp?.toDate ? entry.timestamp.toDate().toLocaleString() : 'Just now';
+                        return `<li class="history-item"><div class="history-item-meta">${timestamp} by <strong>${entry.modifiedBy || 'System'}</strong></div><div class="history-item-action">${entry.action}</div></li>`;
+                    }).join('');
+                } catch (error) {
+                    console.error("Error fetching history:", error);
+                    historyList.innerHTML = '<li>Could not load history.</li>';
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            // --- FIREBASE & CORE LOGIC ---
+            async function initializeFirebase() {
+                try {
+                    const firebaseConfig = {"apiKey":"AIzaSyBp4XoqX-MYvOlweR5dPfEqAP9qXu2P81E","authDomain":"harsha-jw.firebaseapp.com","projectId":"harsha-jw","storageBucket":"harsha-jw.appspot.com","messagingSenderId":"471408120499","appId":"1:471408120499:web:91e61514ad3703ce3b16c6","measurementId":"G-NBC16X4R1T"};
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    
+                    // NEW FLOW: Wait for auth state before doing anything else
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            profileImage.src = user.photoURL || 'https://i.stack.imgur.com/34AD2.jpg';
+                            const userProfileRef = doc(db, `artifacts/default-app-id/user_profiles`, user.uid);
+                            const userDoc = await getDoc(userProfileRef);
+                            if (userDoc.exists()) {
+                                currentUserName = userDoc.data().userName;
+                            }
+                            
+                            // CRITICAL: Now that auth is confirmed, get the order ID and load data
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const orderId = urlParams.get('id');
+                            if (orderId) {
+                                await loadAndDisplayOrder(orderId);
+                            } else {
+                                showMessageModal("No order specified. Redirecting...");
+                                setTimeout(() => window.location.href = 'view-orders.html', 2000);
+                            }
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    });
+                } catch (error) {
+                    console.error("Firebase Initialization Error:", error);
+                    showMessageModal("Critical error initializing application.");
+                    hideLoading();
+                }
+            }
 
             async function loadAndDisplayOrder(orderId) {
                 showLoading();
@@ -853,10 +294,9 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-
                     const orderRef = doc(db, 'upvc_orders', orderId);
                     const orderSnap = await getDoc(orderRef);
                     if (orderSnap.exists()) {
-                        // The original showOrderDetails function is perfect for this
                         showOrderDetails({ id: orderSnap.id, ...orderSnap.data() });
                     } else {
-                         showMessageModal("Order not found. Redirecting...");
+                        showMessageModal("Order not found. Redirecting...");
                         setTimeout(() => window.location.href = 'view-orders.html', 2000);
                     }
                 } catch (error) {
@@ -866,14 +306,62 @@ button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-
                     hideLoading();
                 }
             }
-
-            // In showOrderDetails function, modify button event listeners:
-            // detailEditBtn.addEventListener('click', (e) => window.location.href = `order-form.html?id=${e.currentTarget.dataset.id}`);
-            // detailViewQuoteBtn.addEventListener('click', (e) => window.location.href = `quote.html?id=${e.currentTarget.dataset.id}`);
             
-            // In the delete action callback:
-            // Original: showScreen(viewOrdersScreen);
-            // New: window.location.href = 'view-orders.html';
+            async function handleSignOut() {
+                showLoading();
+                try { await signOut(auth); } 
+                catch (error) { console.error("Sign Out Error:", error); showMessageModal("Failed to sign out."); hideLoading(); }
+            }
+            
+            // --- EVENT LISTENERS ---
+            navLogoutBtn.addEventListener('click', handleSignOut);
+            detailEditBtn.addEventListener('click', (e) => window.location.href = `order-form.html?id=${e.currentTarget.dataset.id}`);
+            detailViewQuoteBtn.addEventListener('click', (e) => window.location.href = `quote.html?id=${e.currentTarget.dataset.id}`);
+            
+            detailDeleteBtn.addEventListener('click', (e) => {
+                showConfirmationModal('Delete this order permanently?', 'btn-danger', 'Delete Order', 'delete', e.currentTarget.dataset.id,
+                    async (docRef) => { 
+                        await deleteDoc(docRef); 
+                        showMessageModal('Order deleted.'); 
+                        window.location.href = 'view-orders.html'; // CRITICAL CHANGE
+                    });
+            });
+
+            detailCompleteBtn.addEventListener('click', (e) => {
+                const orderId = e.currentTarget.dataset.id;
+                const isCompleted = e.currentTarget.textContent.includes('Reopen');
+                
+                if (isCompleted) {
+                    showConfirmationModal('Reopen this order?', 'btn-reopen', 'Reopen Order', 'reopen', orderId,
+                        async (docRef) => { 
+                            await updateDoc(docRef, { status: 'pending', completedAt: deleteField(), completedBy: deleteField() }); 
+                            await logHistory(orderId, 'Order Reopened'); 
+                            showMessageModal('Order reopened.');
+                            loadAndDisplayOrder(orderId); // Refresh data
+                        });
+                } else {
+                    showConfirmationModal('Mark this order as complete?', 'btn-success', 'Mark Complete', 'complete', orderId,
+                        async (docRef) => { 
+                            await updateDoc(docRef, { status: 'completed', completedAt: serverTimestamp(), completedBy: currentUserName }); 
+                            await logHistory(orderId, 'Order Completed'); 
+                            showMessageModal('Order marked as complete!');
+                            loadAndDisplayOrder(orderId); // Refresh data
+                        });
+                }
+            });
+
+            detailShowHistoryBtn.addEventListener('click', (e) => showHistoryModal(e.currentTarget.dataset.id));
+            detailGetDirectionsBtn.addEventListener('click', (e) => {
+                const { lat, lon } = e.currentTarget.dataset;
+                if (lat && lon) window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
+            });
+            messageOkBtn.addEventListener('click', () => messageModal.style.display = 'none');
+            cancelActionBtn.addEventListener('click', hideConfirmationModal);
+            confirmActionBtn.addEventListener('click', performConfirmedAction);
+            historyCloseBtn.addEventListener('click', () => historyModal.style.display = 'none');
+
+            // --- INITIALIZATION ---
+            initializeFirebase();
         })();
     </script>
 </body>
