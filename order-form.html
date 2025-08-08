@@ -353,7 +353,7 @@
                 if ("geolocation" in navigator && !customerLatInput.value) {
                     navigator.geolocation.getCurrentPosition(
                         (position) => {
-                            setupMap(position.coords.latitude, position.coords.longitude, 18);
+                            setupMap(position.coords.latitude, position.coords.longitude, 18); // Max Zoom
                         },
                         (error) => {
                             console.warn(`Geolocation error (${error.code}): ${error.message}`);
@@ -381,8 +381,8 @@
                 saveDraft();
             };
             
-            async function logHistory(orderId, action, details = {}) { /* ... (Same as previous correct version) ... */ }
-            const createChangeLog = (original, newData) => { /* ... (Same as previous correct version) ... */ };
+            async function logHistory(orderId, action, details = {}) { /* ... */ }
+            const createChangeLog = (original, newData) => { /* ... */ };
 
             async function initializeFirebase() {
                 try {
@@ -417,8 +417,47 @@
                 } catch (error) { console.error("Error loading order:", error); hideLoading(); }
             }
 
-            async function handleFormSubmit(e) { /* ... (Same as previous correct version) ... */ }
-            async function handleSignOut() { /* ... (Same as previous correct version) ... */ }
+            async function handleFormSubmit(e) {
+                e.preventDefault(); showLoading();
+                const orderId = orderIdInput.value;
+                const isUpdating = !!orderId;
+                const isSameGlass = sameGlassAllCheckbox.checked;
+                const globalGlass = globalGlassNameInput.value.trim();
+                const windowsData = Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => {
+                    const hasGlass = entry.querySelector('.has-glass-checkbox').checked;
+                    let glassName = '';
+                    if (hasGlass) { glassName = isSameGlass ? globalGlass : entry.querySelector('.individual-glass-name').value.trim(); }
+                    return { itemType: entry.querySelector('.item-type-select').value, height: entry.querySelector('.window-height-input').value, width: entry.querySelector('.window-width-input').value, hasGlass, glassName };
+                });
+                const orderData = {
+                    name: customerNameInput.value.trim(), address: customerAddressInput.value.trim(),
+                    mobileNumber: customerMobileInput.value.trim(), dueDate: dueDateInput.value,
+                    windows: JSON.stringify(windowsData), latitude: customerLatInput.value, longitude: customerLonInput.value
+                };
+                let finalOrderId = orderId;
+                try {
+                    const collectionRef = collection(db, `upvc_orders`);
+                    if(isUpdating) {
+                        const originalOrder = JSON.parse(originalOrderDataInput.value);
+                        const changes = createChangeLog(originalOrder, orderData);
+                        await updateDoc(doc(collectionRef, orderId), { ...orderData, updatedAt: serverTimestamp() });
+                        if(Object.keys(changes).length > 0) { await logHistory(orderId, 'Order Edited', changes); }
+                    } else {
+                        const newDocRef = await addDoc(collectionRef, { ...orderData, status: 'pending', createdBy: currentUserName, createdAt: serverTimestamp() });
+                        finalOrderId = newDocRef.id;
+                        await logHistory(finalOrderId, 'Order Created');
+                        localStorage.removeItem('orderDraft');
+                    }
+                    // --- KEY CHANGE: Immediate redirect on success ---
+                    window.location.href = `order-details.html?id=${finalOrderId}`;
+                } catch (error) { 
+                    console.error("Error saving order:", error); 
+                    showMessageModal("Failed to save order."); 
+                    hideLoading();
+                }
+            }
+            
+            async function handleSignOut() { showLoading(); try { await signOut(auth); } catch (e) { hideLoading(); } }
 
             // --- ALL ORIGINAL EVENT LISTENERS ---
             navLogoutBtn.addEventListener('click', handleSignOut);
