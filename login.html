@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS Enterprises - Login</title>
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <style>
+        /* --- All CSS from the original file is included here --- */
+        :root {
+            --font-main: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+            --font-icon: "Material Symbols Outlined";
+            --light-bg-primary: #ffffff;
+            --light-bg-secondary: #f7f9fc;
+            --light-bg-tertiary: #f1f3f6;
+            --light-text-primary: #012726;
+            --light-text-secondary: #52616b;
+            --light-text-muted: #9ca3af;
+            --light-border: #e5e7eb;
+            --light-border-hover: #d1d5db;
+            --color-primary: #012726;
+            --color-primary-hover: #023d3c;
+            --color-primary-text: #ffffff;
+            --color-accent: #33C375;
+            --color-accent-hover: #2CAC66;
+            --color-accent-text: #012726;
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-danger-text: #ffffff;
+            --color-warning: #f59e0b;
+            --color-warning-hover: #d97706;
+            --color-warning-text: #ffffff;
+            --color-reopen: #6f42c1;
+            --color-reopen-hover: #5a3d9a;
+            --color-reopen-text: #ffffff;
+            --status-pending-bg: #eef2ff;
+            --status-pending-text: #4338ca;
+            --status-completed-bg: #f0fdf4;
+            --status-completed-text: #166534;
+            --status-overdue-bg: #fef2f2;
+            --status-overdue-text: #be123c;
+            --status-overdue-border: #fecaca;
+            --status-upcoming-bg: #fffbeb;
+            --status-upcoming-text: #b45309;
+            --status-upcoming-border: #fde68a;
+            --color-focus-ring: rgba(51, 195, 117, 0.35);
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 1rem;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            --shadow-lg: 0 10px 20px -3px rgb(0 0 0 / 0.07), 0 4px 8px -4px rgb(0 0 0 / 0.07);
+            --ease: cubic-bezier(.4,0,.2,1);
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--light-bg-secondary);
+            color: var(--light-text-secondary);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center; /* Center vertically for login */
+            justify-content: center;
+            padding: 1rem;
+        }
+        .app-container {
+            max-width: 72rem;
+            margin: 2rem auto;
+            padding: 0;
+            width: 100%;
+        }
+        h1, h2, h3 { font-weight: 600; color: var(--light-text-primary); margin: 0; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.5s var(--ease) forwards; }
+        button, .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 600; font-size: 0.875rem;
+            transition: all 0.2s var(--ease);
+            border: 1px solid transparent; cursor: pointer;
+            -webkit-user-select: none; user-select: none;
+        }
+        .btn-primary { background-color: var(--color-primary); color: var(--color-primary-text); }
+        .btn-primary:hover:not(:disabled) { background-color: var(--color-primary-hover); }
+        .loading-overlay {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.9); z-index: 1001;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .spinner {
+            border: 6px solid var(--light-bg-tertiary); border-top: 6px solid var(--color-primary);
+            border-radius: 50%; width: 50px; height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        #login-screen {
+            text-align: center;
+            animation: popIn 0.5s var(--ease) forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Login Screen (The only content on this page) -->
+        <div id="login-screen" class="screen active">
+            <h1 style="margin-bottom: 0.5rem;">Welcome to KS Enterprises</h1>
+            <p style="margin-bottom: 2rem; color: var(--light-text-muted);">Sign in to manage your orders.</p>
+            <button id="google-sign-in-btn" class="btn-primary">
+                <span class="material-symbols-outlined">account_circle</span>
+                Sign in with Google
+            </button>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;"><div class="spinner"></div></div>
+    
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        (function() {
+            // --- DOM ELEMENTS ---
+            const googleSignInBtn = document.getElementById('google-sign-in-btn'); 
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const showLoading = () => loadingOverlay.style.display = 'flex';
+            const hideLoading = () => loadingOverlay.style.display = 'none';
+            
+            // --- FIREBASE & CORE LOGIC ---
+            let db, auth;
+            
+            async function initializeFirebase() {
+                try {
+                    const firebaseConfig = {"apiKey":"AIzaSyBp4XoqX-MYvOlweR5dPfEqAP9qXu2P81E","authDomain":"harsha-jw.firebaseapp.com","projectId":"harsha-jw","storageBucket":"harsha-jw.appspot.com","messagingSenderId":"471408120499","appId":"1:471408120499:web:91e61514ad3703ce3b16c6","measurementId":"G-NBC16X4R1T"};
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+
+                    // Authentication state observer
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            // User is signed in, redirect to the main dashboard.
+                            window.location.href = 'index.html';
+                        } else {
+                            // User is signed out, ensure the login form is visible and hide loading.
+                            hideLoading();
+                        }
+                    });
+                } catch (error) {
+                    console.error("Firebase Initialization Error:", error);
+                    alert("Critical error initializing application.");
+                    hideLoading();
+                }
+            }
+
+            async function handleGoogleSignIn() {
+                showLoading();
+                const provider = new GoogleAuthProvider();
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    // On successful sign-in, create a user profile if it doesn't exist.
+                    // The onAuthStateChanged listener will handle the redirection.
+                    await fetchOrCreateUserProfile(result.user.uid, result.user.displayName);
+                } catch (error) {
+                    console.error("Google Sign-In Error:", error);
+                    alert(`Sign-in failed: ${error.message}`);
+                    hideLoading();
+                }
+            }
+
+            async function fetchOrCreateUserProfile(userId, googleDisplayName) {
+                const userProfileRef = doc(db, `artifacts/default-app-id/user_profiles`, userId);
+                try {
+                    const userDoc = await getDoc(userProfileRef);
+                    if (!userDoc.exists()) {
+                        const userName = googleDisplayName || "Anonymous User";
+                        await setDoc(userProfileRef, { userName: userName, createdAt: serverTimestamp() }, { merge: true });
+                    }
+                } catch (error) {
+                    console.error("User Profile Error:", error);
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+            googleSignInBtn.addEventListener('click', handleGoogleSignIn);
+            
+            // --- INITIALIZATION ---
+            showLoading(); // Show loading indicator while Firebase initializes
+            initializeFirebase();
+        })();
+    </script>
+</body>
+</html>
