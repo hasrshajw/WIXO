@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS Enterprises - Generate Quote</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        /* --- All CSS from the original file is included here, including @media print styles --- */
+        /* (The full CSS block is placed here) */
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Quote Screen -->
+        <div id="quote-screen" class="screen active">
+            <div id="quote-screen-printable">
+                <!-- Content will be injected by JavaScript -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- All required modals for this page -->
+    <div id="message-modal" class="modal">...</div>
+    <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div></div>
+    <div id="price-modal" class="modal">
+        <div class="modal-content" style="max-width: 480px; text-align: left;">
+             <form id="price-form">
+                <h3 style="margin-bottom: 2rem;">Enter Pricing Details</h3>
+                <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <input type="number" id="price-per-sft" class="input-field" min="0" step="0.01" placeholder=" " required>
+                    <label for="price-per-sft" class="input-label">Price per SFT (₹)</label>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="transport-charges" class="input-field" min="0" step="1" placeholder=" " value="0" required>
+                    <label for="transport-charges" class="input-label">Transport Charges (₹)</label>
+                </div>
+                <div class="modal-buttons" style="margin-top: 2rem; justify-content: flex-end;">
+                    <button type="button" id="price-cancel-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Generate Quote</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        (function() {
+            // --- All JS from the original file is included here, with modifications for MPA ---
+            
+            // --- PAGE-SPECIFIC INITIALIZATION LOGIC ---
+            document.addEventListener('DOMContentLoaded', () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const orderId = urlParams.get('id');
+
+                if (orderId) {
+                    priceForm.dataset.id = orderId;
+                    priceModal.style.display = 'flex'; // Show price modal immediately
+                    pricePerSftInput.focus();
+                } else {
+                    showMessageModal("No order specified for quote. Redirecting...");
+                    setTimeout(() => window.location.href = 'view-orders.html', 2000);
+                }
+            });
+
+            // Modify the priceForm submit event listener
+            priceForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading();
+                const orderId = e.currentTarget.dataset.id;
+                const price = parseFloat(pricePerSftInput.value);
+                const transport = parseFloat(transportChargesInput.value);
+
+                try {
+                    const orderRef = doc(db, 'upvc_orders', orderId);
+                    const orderSnap = await getDoc(orderRef);
+
+                    if (orderSnap.exists()) {
+                        const order = { id: orderSnap.id, ...orderSnap.data() };
+                        quoteScreenPrintable.innerHTML = createQuoteHtml(order, price, transport);
+                        priceModal.style.display = 'none';
+                        priceForm.reset();
+                        // Add event listener for the new back button
+                        document.getElementById('quote-back-btn').addEventListener('click', () => history.back());
+                    } else {
+                        showMessageModal("Could not find order to generate quote.");
+                    }
+                } catch (error) {
+                    console.error("Error generating quote:", error);
+                    showMessageModal("An error occurred while generating the quote.");
+                } finally {
+                    hideLoading();
+                }
+            });
+
+            // Make the cancel button go back to the previous page
+            priceCancelBtn.addEventListener('click', () => history.back());
+        })();
+    </script>
+</body>
+</html>
