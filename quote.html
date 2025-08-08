@@ -68,6 +68,7 @@
 
             // --- APP STATE ---
             let db, auth;
+            let currentOrderData = null; // To hold the fetched order data
 
             // --- HELPER FUNCTIONS ---
             const showLoading = () => loadingOverlay.style.display = 'flex';
@@ -87,7 +88,7 @@
                     const windowCost = sft * pricePerSft;
                     subTotal += windowCost;
                     const itemName = win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Item';
-                    tableRows += `<tr><td>${(index + 1).toString().padStart(2, '0')}</td><td>${itemName}${win.hasGlass && win.glassName ? ` <br><small>(${win.glassName})</small>` : ''}</td><td>${widthMm}</td><td>${heightMm}</td><td>304</td><td>${sft.toFixed(2)}</td><td>${pricePerSft.toLocaleString('en-IN')}</td><td>${windowCost.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                    tableRows += `<tr><td>${(index + 1).toString().padStart(2, '0')}</td><td>${itemName}${win.hasGlass && win.glassName ? ` <br><small>(${win.glassName})</small>` : ''}</td><td>${widthMm}</td><td>${heightMm}</td><td>304.8</td><td>${sft.toFixed(2)}</td><td>${pricePerSft.toLocaleString('en-IN')}</td><td>${windowCost.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
                 });
 
                 const gst = subTotal * 0.18;
@@ -112,13 +113,13 @@
                                 <p><strong>${order.name}</strong><br>${order.address.replace(/\n/g, '<br>')}<br>Phone: ${order.mobileNumber || 'N/A'}</p>
                             </div>
                             <table>
-                                <thead><tr><th>S.No</th><th>Item Name</th><th>Width (mm)</th><th>Height (mm)</th><th>Mesh</th><th>SFT</th><th>Price (₹)</th><th>Total Cost (₹)</th></tr></thead>
+                                <thead><tr><th>S.No</th><th>Item Name</th><th>Width (mm)</th><th>Height (mm)</th><th>Per Foot (mm)</th><th>SFT</th><th>Price/SFT (₹)</th><th>Total Cost (₹)</th></tr></thead>
                                 <tbody>${tableRows}</tbody>
                             </table>
                         </div>
                         <div class="invoice-summary">
                             <table>
-                                <tr><td>Total:</td><td style="text-align: right;">${subTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
+                                <tr><td>Sub Total:</td><td style="text-align: right;">${subTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
                                 <tr><td>GST 18%:</td><td style="text-align: right;">+${gst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
                                 <tr><td>Transport:</td><td style="text-align: right;">+${transportCharges.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
                                 <tr><td>Grand Total:</td><td style="text-align: right;">₹ ${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
@@ -166,46 +167,48 @@
                 }
             }
             
-            function startPageLogic() {
+            async function startPageLogic() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const orderId = urlParams.get('id');
-                if (orderId) {
-                    priceForm.dataset.id = orderId;
-                    priceModal.style.display = 'flex'; 
-                    pricePerSftInput.focus();
-                } else {
+                if (!orderId) {
                     showMessageModal("No order specified for quote. Redirecting...");
                     setTimeout(() => window.location.href = 'view-orders.html', 2000);
+                    return;
                 }
-                hideLoading();
-            }
-
-            // --- EVENT LISTENERS ---
-            priceForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                showLoading();
-                const orderId = e.currentTarget.dataset.id;
-                const price = parseFloat(pricePerSftInput.value);
-                const transport = parseFloat(transportChargesInput.value || 0);
 
                 try {
                     const orderRef = doc(db, 'upvc_orders', orderId);
                     const orderSnap = await getDoc(orderRef);
-
                     if (orderSnap.exists()) {
-                        const order = { id: orderSnap.id, ...orderSnap.data() };
-                        quoteScreenPrintable.innerHTML = createQuoteHtml(order, price, transport);
-                        priceModal.style.display = 'none';
-                        document.getElementById('quote-back-btn').addEventListener('click', () => history.back());
+                        currentOrderData = { id: orderSnap.id, ...orderSnap.data() };
+                        priceModal.style.display = 'flex'; 
+                        pricePerSftInput.focus();
                     } else {
-                        showMessageModal("Could not find the order to generate a quote.");
+                        showMessageModal("The specified order could not be found.");
                     }
-                } catch (error) {
-                    console.error("Error generating quote:", error);
-                    showMessageModal("An error occurred while generating the quote.");
+                } catch(e) {
+                     showMessageModal("Error fetching order data.");
                 } finally {
                     hideLoading();
                 }
+            }
+
+            // --- EVENT LISTENERS ---
+            priceForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                showLoading();
+                const price = parseFloat(pricePerSftInput.value);
+                const transport = parseFloat(transportChargesInput.value || 0);
+
+                if (currentOrderData) {
+                    quoteScreenPrintable.innerHTML = createQuoteHtml(currentOrderData, price, transport);
+                    priceModal.style.display = 'none';
+                    // Attach listener to the newly created back button
+                    document.getElementById('quote-back-btn').addEventListener('click', () => history.back());
+                } else {
+                    showMessageModal("Order data is missing. Cannot generate quote.");
+                }
+                hideLoading();
             });
 
             priceCancelBtn.addEventListener('click', () => history.back());
