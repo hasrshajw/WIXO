@@ -87,11 +87,11 @@
                 windowsForPdf.forEach((win, index) => {
                     const heightMm = parseFloat(win.height || 0);
                     const widthMm = parseFloat(win.width || 0);
-                    const sft = (widthMm / 304.8) * (heightMm / 304.8);
+                    const sft = (widthMm / 304) * (heightMm / 304);
                     const windowCost = sft * pricePerSft;
                     subTotal += windowCost;
                     const itemName = win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Item';
-                    tableRows += `<tr><td>${(index + 1).toString().padStart(2, '0')}</td><td>${itemName}${win.hasGlass && win.glassName ? ` <br><small>(${win.glassName})</small>` : ''}</td><td>${widthMm}</td><td>${heightMm}</td><td>304.8</td><td>${sft.toFixed(2)}</td><td>${pricePerSft.toLocaleString('en-IN')}</td><td>${windowCost.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                    tableRows += `<tr><td>${(index + 1).toString().padStart(2, '0')}</td><td>${itemName}${win.hasGlass && win.glassName ? ` <br><small>(${win.glassName})</small>` : ''}</td><td>${widthMm}</td><td>${heightMm}</td><td>304</td><td>${sft.toFixed(2)}</td><td>${pricePerSft.toLocaleString('en-IN')}</td><td>${windowCost.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
                 });
 
                 const gst = subTotal * 0.18;
