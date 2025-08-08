@@ -182,6 +182,7 @@
     </div>
 
     <script type="module">
+        // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, addDoc, getDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -331,8 +332,56 @@
                 }
             }
 
-            const openLocationPicker = async () => { /* ... (Same as previous correct version) ... */ };
-            const confirmSelectedLocation = () => { /* ... (Same as previous correct version) ... */ };
+            // --- FULLY RESTORED MAP LOGIC ---
+            const openLocationPicker = async () => {
+                locationPickerModal.style.display = 'flex';
+                showLoading();
+                let initialLat = customerLatInput.value || 20.5937;
+                let initialLon = customerLonInput.value || 78.9629;
+                let initialZoom = customerLatInput.value ? 16 : 5;
+
+                const setupMap = (lat, lon, zoom) => {
+                    if (!map) {
+                        map = L.map('map-container').setView([lat, lon], zoom);
+                        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }).addTo(map);
+                    } else {
+                        map.setView([lat, lon], zoom);
+                    }
+                    setTimeout(() => map.invalidateSize(), 10);
+                    hideLoading();
+                };
+
+                if ("geolocation" in navigator && !customerLatInput.value) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            setupMap(position.coords.latitude, position.coords.longitude, 18); // Max Zoom
+                        },
+                        (error) => {
+                            console.warn(`Geolocation error (${error.code}): ${error.message}`);
+                            showMessageModal("Could not get your location. Please select manually.");
+                            setupMap(initialLat, initialLon, initialZoom);
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                    );
+                } else {
+                    setupMap(initialLat, initialLon, initialZoom);
+                }
+            };
+            const confirmSelectedLocation = () => {
+                const center = map.getCenter();
+                customerLatInput.value = center.lat.toFixed(6);
+                customerLonInput.value = center.lng.toFixed(6);
+                getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                getLocationBtn.classList.remove('btn-secondary');
+                getLocationBtn.classList.add('btn-success');
+                locationPickerModal.style.display = 'none';
+                saveDraft();
+            };
+            
             async function logHistory(orderId, action, details = {}) {
                 if (!orderId) return;
                 try {
@@ -340,6 +389,7 @@
                     await addDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
                 } catch (error) { console.error("Error logging history:", error); }
             }
+
             const createChangeLog = (original, newData) => {
                 const changes = {};
                 const simpleFields = ['name', 'address', 'mobileNumber', 'dueDate'];
@@ -416,7 +466,6 @@
                         await logHistory(finalOrderId, 'Order Created');
                         localStorage.removeItem('orderDraft');
                     }
-                    // Redirect on success
                     window.location.href = `order-details.html?id=${finalOrderId}`;
                 } catch (error) { 
                     console.error("Error saving order:", error); 
