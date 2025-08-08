@@ -272,7 +272,6 @@
         .skeleton.h-4 { height: 1rem; } .skeleton.w-1_2 { width: 50%; } .skeleton.w-1_3 { width: 33.33%; }
         .skeleton.mt-4 { margin-top: 1rem; } .skeleton.mt-2 { margin-top: 0.5rem; }
         
-        /* MODIFIED: Upcoming Order Cards on Dashboard */
         .upcoming-cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -294,10 +293,9 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
-        /* MODIFIED: New class for text container */
         .upcoming-order-card .card-info {
             flex-grow: 1;
-            min-width: 0; /* This is the key to allow text to truncate in flexbox */
+            min-width: 0;
         }
         .upcoming-order-card .customer-name {
             font-weight: 600;
@@ -414,12 +412,19 @@
             max-width: 794px; 
             margin: auto;
             background: #fff; 
-            padding: 30px; 
             border-radius: 6px;
             color: #2d3748; 
             display: flex; 
             flex-direction: column;
         }
+
+        /* MODIFIED: Explicitly sets padding for SCREEN ONLY */
+        @media screen {
+            #quote-screen .invoice-box {
+                padding: 30px;
+            }
+        }
+
         #quote-screen .header {
             display: flex; justify-content: space-between; align-items: flex-start;
             border-bottom: 2px solid #e2e8f0; padding-bottom: 20px;
@@ -525,12 +530,12 @@
                 box-shadow: none !important;
                 border-radius: 0;
                 margin: 0;
-                padding: 15mm !important; /* A4 printable area padding */
+                padding: 15mm !important; /* This padding is ONLY for the final print/PDF output */
                 max-width: 100%;
                 min-height: initial;
             }
             #quote-screen table th {
-                background-color: #535456 !important; /* Keep dark header for print */
+                background-color: #535456 !important;
                 color: #fff !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
@@ -1122,7 +1127,6 @@
                 populateUpcomingOverdueList();
             };
 
-            // MODIFIED: Renders compact, colored cards with horizontal layout.
             const populateUpcomingOverdueList = () => {
                 upcomingOverdueList.innerHTML = '';
                 const today = new Date(); today.setHours(0,0,0,0);
@@ -1159,7 +1163,6 @@
                         const card = document.createElement('div');
                         card.className = `upcoming-order-card ${statusClassName}`;
                         
-                        // MODIFIED: New HTML structure for handling text overflow correctly.
                         card.innerHTML = `
                             <div class="card-info">
                                 <div class="customer-name" title="${order.name}">${order.name}</div>
@@ -1172,11 +1175,10 @@
                         `;
                         
                         card.querySelector('.view-btn').addEventListener('click', (e) => {
-                            e.stopPropagation(); // Prevent card click event when button is clicked
+                            e.stopPropagation(); 
                             showOrderDetails(order.id);
                         });
                         
-                        // Make the whole card clickable as well
                         card.addEventListener('click', () => {
                              showOrderDetails(order.id);
                         });
