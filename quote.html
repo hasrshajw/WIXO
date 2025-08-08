@@ -31,6 +31,7 @@
              <form id="price-form">
                 <h3 style="margin-bottom: 2rem;">Enter Pricing Details</h3>
                 <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <!-- The placeholder=" " is CRITICAL for the label animation -->
                     <input type="number" id="price-per-sft" class="input-field" min="0" step="0.01" placeholder=" " required>
                     <label for="price-per-sft" class="input-label">Price per SFT (₹)</label>
                 </div>
@@ -68,7 +69,6 @@
 
             // --- APP STATE ---
             let db, auth;
-            let currentOrderData = null; // To hold the fetched order data
 
             // --- HELPER FUNCTIONS ---
             const showLoading = () => loadingOverlay.style.display = 'flex';
@@ -113,13 +113,13 @@
                                 <p><strong>${order.name}</strong><br>${order.address.replace(/\n/g, '<br>')}<br>Phone: ${order.mobileNumber || 'N/A'}</p>
                             </div>
                             <table>
-                                <thead><tr><th>S.No</th><th>Item Name</th><th>Width (mm)</th><th>Height (mm)</th><th>Per Foot (mm)</th><th>SFT</th><th>Price/SFT (₹)</th><th>Total Cost (₹)</th></tr></thead>
+                                <thead><tr><th>S.No</th><th>Item Name</th><th>Width (mm)</th><th>Height (mm)</th><th>Mesh</th><th>SFT</th><th>Price (₹)</th><th>Total Cost (₹)</th></tr></thead>
                                 <tbody>${tableRows}</tbody>
                             </table>
                         </div>
                         <div class="invoice-summary">
                             <table>
-                                <tr><td>Sub Total:</td><td style="text-align: right;">${subTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
+                                <tr><td>Total:</td><td style="text-align: right;">${subTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
                                 <tr><td>GST 18%:</td><td style="text-align: right;">+${gst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
                                 <tr><td>Transport:</td><td style="text-align: right;">+${transportCharges.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
                                 <tr><td>Grand Total:</td><td style="text-align: right;">₹ ${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
@@ -167,48 +167,46 @@
                 }
             }
             
-            async function startPageLogic() {
+            function startPageLogic() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const orderId = urlParams.get('id');
-                if (!orderId) {
+                if (orderId) {
+                    priceForm.dataset.id = orderId;
+                    priceModal.style.display = 'flex'; 
+                    pricePerSftInput.focus();
+                } else {
                     showMessageModal("No order specified for quote. Redirecting...");
                     setTimeout(() => window.location.href = 'view-orders.html', 2000);
-                    return;
                 }
+                hideLoading();
+            }
+
+            // --- EVENT LISTENERS ---
+            priceForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading();
+                const orderId = e.currentTarget.dataset.id;
+                const price = parseFloat(pricePerSftInput.value);
+                const transport = parseFloat(transportChargesInput.value || 0);
 
                 try {
                     const orderRef = doc(db, 'upvc_orders', orderId);
                     const orderSnap = await getDoc(orderRef);
+
                     if (orderSnap.exists()) {
-                        currentOrderData = { id: orderSnap.id, ...orderSnap.data() };
-                        priceModal.style.display = 'flex'; 
-                        pricePerSftInput.focus();
+                        const order = { id: orderSnap.id, ...orderSnap.data() };
+                        quoteScreenPrintable.innerHTML = createQuoteHtml(order, price, transport);
+                        priceModal.style.display = 'none';
+                        document.getElementById('quote-back-btn').addEventListener('click', () => history.back());
                     } else {
-                        showMessageModal("The specified order could not be found.");
+                        showMessageModal("Could not find the order to generate a quote.");
                     }
-                } catch(e) {
-                     showMessageModal("Error fetching order data.");
+                } catch (error) {
+                    console.error("Error generating quote:", error);
+                    showMessageModal("An error occurred while generating the quote.");
                 } finally {
                     hideLoading();
                 }
-            }
-
-            // --- EVENT LISTENERS ---
-            priceForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                showLoading();
-                const price = parseFloat(pricePerSftInput.value);
-                const transport = parseFloat(transportChargesInput.value || 0);
-
-                if (currentOrderData) {
-                    quoteScreenPrintable.innerHTML = createQuoteHtml(currentOrderData, price, transport);
-                    priceModal.style.display = 'none';
-                    // Attach listener to the newly created back button
-                    document.getElementById('quote-back-btn').addEventListener('click', () => history.back());
-                } else {
-                    showMessageModal("Order data is missing. Cannot generate quote.");
-                }
-                hideLoading();
             });
 
             priceCancelBtn.addEventListener('click', () => history.back());
