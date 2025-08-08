@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +43,10 @@
             --color-danger-hover: #dc2626;
             --color-danger-text: #ffffff;
             
+            --color-warning: #f59e0b; /* Amber 500 */
+            --color-warning-hover: #d97706; /* Amber 600 */
+            --color-warning-text: #ffffff;
+
             --color-reopen: #6f42c1;
             --color-reopen-hover: #5a3d9a;
             --color-reopen-text: #ffffff;
@@ -52,10 +55,12 @@
             --status-pending-text: #4338ca;
             --status-completed-bg: #f0fdf4;
             --status-completed-text: #166534;
-            --status-overdue-bg: #fff1f2;
+            --status-overdue-bg: #fef2f2; /* Lighter Red */
             --status-overdue-text: #be123c;
-            --status-upcoming-bg: #fefce8;
-            --status-upcoming-text: #854d0e;
+            --status-overdue-border: #fecaca; /* Light Red Border */
+            --status-upcoming-bg: #fffbeb; /* Lighter Yellow */
+            --status-upcoming-text: #b45309; /* Darker Yellow/Brown for text */
+            --status-upcoming-border: #fde68a; /* Light Yellow/Amber Border */
             
             --color-focus-ring: rgba(51, 195, 117, 0.35);
             --radius-sm: 0.25rem; /* 4px */
@@ -124,6 +129,9 @@
 
         .btn-danger { background-color: var(--color-danger); color: var(--color-danger-text); }
         .btn-danger:hover:not(:disabled) { background-color: var(--color-danger-hover); }
+
+        .btn-warning { background-color: var(--color-warning); color: var(--color-warning-text); }
+        .btn-warning:hover:not(:disabled) { background-color: var(--color-warning-hover); }
 
         .btn-success { background-color: var(--color-accent); color: var(--color-accent-text); }
         .btn-success:hover:not(:disabled) { background-color: var(--color-accent-hover); }
@@ -263,6 +271,63 @@
         .skeleton.h-6 { height: 1.5rem; } .skeleton.w-3_4 { width: 75%; }
         .skeleton.h-4 { height: 1rem; } .skeleton.w-1_2 { width: 50%; } .skeleton.w-1_3 { width: 33.33%; }
         .skeleton.mt-4 { margin-top: 1rem; } .skeleton.mt-2 { margin-top: 0.5rem; }
+        
+        /* MODIFIED: Upcoming Order Cards on Dashboard */
+        .upcoming-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .upcoming-order-card {
+            border: 1px solid;
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s var(--ease);
+            cursor: pointer;
+        }
+        .upcoming-order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        /* MODIFIED: New class for text container */
+        .upcoming-order-card .card-info {
+            flex-grow: 1;
+            min-width: 0; /* This is the key to allow text to truncate in flexbox */
+        }
+        .upcoming-order-card .customer-name {
+            font-weight: 600;
+            color: var(--light-text-primary);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .upcoming-order-card .due-status {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .upcoming-order-card .view-btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        .upcoming-order-card .view-btn .material-symbols-outlined {
+            font-size: 1rem;
+        }
+        .upcoming-order-card.overdue {
+            background-color: var(--status-overdue-bg);
+            border-color: var(--status-overdue-border);
+        }
+        .upcoming-order-card.upcoming-due {
+            background-color: var(--status-upcoming-bg);
+            border-color: var(--status-upcoming-border);
+        }
+
 
         /* --- 7. MODAL & OVERLAY STYLES --- */
         .modal {
@@ -499,10 +564,10 @@
                 Logged in as: <span id="user-id-display" class="font-mono" style="color: var(--color-primary);">Loading...</span>
             </p>
             <div id="due-date-summary" class="card" style="margin-bottom: 2rem; text-align: left;">
-                <h3 style="margin-bottom: 1rem;">Upcoming & Overdue Orders</h3>
-                <ul id="upcoming-overdue-list" style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
-                    <li style="color: var(--light-text-secondary);">No critical orders.</li>
-                </ul>
+                <h3 style="margin-bottom: 1.5rem;">Upcoming & Overdue Orders</h3>
+                <div id="upcoming-overdue-list" class="upcoming-cards-container">
+                    <p style="color: var(--light-text-secondary);">No critical orders.</p>
+                </div>
             </div>
             <div class="main-menu-actions">
                 <button id="add-new-btn" class="btn-primary">
@@ -1057,6 +1122,7 @@
                 populateUpcomingOverdueList();
             };
 
+            // MODIFIED: Renders compact, colored cards with horizontal layout.
             const populateUpcomingOverdueList = () => {
                 upcomingOverdueList.innerHTML = '';
                 const today = new Date(); today.setHours(0,0,0,0);
@@ -1070,20 +1136,52 @@
                 }).sort((a,b) => (new Date(a.dueDate)?.getTime() || 0) - (new Date(b.dueDate)?.getTime() || 0));
 
                 if (criticalOrders.length === 0) {
-                    upcomingOverdueList.innerHTML = '<li style="color: var(--light-text-secondary);">No critical orders.</li>';
+                    upcomingOverdueList.innerHTML = '<p style="color: var(--light-text-secondary); grid-column: 1 / -1;">No critical orders.</p>';
                 } else {
                     criticalOrders.forEach(order => {
                         const dueDate = new Date(order.dueDate);
                         const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
-                        let summaryText = ''; let summaryColor = '';
+                        
+                        let summaryText, statusClassName, summaryColor, buttonClass;
+
                         if (dueDate < today) {
-                            summaryText = `Overdue (${order.dueDate})`; summaryColor = 'var(--status-overdue-text)';
+                            summaryText = `Overdue`; 
+                            statusClassName = 'overdue';
+                            summaryColor = 'var(--status-overdue-text)';
+                            buttonClass = 'btn-danger';
                         } else {
-                            summaryText = `Due in ${daysDiff} day${daysDiff !== 1 ? 's' : ''} (${order.dueDate})`; summaryColor = 'var(--status-upcoming-text)';
+                            summaryText = `Due in ${daysDiff} day${daysDiff !== 1 ? 's' : ''}`;
+                            statusClassName = 'upcoming-due';
+                            summaryColor = 'var(--status-upcoming-text)';
+                            buttonClass = 'btn-warning';
                         }
-                        const li = document.createElement('li'); li.style.color = summaryColor;
-                        li.innerHTML = `<span style="font-weight: 600;">${order.name}</span> - ${summaryText}`;
-                        upcomingOverdueList.appendChild(li);
+                        
+                        const card = document.createElement('div');
+                        card.className = `upcoming-order-card ${statusClassName}`;
+                        
+                        // MODIFIED: New HTML structure for handling text overflow correctly.
+                        card.innerHTML = `
+                            <div class="card-info">
+                                <div class="customer-name" title="${order.name}">${order.name}</div>
+                                <div class="due-status" style="color: ${summaryColor};">${summaryText}</div>
+                            </div>
+                            <button class="btn ${buttonClass} view-btn" data-id="${order.id}">
+                                <span class="material-symbols-outlined">visibility</span>
+                                View
+                            </button>
+                        `;
+                        
+                        card.querySelector('.view-btn').addEventListener('click', (e) => {
+                            e.stopPropagation(); // Prevent card click event when button is clicked
+                            showOrderDetails(order.id);
+                        });
+                        
+                        // Make the whole card clickable as well
+                        card.addEventListener('click', () => {
+                             showOrderDetails(order.id);
+                        });
+
+                        upcomingOverdueList.appendChild(card);
                     });
                 }
             };
@@ -1282,8 +1380,10 @@
                 const center = map.getCenter();
                 customerLatInput.value = center.lat.toFixed(6); customerLonInput.value = center.lng.toFixed(6);
                 getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
-                getLocationBtn.classList.remove('btn-secondary'); getLocationBtn.classList.add('btn-success');
-                locationPickerModal.style.display = 'none'; saveDraft();
+                getLocationBtn.classList.remove('btn-secondary');
+                getLocationBtn.classList.add('btn-success');
+                locationPickerModal.style.display = 'none';
+                saveDraft();
             };
 
 
@@ -1543,7 +1643,8 @@
 
                     if (data.lat && data.lon) {
                         getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
-                        getLocationBtn.classList.remove('btn-secondary'); getLocationBtn.classList.add('btn-success');
+                        getLocationBtn.classList.remove('btn-secondary');
+                        getLocationBtn.classList.add('btn-success');
                     }
                     windowsContainer.innerHTML = '';
                     if (data.windows && data.windows.length > 0) {
