@@ -3,310 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KS Enterprises - Order Details</title>
+    <title>KS Enterprises - Quote</title>
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
-        /* --- EXACT, COMPLETE ORIGINAL CSS - INCLUDING ALL RESPONSIVE STYLES --- */
-        :root{--font-main:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;--font-icon:"Material Symbols Outlined";--light-bg-primary:#fff;--light-bg-secondary:#f7f9fc;--light-bg-tertiary:#f1f3f6;--light-text-primary:#012726;--light-text-secondary:#52616b;--light-text-muted:#9ca3af;--light-border:#e5e7eb;--light-border-hover:#d1d5db;--color-primary:#012726;--color-primary-hover:#023d3c;--color-primary-text:#fff;--color-accent:#33c375;--color-accent-hover:#2cac66;--color-accent-text:#012726;--color-danger:#ef4444;--color-danger-hover:#dc2626;--color-danger-text:#fff;--color-warning:#f59e0b;--color-warning-hover:#d97706;--color-warning-text:#fff;--color-reopen:#6f42c1;--color-reopen-hover:#5a3d9a;--color-reopen-text:#fff;--status-pending-bg:#eef2ff;--status-pending-text:#4338ca;--status-completed-bg:#f0fdf4;--status-completed-text:#166534;--status-overdue-bg:#fef2f2;--status-overdue-text:#be123c;--status-overdue-border:#fecaca;--status-upcoming-bg:#fffbeb;--status-upcoming-text:#b45309;--status-upcoming-border:#fde68a;--color-focus-ring:rgba(51,195,117,.35);--radius-sm:0.25rem;--radius-md:0.5rem;--radius-lg:1rem;--shadow-sm:0 1px 2px 0 rgba(0,0,0,.04);--shadow-md:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.07);--shadow-lg:0 10px 20px -3px rgba(0,0,0,.07),0 4px 8px -4px rgba(0,0,0,.07);--ease:cubic-bezier(.4,0,.2,1)}*,:after,:before{box-sizing:border-box}html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{font-family:var(--font-main);background-color:var(--light-bg-secondary);color:var(--light-text-secondary);margin:0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1rem;padding-top:calc(70px + 1rem)}.app-container{max-width:72rem;margin:2rem auto;padding:0;width:100%}h1,h2,h3{font-weight:600;color:var(--light-text-primary);margin:0}h1{font-size:1.875rem;line-height:2.25rem}h2{font-size:1.5rem;line-height:2rem}h3{font-size:1.25rem;line-height:1.75rem}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes popIn{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}.screen{display:none}.screen.active{display:block;animation:fadeUp .5s var(--ease) forwards}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:var(--radius-md);font-weight:600;font-size:.875rem;transition:all .2s var(--ease);border:1px solid transparent;cursor:pointer;-webkit-user-select:none;user-select:none}button:hover:not(:disabled),.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-md)}button:active:not(:disabled),.btn:active:not(:disabled){transform:translateY(0);box-shadow:var(--shadow-sm)}button:disabled,.btn:disabled{opacity:.6;cursor:not-allowed}button:focus-visible,.btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}.btn-primary{background-color:var(--color-primary);color:var(--color-primary-text)}.btn-primary:hover:not(:disabled){background-color:var(--color-primary-hover)}.btn-secondary{background-color:var(--light-bg-primary);color:var(--light-text-secondary);border-color:var(--light-border);box-shadow:var(--shadow-sm)}.btn-secondary:hover:not(:disabled){background-color:var(--light-bg-tertiary);border-color:var(--light-border-hover);color:var(--light-text-primary)}.btn-danger{background-color:var(--color-danger);color:var(--color-danger-text)}.btn-danger:hover:not(:disabled){background-color:var(--color-danger-hover)}.btn-success{background-color:var(--color-accent);color:var(--color-accent-text)}.btn-success:hover:not(:disabled){background-color:var(--color-accent-hover)}.btn-reopen{background-color:var(--color-reopen);color:var(--color-reopen-text)}.btn-reopen:hover:not(:disabled){background-color:var(--color-reopen-hover)}.status-tag{display:inline-flex;align-items:center;gap:.375rem;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:600}.status-tag:before{content:"";display:block;width:.5rem;height:.5rem;border-radius:50%}.status-tag.pending{background-color:var(--status-pending-bg);color:var(--status-pending-text)}.status-tag.pending:before{background-color:var(--status-pending-text)}.status-tag.completed{background-color:var(--status-completed-bg);color:var(--status-completed-text)}.status-tag.completed:before{background-color:var(--status-completed-text)}.status-tag.overdue{background-color:var(--status-overdue-bg);color:var(--status-overdue-text)}.status-tag.overdue:before{background-color:var(--status-overdue-text)}.status-tag.upcoming-due{background-color:var(--status-upcoming-bg);color:var(--status-upcoming-text)}.status-tag.upcoming-due:before{background-color:var(--status-upcoming-text)}.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding:0 1.5rem}.card{background-color:var(--light-bg-primary);border:1px solid var(--light-border);border-radius:var(--radius-lg);padding:2.5rem;box-shadow:var(--shadow-sm)}.modal{display:none;position:fixed;z-index:1000;inset:0;width:100%;height:100%;background-color:rgba(17,24,39,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:center;justify-content:center;animation:fadeIn .3s var(--ease)}.modal-content{background-color:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:90%;max-width:420px;text-align:center;animation:popIn .3s var(--ease)}.modal-message{font-size:1.125rem;font-weight:500;margin-bottom:1.5rem;color:var(--light-text-primary)}.modal-buttons{display:flex;justify-content:center;gap:1rem}.loading-overlay{position:fixed;inset:0;width:100%;height:100%;background-color:rgba(255,255,255,.9);z-index:1001;display:flex;align-items:center;justify-content:center}.spinner{border:6px solid var(--light-bg-tertiary);border-top:6px solid var(--color-primary);border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}.history-item{padding:1rem;border-bottom:1px solid var(--light-border)}.history-item:last-child{border-bottom:none}.history-item-meta{font-size:.8rem;color:var(--light-text-muted);margin-bottom:.25rem}.history-item-action{font-weight:500;color:var(--light-text-primary)}.history-detail{font-size:.85rem;color:var(--light-text-secondary);padding-left:1rem;margin-top:.5rem;list-style-type:none}.history-detail ul{padding-left:1.25rem;margin-top:.25rem}.detail-window-item{display:flex;align-items:center;gap:1rem;padding:.75rem;background-color:var(--light-bg-tertiary);border-radius:var(--radius-md);margin-bottom:.5rem}.item-number{flex-shrink:0;width:2.25rem;height:2.25rem;background-color:var(--color-primary);color:var(--color-primary-text);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.875rem}.item-info{font-size:.9rem;color:var(--light-text-primary);line-height:1.4}.item-info small{display:block;color:var(--light-text-secondary);font-size:.8rem;margin-top:.25rem}.remove-window-btn{background:0 0;border:none;padding:.25rem;color:var(--light-text-muted);cursor:pointer;border-radius:9999px;display:flex;align-items:center;justify-content:center;transition:color .2s,background-color .2s;position:static}.remove-window-btn:hover{background-color:var(--light-bg-tertiary);color:var(--color-danger)}.navbar{background-color:var(--light-bg-primary);padding:10px 5%;box-shadow:var(--shadow-md);display:flex;align-items:center;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:1000;height:70px}.navbar-logo img{height:40px;display:block}.navbar-profile{position:relative}.navbar-profile .profile-image{height:45px;width:45px;border-radius:50%;-o-object-fit:cover;object-fit:cover;cursor:pointer;border:2px solid #e0e0e0;transition:transform .2s ease,box-shadow .2s ease}.navbar-profile .profile-image:hover{transform:scale(1.1);box-shadow:0 0 10px rgba(0,0,0,.2)}.profile-dropdown{position:absolute;top:calc(100% + 12px);right:0;background:var(--light-bg-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-md);padding:8px;min-width:160px;z-index:1001;visibility:hidden;opacity:0;transform:translateY(-10px);transition:all .2s ease-out}.profile-dropdown.show{visibility:visible;opacity:1;transform:translateY(0)}.profile-dropdown button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:none;background:0 0;text-align:left;font-size:15px;color:var(--light-text-primary);border-radius:var(--radius-sm);cursor:pointer;transition:background-color .2s ease}.profile-dropdown button:hover{background-color:var(--light-bg-tertiary)}.profile-dropdown .icon{font-size:18px}
-        @media (max-width: 640px) {
-            body { padding: 0; padding-top: 70px; background-color: var(--light-bg-primary); }
-            .app-container { margin: 0; padding: 0; }
-            .card { padding: 1.5rem; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
-            .page-header { flex-direction: row; justify-content: flex-start; align-items: center; gap: 1rem; padding: 1.5rem; background-color: var(--light-bg-secondary); border-bottom: 1px solid var(--light-border); }
-            #detail-info-grid { grid-template-columns: 1fr !important; }
-            .details-action-buttons { flex-direction: column; align-items: stretch !important; gap: 0.75rem; }
-            .details-action-buttons .btn { width: 100%; margin: 0; }
-        }
+        /* --- EXACT, COMPLETE ORIGINAL CSS - INCLUDING ALL RESPONSIVE & PRINT STYLES --- */
+        :root{--font-main:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;--font-icon:"Material Symbols Outlined";--light-bg-primary:#fff;--light-bg-secondary:#f7f9fc;--light-bg-tertiary:#f1f3f6;--light-text-primary:#012726;--light-text-secondary:#52616b;--light-text-muted:#9ca3af;--light-border:#e5e7eb;--light-border-hover:#d1d5db;--color-primary:#012726;--color-primary-hover:#023d3c;--color-primary-text:#fff;--color-accent:#33c375;--color-accent-hover:#2cac66;--color-accent-text:#012726;--color-danger:#ef4444;--color-danger-hover:#dc2626;--color-danger-text:#fff;--color-warning:#f59e0b;--color-warning-hover:#d97706;--color-warning-text:#fff;--color-reopen:#6f42c1;--color-reopen-hover:#5a3d9a;--color-reopen-text:#fff;--status-pending-bg:#eef2ff;--status-pending-text:#4338ca;--status-completed-bg:#f0fdf4;--status-completed-text:#166534;--status-overdue-bg:#fef2f2;--status-overdue-text:#be123c;--status-overdue-border:#fecaca;--status-upcoming-bg:#fffbeb;--status-upcoming-text:#b45309;--status-upcoming-border:#fde68a;--color-focus-ring:rgba(51,195,117,.35);--radius-sm:0.25rem;--radius-md:0.5rem;--radius-lg:1rem;--shadow-sm:0 1px 2px 0 rgba(0,0,0,.04);--shadow-md:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.07);--shadow-lg:0 10px 20px -3px rgba(0,0,0,.07),0 4px 8px -4px rgba(0,0,0,.07);--ease:cubic-bezier(.4,0,.2,1)}*,:after,:before{box-sizing:border-box}html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{font-family:var(--font-main);background-color:var(--light-bg-secondary);color:var(--light-text-secondary);margin:0;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1rem;padding-top:1rem}h1,h2,h3{font-weight:600;color:var(--light-text-primary);margin:0}h1{font-size:1.875rem;line-height:2.25rem}h2{font-size:1.5rem;line-height:2rem}h3{font-size:1.25rem;line-height:1.75rem}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes popIn{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}.screen{display:none}.screen.active{display:block;animation:fadeIn .5s var(--ease) forwards}button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1.25rem;border-radius:var(--radius-md);font-weight:600;font-size:.875rem;transition:all .2s var(--ease);border:1px solid transparent;cursor:pointer;-webkit-user-select:none;user-select:none}button:hover:not(:disabled),.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-md)}button:focus-visible,.btn:focus-visible{outline:2px solid var(--color-focus-ring);outline-offset:2px}.btn-primary{background-color:var(--color-primary);color:var(--color-primary-text)}.btn-primary:hover:not(:disabled){background-color:var(--color-primary-hover)}.btn-secondary{background-color:var(--light-bg-primary);color:var(--light-text-secondary);border-color:var(--light-border);box-shadow:var(--shadow-sm)}.btn-secondary:hover:not(:disabled){background-color:var(--light-bg-tertiary);border-color:var(--light-border-hover);color:var(--light-text-primary)}.input-group{position:relative}.input-field{width:100%;background-color:var(--light-bg-primary);border:1px solid var(--light-border);border-radius:var(--radius-md);font-size:1rem;padding:1rem;color:var(--light-text-primary);transition:all .2s;outline:none}.input-label{position:absolute;top:1rem;left:1rem;color:var(--light-text-secondary);pointer-events:none;transition:all .2s var(--ease);background-color:var(--light-bg-primary);padding:0 .25rem}.input-field:focus+.input-label,.input-field:not(:-moz-placeholder-shown)+.input-label,.input-field:not(:placeholder-shown)+.input-label{top:-.625rem;font-size:.75rem;color:var(--color-primary)}.input-field:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px var(--color-focus-ring)}.modal{display:none;position:fixed;z-index:1000;inset:0;width:100%;height:100%;background-color:rgba(17,24,39,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:center;justify-content:center;animation:fadeIn .3s var(--ease)}.modal-content{background-color:#fff;padding:2rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:90%;max-width:420px;text-align:center;animation:popIn .3s var(--ease)}.modal-message{font-size:1.125rem;font-weight:500;margin-bottom:1.5rem;color:var(--light-text-primary)}.modal-buttons{display:flex;justify-content:center;gap:1rem}.loading-overlay{position:fixed;inset:0;width:100%;height:100%;background-color:rgba(255,255,255,.9);z-index:1001;display:flex;align-items:center;justify-content:center}.spinner{border:6px solid var(--light-bg-tertiary);border-top:6px solid var(--color-primary);border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}#quote-screen{background:#e9e9e9;padding:20px;font-size:14px}#quote-screen .quote-controls{display:flex;justify-content:center;align-items:center;gap:1rem;margin-bottom:20px}#quote-screen .btn{width:auto}#quote-screen .invoice-box{max-width:794px;margin:auto;background:#fff;border-radius:6px;color:#2d3748;display:flex;flex-direction:column;padding:30px}#quote-screen .header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #e2e8f0;padding-bottom:20px}#quote-screen .logo-img{max-width:160px;height:auto}#quote-screen .invoice-details{text-align:right;font-size:13px;line-height:1.5;color:#718096}#quote-screen .invoice-details strong{color:#2d3748}#quote-screen .bill-to{margin-top:25px}#quote-screen .bill-to h3{font-weight:600;font-size:16px;margin-bottom:8px}#quote-screen .bill-to p{font-size:13px;color:#718096;margin:3px 0;line-height:1.6}#quote-screen table{width:100%;margin-top:25px;border-collapse:collapse;font-size:13px}#quote-screen table th{background-color:#535456;color:#fff;font-weight:600;padding:12px 8px;text-align:left;border-bottom:none}#quote-screen table td{padding:10px 8px;border-bottom:1px solid #e2e8f0;color:#718096}#quote-screen table td:nth-child(2){color:#2d3748;font-weight:500}#quote-screen tbody tr:nth-child(even){background-color:#f8f8f7}#quote-screen tbody tr:nth-child(odd){background-color:#fff}#quote-screen table td:not(:first-child):not(:nth-child(2)),#quote-screen table th:not(:first-child):not(:nth-child(2)){text-align:right}#quote-screen .invoice-summary{margin-top:auto;padding-top:20px;display:flex;justify-content:flex-end}#quote-screen .invoice-summary table{width:40%;font-size:14px;margin-top:0}#quote-screen .invoice-summary table td{border-bottom:1px solid #e2e8f0;padding:8px;background-color:#fff!important}#quote-screen .invoice-summary table tr:last-child{font-weight:700;font-size:18px;color:#2d3748}#quote-screen .invoice-summary table tr:last-child td{background-color:#f7fafc!important;border-bottom:none;padding:12px 8px}#quote-screen .terms{margin-top:20px;padding-top:20px;border-top:1px solid #e2e8f0;font-size:11px;color:#888;line-height:1.5}#quote-screen .terms strong{color:#718096;font-weight:600;font-size:12px}#quote-screen .terms ol{padding-left:15px;margin-top:8px}#quote-screen .terms ol li{margin-bottom:8px}#quote-screen .footer{margin-top:auto;padding-top:20px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#718096}#quote-screen .signature p{margin-top:0;font-weight:600;color:#2d3748}@media (max-width:640px){#quote-screen{padding:0;background-color:#fff}#quote-screen .quote-controls{margin:15px}#quote-screen .invoice-box{padding:15px;min-height:unset;border-radius:0;box-shadow:none}#quote-screen .header{padding-bottom:10px}#quote-screen .logo-img{max-width:100px}#quote-screen .bill-to h3,#quote-screen .invoice-details,#quote-screen .invoice-summary table tr:last-child,#quote-screen table{font-size:10px}#quote-screen .bill-to h3{font-size:12px}#quote-screen table td,#quote-screen table th{padding:5px 4px}#quote-screen .invoice-summary{margin-top:15px;padding-top:15px}#quote-screen .invoice-summary table{width:80%}#quote-screen .invoice-summary table tr:last-child{font-size:12px}#quote-screen .terms{font-size:8px;margin-top:15px;padding-top:15px}#quote-screen .terms li,#quote-screen .terms strong{font-size:8px}#quote-screen .terms ol li{margin-bottom:4px}#quote-screen .footer{font-size:8px;flex-direction:column;align-items:flex-start;gap:8px;margin-top:15px;padding-top:15px}}@media print{@page{size:A4;margin:0}body{background:#fff!important;padding:0!important;margin:0!important}body>*:not(.app-container),.navbar,.fab-container{display:none!important}.app-container{margin:0!important;padding:0!important;max-width:100%!important;width:100%!important}.app-container>*:not(#quote-screen){display:none!important}#quote-screen{display:block!important;padding:0!important;background:#fff!important}#quote-screen .quote-controls{display:none!important}#quote-screen .invoice-box{box-shadow:none!important;border:none!important;border-radius:0!important;margin:0!important;padding:10mm!important;max-width:100%!important;width:100%!important;min-height:initial!important}#quote-screen table th{background-color:#535456!important;color:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}#quote-screen tbody tr:nth-child(even){background-color:#f8f8f7!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}}
     </style>
 </head>
 <body>
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <a href="index.html" class="navbar-logo">
-            <img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="IHTNAS Logo">
-        </a>
-        <div class="navbar-profile" id="profileContainer">
-            <img src="https://i.stack.imgur.com/34AD2.jpg" alt="User Profile" class="profile-image" id="profileImage">
-            <div class="profile-dropdown" id="profileDropdown">
-                <button id="nav-logout-btn">
-                    <span class="icon material-symbols-outlined">logout</span>
-                    Logout
-                </button>
-            </div>
-        </div>
-    </nav>
 
     <div class="app-container">
-        <!-- Order Details Screen -->
-        <div id="order-details-screen" class="screen active">
-            <div class="page-header">
-                <button class="back-to-view-orders btn-secondary" onclick="window.location.href='view-orders.html'">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                </button>
-                 <h2>Order Details</h2>
-            </div>
-            <div class="card">
-                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
-                    <div>
-                        <p id="detail-customer-name" style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary);"></p>
-                        <p id="detail-customer-address" style="color: var(--light-text-secondary);"></p>
-                    </div>
-                    <div id="detail-status-tag" class="status-tag" style="align-self: flex-start;"></div>
-                </div>
-                <div id="detail-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; font-size: 0.875rem;">
-                    <p><strong>Mobile:</strong> <span id="detail-customer-mobile"></span></p>
-                    <p><strong>Placed:</strong> <span id="detail-order-taken-date"></span></p>
-                    <p><strong>Due Date:</strong> <span id="detail-due-date"></span></p>
-                    <p id="detail-completed-date-row" style="display: none;"><strong>Completed:</strong> <span id="detail-completed-date"></span></p>
-                    <p id="detail-created-by-row" style="display: none;"><strong>Created By:</strong> <span id="detail-created-by"></span></p>
-                    <p id="detail-completed-by-row" style="display: none;"><strong>Completed By:</strong> <span id="detail-completed-by"></span></p>
-                </div>
-                <h3 style="margin-bottom: 1rem;">Windows (<span id="detail-window-count"></span>)</h3>
-                <div id="detail-windows-list"></div>
-                <div class="details-action-buttons" style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.75rem; margin-top: 2rem; border-top: 1px solid var(--light-border); padding-top: 2rem;">
-                    <button id="detail-get-directions-btn" class="btn-secondary"><span class="material-symbols-outlined">directions</span>Get Directions</button>
-                    <button id="detail-complete-btn" class="btn-success"><span class="material-symbols-outlined">check_circle</span>Mark as Complete</button>
-                    <button id="detail-edit-btn" class="btn-primary"><span class="material-symbols-outlined">edit</span>Edit Order</button>
-                    <button id="detail-view-quote-btn" class="btn-secondary"><span class="material-symbols-outlined">request_quote</span>View Quote</button>
-                    <button id="detail-show-history-btn" class="btn-secondary"><span class="material-symbols-outlined">history</span>Show History</button>
-                    <button id="detail-delete-btn" class="btn-danger"><span class="material-symbols-outlined">delete</span>Delete</button>
-                </div>
+        <!-- Quote Screen -->
+        <div id="quote-screen" class="screen active">
+            <div id="quote-screen-printable">
+                <!-- Content will be injected by JavaScript -->
             </div>
         </div>
     </div>
-
-    <!-- ALL MODALS, EXACTLY AS NEEDED -->
-    <div id="confirmation-modal" class="modal"><div class="modal-content"><p id="modal-message" class="modal-message"></p><div class="modal-buttons"><button id="cancel-action-btn" class="btn-secondary">Cancel</button><button id="confirm-action-btn" class="btn-danger">Confirm</button></div></div></div>
-    <div id="message-modal" class="modal"><div class="modal-content"><p id="message-text" class="modal-message"></p><button id="message-ok-btn" class="btn-primary" style="min-width: 120px;">OK</button></div></div>
-    <div id="history-modal" class="modal"><div class="modal-content" style="max-width: 600px; text-align: left;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;"><h3 id="history-modal-title">Order History</h3><button id="history-close-btn" class="remove-window-btn" style="position: static; border-radius: 50%;"><span class="material-symbols-outlined">close</span></button></div><ul id="history-list" style="list-style-type: none; padding: 0; max-height: 60vh; overflow-y: auto;"></ul></div></div>
-    <div id="loading-overlay" class="loading-overlay" style="display: none;"><div class="spinner"></div></div>
     
+    <!-- MODALS -->
+    <div id="price-modal" class="modal">
+        <div class="modal-content" style="max-width: 480px; text-align: left;">
+             <form id="price-form">
+                <h3 style="margin-bottom: 2rem;">Enter Pricing Details</h3>
+                <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <input type="number" id="price-per-sft" class="input-field" min="0" step="0.01" placeholder=" " required>
+                    <label for="price-per-sft" class="input-label">Price per SFT (₹)</label>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="transport-charges" class="input-field" min="0" step="1" placeholder=" " value="0" required>
+                    <label for="transport-charges" class="input-label">Transport Charges (₹)</label>
+                </div>
+                <div class="modal-buttons" style="margin-top: 2rem; justify-content: flex-end;">
+                    <button type="button" id="price-cancel-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Generate Quote</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="message-modal" class="modal"><div class="modal-content"><p id="message-text" class="modal-message"></p><button id="message-ok-btn" class="btn-primary" style="min-width: 120px;">OK</button></div></div>
+    <div id="loading-overlay" class="loading-overlay" style="display: none;"><div class="spinner"></div></div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, getDocs, updateDoc, deleteDoc, collection, serverTimestamp, deleteField, query, orderBy, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         (function() {
-            // --- ALL ORIGINAL DOM ELEMENTS ---
+            // --- CACHED DOM ELEMENTS ---
             const loadingOverlay = document.getElementById('loading-overlay');
-            const profileContainer = document.getElementById('profileContainer');
-            const profileImage = document.getElementById('profileImage');
-            const profileDropdown = document.getElementById('profileDropdown');
-            const navLogoutBtn = document.getElementById('nav-logout-btn');
-            const detailCustomerName = document.getElementById('detail-customer-name');
-            const detailCustomerAddress = document.getElementById('detail-customer-address');
-            const detailCustomerMobile = document.getElementById('detail-customer-mobile');
-            const detailOrderTakenDate = document.getElementById('detail-order-taken-date');
-            const detailDueDate = document.getElementById('detail-due-date');
-            const detailStatusTag = document.getElementById('detail-status-tag');
-            const detailCompletedDateRow = document.getElementById('detail-completed-date-row');
-            const detailCompletedDate = document.getElementById('detail-completed-date');
-            const detailCreatedByRow = document.getElementById('detail-created-by-row');
-            const detailCreatedBy = document.getElementById('detail-created-by');
-            const detailCompletedByRow = document.getElementById('detail-completed-by-row');
-            const detailCompletedBy = document.getElementById('detail-completed-by');
-            const detailWindowsList = document.getElementById('detail-windows-list');
-            const detailWindowCount = document.getElementById('detail-window-count');
-            const detailEditBtn = document.getElementById('detail-edit-btn');
-            const detailDeleteBtn = document.getElementById('detail-delete-btn');
-            const detailViewQuoteBtn = document.getElementById('detail-view-quote-btn');
-            const detailCompleteBtn = document.getElementById('detail-complete-btn');
-            const detailShowHistoryBtn = document.getElementById('detail-show-history-btn');
-            const detailGetDirectionsBtn = document.getElementById('detail-get-directions-btn');
-            const confirmationModal = document.getElementById('confirmation-modal');
-            const modalMessage = document.getElementById('modal-message');
-            const confirmActionBtn = document.getElementById('confirm-action-btn');
-            const cancelActionBtn = document.getElementById('cancel-action-btn');
             const messageModal = document.getElementById('message-modal');
             const messageText = document.getElementById('message-text');
             const messageOkBtn = document.getElementById('message-ok-btn');
-            const historyModal = document.getElementById('history-modal');
-            const historyList = document.getElementById('history-list');
-            const historyCloseBtn = document.getElementById('history-close-btn');
+            const priceModal = document.getElementById('price-modal');
+            const priceForm = document.getElementById('price-form');
+            const pricePerSftInput = document.getElementById('price-per-sft');
+            const transportChargesInput = document.getElementById('transport-charges');
+            const priceCancelBtn = document.getElementById('price-cancel-btn');
+            const quoteScreenPrintable = document.getElementById('quote-screen-printable');
 
             // --- APP STATE ---
             let db, auth;
-            let currentAction = { type: null, id: null, callback: null };
-            let currentUserName = "Unknown User";
 
-            // --- ALL ORIGINAL UI & HELPER FUNCTIONS ---
+            // --- HELPER FUNCTIONS ---
             const showLoading = () => loadingOverlay.style.display = 'flex';
             const hideLoading = () => loadingOverlay.style.display = 'none';
-            function toggleProfileMenu() { profileDropdown.classList.toggle('show'); }
             const showMessageModal = (message) => { messageText.textContent = message; messageModal.style.display = 'flex'; };
-            const showConfirmationModal = (message, confirmClass, confirmText, actionType, orderId, callback) => {
-                modalMessage.textContent = message;
-                confirmActionBtn.className = 'btn';
-                confirmActionBtn.classList.add(confirmClass);
-                confirmActionBtn.textContent = confirmText;
-                currentAction = { type: actionType, id: orderId, callback: callback };
-                confirmationModal.style.display = 'flex';
+
+            // --- CORE FUNCTIONALITY (VERBATIM FROM ORIGINAL) ---
+            const createQuoteHtml = (order, pricePerSft, transportCharges) => {
+                let windowsForPdf = Array.isArray(order.windows) ? order.windows : JSON.parse(order.windows || '[]');
+                let tableRows = '';
+                let subTotal = 0;
+
+                windowsForPdf.forEach((win, index) => {
+                    const heightMm = parseFloat(win.height || 0);
+                    const widthMm = parseFloat(win.width || 0);
+                    const sft = (widthMm / 304.8) * (heightMm / 304.8);
+                    const windowCost = sft * pricePerSft;
+                    subTotal += windowCost;
+                    const itemName = win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Item';
+                    tableRows += `<tr><td>${(index + 1).toString().padStart(2, '0')}</td><td>${itemName}${win.hasGlass && win.glassName ? ` <br><small>(${win.glassName})</small>` : ''}</td><td>${widthMm}</td><td>${heightMm}</td><td>304</td><td>${sft.toFixed(2)}</td><td>${pricePerSft.toLocaleString('en-IN')}</td><td>${windowCost.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                });
+
+                const gst = subTotal * 0.18;
+                const grandTotal = subTotal + gst + transportCharges;
+                
+                return `
+                    <div class="quote-controls">
+                        <button id="quote-back-btn" class="btn btn-secondary"><span class="material-symbols-outlined">arrow_back</span>Back</button>
+                        <button onclick="window.print()" class="btn btn-primary print-button"><span class="material-symbols-outlined">print</span>Print / Save PDF</button>
+                    </div>
+                    <div class="invoice-box">
+                        <div>
+                            <div class="header">
+                                <div class="logo"><img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="Company Logo" class="logo-img"></div>
+                                <div class="invoice-details">
+                                    <div><strong>Quotation Date:</strong> ${new Date().toLocaleDateString()}</div>
+                                    <div><strong>Prepared by:</strong> ${order.createdBy || 'N/A'}</div>
+                                </div>
+                            </div>
+                            <div class="bill-to">
+                                <h3>QUOTATION FOR</h3>
+                                <p><strong>${order.name}</strong><br>${order.address.replace(/\n/g, '<br>')}<br>Phone: ${order.mobileNumber || 'N/A'}</p>
+                            </div>
+                            <table>
+                                <thead><tr><th>S.No</th><th>Item Name</th><th>Width (mm)</th><th>Height (mm)</th><th>Mesh</th><th>SFT</th><th>Price (₹)</th><th>Total Cost (₹)</th></tr></thead>
+                                <tbody>${tableRows}</tbody>
+                            </table>
+                        </div>
+                        <div class="invoice-summary">
+                            <table>
+                                <tr><td>Total:</td><td style="text-align: right;">${subTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
+                                <tr><td>GST 18%:</td><td style="text-align: right;">+${gst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
+                                <tr><td>Transport:</td><td style="text-align: right;">+${transportCharges.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
+                                <tr><td>Grand Total:</td><td style="text-align: right;">₹ ${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>
+                            </table>
+                        </div>
+                        <div class="terms">
+                            <strong>Terms & Conditions</strong>
+                            <ol>
+                                <li>This quotation is based on the <strong>approximate measurements</strong> shared by the customer. <strong>Final measurements</strong> will be taken after the order is confirmed. The total square footage (SFT) may <strong>increase or decrease</strong> accordingly.</li>
+                                <li>A <strong>signed work order</strong> with full contract details must be submitted on the customer's <strong>official letterhead</strong> along with the <strong>advance payment</strong>.</li>
+                                <li><strong>Payment terms:</strong> <strong>60% advance</strong>, <strong>30% after material delivery</strong>, and remaining <strong>10% after installation</strong>.</li>
+                                <li>All payments by <strong>cheque or demand draft</strong> in favour of <strong>“PREMIUM U-PVC DOORS & WINDOWS”</strong>.</li>
+                                <li>Customer is responsible for: <strong>safe storage</strong> of materials, <strong>scaffolding</strong>, and <strong>power supply</strong> at site.</li>
+                                <li>This quotation is <strong>valid for 30 days</strong>.</li>
+                                <li><strong>Delivery timeline:</strong> <strong>30 days from the date of final measurement</strong>.</li>
+                                <li>Customer must arrange any <strong>masonry chipping or leveling</strong> at their own expense.</li>
+                            </ol>
+                        </div>
+                        <div class="footer">
+                            <div class="icons"><span>📞 +91 79815 99155</span> | <span>✉️ kolatapu.k@gmail.com</span> | <span>📍 K.S Enterprises, Jewellery Park, Machilipatnam</span></div>
+                            <div class="signature"><p>K.KIRAN KUMAR</p></div>
+                        </div>
+                    </div>`;
             };
-            const hideConfirmationModal = () => { confirmationModal.style.display = 'none'; };
-
-            // --- DATA & RENDERING FUNCTIONS (IDENTICAL TO ORIGINAL) ---
-            const getStatusInfo = (order, today) => {
-                if (order.status === 'completed') { return { text: 'Completed', className: 'completed' }; }
-                const dueDate = order.dueDate ? new Date(order.dueDate + 'T00:00:00') : null; 
-                if (dueDate && dueDate < today) { return { text: 'Overdue', className: 'overdue' }; }
-                if (dueDate) {
-                    const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
-                    if (daysDiff >= 0 && daysDiff <= 3) { return { text: `Due in ${daysDiff} day${daysDiff !== 1 ? 's' : ''}`, className: 'upcoming-due' }; }
-                }
-                return { text: 'Pending', className: 'pending' };
-            };
             
-            function showOrderDetails(order) {
-                detailCustomerName.textContent = order.name;
-                detailCustomerAddress.textContent = order.address;
-                detailCustomerMobile.textContent = order.mobileNumber || 'N/A';
-                detailOrderTakenDate.textContent = order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleDateString() : 'N/A';
-                detailDueDate.textContent = order.dueDate || 'N/A';
-                
-                const today = new Date(); today.setHours(0,0,0,0);
-                const statusInfo = getStatusInfo(order, today);
-                detailStatusTag.className = 'status-tag ' + statusInfo.className;
-                detailStatusTag.textContent = statusInfo.text;
-                
-                detailCompletedDateRow.style.display = (order.status === 'completed' && order.completedAt) ? 'block' : 'none';
-                detailCompletedDate.textContent = (order.status === 'completed' && order.completedAt?.toDate) ? new Date(order.completedAt.toDate()).toLocaleDateString() : '';
-
-                detailCreatedByRow.style.display = order.createdBy ? 'block' : 'none';
-                detailCreatedBy.textContent = order.createdBy || '';
-                detailCompletedByRow.style.display = (order.completedBy && order.status === 'completed') ? 'block' : 'none';
-                detailCompletedBy.textContent = order.completedBy || '';
-
-                let windowsToDisplay = Array.isArray(order.windows) ? order.windows : JSON.parse(order.windows || '[]');
-                
-                detailWindowsList.innerHTML = '';
-                if(windowsToDisplay.length > 0) {
-                    windowsToDisplay.forEach((win, i) => {
-                        const itemDiv = document.createElement('div');
-                        itemDiv.className = 'detail-window-item';
-                        let glassInfo = win.hasGlass ? `<small>Glass: ${win.glassName || 'Not specified'}</small>` : '<small>No Glass</small>';
-                        const itemName = win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Window';
-                        itemDiv.innerHTML = `<div class="item-number">${i + 1}</div><div class="item-info"><strong>${itemName}:</strong> H: ${win.height} mm, W: ${win.width} mm ${glassInfo}</div>`;
-                        detailWindowsList.appendChild(itemDiv);
-                    });
-                } else { 
-                    detailWindowsList.innerHTML = '<p>No window details available.</p>';
-                }
-                detailWindowCount.textContent = windowsToDisplay.length;
-
-                detailEditBtn.dataset.id = order.id;
-                detailViewQuoteBtn.dataset.id = order.id;
-                detailCompleteBtn.dataset.id = order.id;
-                detailShowHistoryBtn.dataset.id = order.id;
-                detailDeleteBtn.dataset.id = order.id;
-                detailGetDirectionsBtn.style.display = (order.latitude && order.longitude) ? 'inline-flex' : 'none';
-                detailGetDirectionsBtn.dataset.lat = order.latitude;
-                detailGetDirectionsBtn.dataset.lon = order.longitude;
-
-                const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
-                detailDeleteBtn.style.display = (currentUserEmail === 'harshavardhanjw@gmail.com') ? 'inline-flex' : 'none';
-                
-                if (order.status === 'completed') {
-                    detailCompleteBtn.innerHTML = '<span class="material-symbols-outlined">refresh</span>Reopen Order';
-                    detailCompleteBtn.className = 'btn btn-reopen';
-                    detailEditBtn.disabled = true;
-                } else {
-                    detailCompleteBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span>Mark as Complete';
-                    detailCompleteBtn.className = 'btn btn-success';
-                    detailEditBtn.disabled = false;
-                }
-            }
-            
-            async function logHistory(orderId, action, details = {}) { /* ... (same as previous) ... */ }
-            
-            async function performConfirmedAction() {
-                hideConfirmationModal(); showLoading();
-                try {
-                    await currentAction.callback(doc(db, 'upvc_orders', currentAction.id));
-                } catch (error) {
-                    console.error(`Error performing action '${currentAction.type}':`, error);
-                    showMessageModal(`Action failed.`);
-                } finally {
-                    currentAction = { type: null, id: null, callback: null };
-                    hideLoading();
-                }
-            }
-
-            // --- REWORKED DETAILED HISTORY MODAL ---
-            async function showHistoryModal(orderId) {
-                showLoading();
-                historyList.innerHTML = '<li>Loading history...</li>';
-                historyModal.style.display = 'flex';
-                try {
-                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
-                    const q = query(historyCollectionRef, orderBy('timestamp', 'desc'));
-                    const snapshot = await getDocs(q);
-                    const historyData = snapshot.docs.map(doc => doc.data());
-
-                    if (historyData.length === 0) {
-                        historyList.innerHTML = '<li>No history found.</li>';
-                    } else {
-                        historyList.innerHTML = ''; // Clear loading message
-                        historyData.forEach(entry => {
-                            const li = document.createElement('li');
-                            li.className = 'history-item';
-                            const timestamp = entry.timestamp?.toDate ? entry.timestamp.toDate().toLocaleString() : 'Just now';
-                            let detailsHtml = '';
-
-                            if (entry.details && Object.keys(entry.details).length > 0) {
-                                detailsHtml += '<ul class="history-detail">';
-                                for (const [key, value] of Object.entries(entry.details)) {
-                                    if (typeof value === 'object' && value !== null) {
-                                        // Handle nested objects like the 'Windows' change log
-                                        detailsHtml += `<li><strong>${key}:</strong><ul>`;
-                                        for (const [subKey, subValue] of Object.entries(value)) {
-                                            detailsHtml += `<li><strong>${subKey}:</strong> ${subValue}</li>`;
-                                        }
-                                        detailsHtml += '</ul></li>';
-                                    } else {
-                                        detailsHtml += `<li><strong>${key}:</strong> ${value}</li>`;
-                                    }
-                                }
-                                detailsHtml += '</ul>';
-                            }
-                            
-                            li.innerHTML = `<div class="history-item-meta">${timestamp} by <strong>${entry.modifiedBy || 'System'}</strong></div><div class="history-item-action">${entry.action}</div>${detailsHtml}`;
-                            historyList.appendChild(li);
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error fetching history:", error);
-                    historyList.innerHTML = '<li>Could not load history.</li>';
-                } finally {
-                    hideLoading();
-                }
-            }
-
-            // --- FIREBASE & CORE LOGIC (CORRECTED FLOW) ---
+            // --- FIREBASE & PAGE LOGIC ---
             async function initializeFirebase() {
                 try {
                     const firebaseConfig = {"apiKey":"AIzaSyBp4XoqX-MYvOlweR5dPfEqAP9qXu2P81E","authDomain":"harsha-jw.firebaseapp.com","projectId":"harsha-jw","storageBucket":"harsha-jw.appspot.com","messagingSenderId":"471408120499","appId":"1:471408120499:web:91e61514ad3703ce3b16c6","measurementId":"G-NBC16X4R1T"};
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
-                    
-                    onAuthStateChanged(auth, async (user) => {
+
+                    onAuthStateChanged(auth, (user) => {
                         if (user) {
-                            profileImage.src = user.photoURL || 'https://i.stack.imgur.com/34AD2.jpg';
-                            const userDoc = await getDoc(doc(db, `artifacts/default-app-id/user_profiles`, user.uid));
-                            if (userDoc.exists()) currentUserName = userDoc.data().userName;
-                            
-                            const urlParams = new URLSearchParams(window.location.search);
-                            const orderId = urlParams.get('id');
-                            if (orderId) { await loadAndDisplayOrder(orderId); } 
-                            else {
-                                showMessageModal("No order specified. Redirecting...");
-                                setTimeout(() => window.location.href = 'view-orders.html', 2000);
-                            }
-                        } else { window.location.href = 'login.html'; }
+                            startPageLogic();
+                        } else {
+                            window.location.href = 'login.html';
+                        }
                     });
                 } catch (error) {
                     console.error("Firebase Initialization Error:", error);
@@ -314,82 +165,51 @@
                     hideLoading();
                 }
             }
+            
+            function startPageLogic() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const orderId = urlParams.get('id');
+                if (orderId) {
+                    priceForm.dataset.id = orderId;
+                    priceModal.style.display = 'flex'; 
+                    pricePerSftInput.focus();
+                } else {
+                    showMessageModal("No order specified for quote. Redirecting...");
+                    setTimeout(() => window.location.href = 'view-orders.html', 2000);
+                }
+                hideLoading();
+            }
 
-            async function loadAndDisplayOrder(orderId) {
+            // --- EVENT LISTENERS ---
+            priceForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
                 showLoading();
+                const orderId = e.currentTarget.dataset.id;
+                const price = parseFloat(pricePerSftInput.value);
+                const transport = parseFloat(transportChargesInput.value || 0);
+
                 try {
                     const orderRef = doc(db, 'upvc_orders', orderId);
                     const orderSnap = await getDoc(orderRef);
+
                     if (orderSnap.exists()) {
-                        showOrderDetails({ id: orderSnap.id, ...orderSnap.data() });
+                        const order = { id: orderSnap.id, ...orderSnap.data() };
+                        quoteScreenPrintable.innerHTML = createQuoteHtml(order, price, transport);
+                        priceModal.style.display = 'none';
+                        document.getElementById('quote-back-btn').addEventListener('click', () => history.back());
                     } else {
-                        showMessageModal("Order not found. Redirecting...");
-                        setTimeout(() => window.location.href = 'view-orders.html', 2000);
+                        showMessageModal("Could not find the order to generate a quote.");
                     }
                 } catch (error) {
-                    console.error("Error loading order: ", error);
-                    showMessageModal("Failed to load order data.");
+                    console.error("Error generating quote:", error);
+                    showMessageModal("An error occurred while generating the quote.");
                 } finally {
                     hideLoading();
                 }
-            }
-            
-            async function handleSignOut() { showLoading(); try { await signOut(auth); } catch (e) { hideLoading(); } }
-            
-            // --- ALL ORIGINAL EVENT LISTENERS ---
-            navLogoutBtn.addEventListener('click', handleSignOut);
-            detailEditBtn.addEventListener('click', (e) => window.location.href = `order-form.html?id=${e.currentTarget.dataset.id}`);
-            detailViewQuoteBtn.addEventListener('click', (e) => window.location.href = `quote.html?id=${e.currentTarget.dataset.id}`);
-            
-            detailDeleteBtn.addEventListener('click', (e) => {
-                showConfirmationModal('Delete this order permanently?', 'btn-danger', 'Delete Order', 'delete', e.currentTarget.dataset.id,
-                    async (docRef) => { 
-                        await deleteDoc(docRef); 
-                        showMessageModal('Order deleted.'); 
-                        window.location.href = 'view-orders.html';
-                    });
             });
 
-            detailCompleteBtn.addEventListener('click', (e) => {
-                const orderId = e.currentTarget.dataset.id;
-                const isCompleted = e.currentTarget.textContent.includes('Reopen');
-                
-                if (isCompleted) {
-                    showConfirmationModal('Reopen this order?', 'btn-reopen', 'Reopen Order', 'reopen', orderId,
-                        async (docRef) => { 
-                            await updateDoc(docRef, { status: 'pending', completedAt: deleteField(), completedBy: deleteField() }); 
-                            await logHistory(orderId, 'Order Reopened'); 
-                            showMessageModal('Order reopened.');
-                            loadAndDisplayOrder(orderId); // Refresh data on the same page
-                        });
-                } else {
-                    showConfirmationModal('Mark this order as complete?', 'btn-success', 'Mark Complete', 'complete', orderId,
-                        async (docRef) => { 
-                            await updateDoc(docRef, { status: 'completed', completedAt: serverTimestamp(), completedBy: currentUserName }); 
-                            await logHistory(orderId, 'Order Completed'); 
-                            showMessageModal('Order marked as complete!');
-                            loadAndDisplayOrder(orderId); // Refresh data on the same page
-                        });
-                }
-            });
-
-            detailShowHistoryBtn.addEventListener('click', (e) => showHistoryModal(e.currentTarget.dataset.id));
-            detailGetDirectionsBtn.addEventListener('click', (e) => {
-                const { lat, lon } = e.currentTarget.dataset;
-                if (lat && lon) window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
-            });
-            
-            profileImage.addEventListener('click', (e) => { e.stopPropagation(); toggleProfileMenu(); });
-            window.addEventListener('click', (e) => {
-                if (profileDropdown.classList.contains('show') && !profileContainer.contains(e.target)) {
-                    toggleProfileMenu();
-                }
-            });
-
+            priceCancelBtn.addEventListener('click', () => history.back());
             messageOkBtn.addEventListener('click', () => messageModal.style.display = 'none');
-            cancelActionBtn.addEventListener('click', hideConfirmationModal);
-            confirmActionBtn.addEventListener('click', performConfirmedAction);
-            historyCloseBtn.addEventListener('click', () => historyModal.style.display = 'none');
 
             // --- INITIALIZATION ---
             showLoading();
