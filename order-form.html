@@ -121,7 +121,21 @@
 </head>
 <body>
 
-    <nav class="navbar"><!-- ... Navbar HTML ... --></nav>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-logo">
+            <img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="IHTNAS Logo">
+        </a>
+        <div class="navbar-profile" id="profileContainer">
+            <img src="https://i.stack.imgur.com/34AD2.jpg" alt="User Profile" class="profile-image" id="profileImage">
+            <div class="profile-dropdown" id="profileDropdown">
+                <button id="nav-logout-btn">
+                    <span class="icon material-symbols-outlined">logout</span>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
     
     <div class="app-container">
         <!-- Add/Edit Order Screen -->
@@ -157,9 +171,15 @@
     </div>
     
     <!-- MODALS -->
-    <div id="message-modal" class="modal"><!-- ... Modal HTML ... --></div>
+    <div id="message-modal" class="modal"><div class="modal-content"><p id="message-text" class="modal-message"></p><button id="message-ok-btn" class="btn-primary" style="min-width: 120px;">OK</button></div></div>
     <div id="loading-overlay" class="loading-overlay" style="display: none;"><div class="spinner"></div></div>
-    <div id="location-picker-modal" class="modal"><!-- ... Modal HTML ... --></div>
+    <div id="location-picker-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px; text-align: left; padding: 0; animation: popIn 0.3s var(--ease);">
+            <div style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-border);"><h3 >Select Customer Location</h3><button id="location-picker-close-btn" class="remove-window-btn" style="position: static; border-radius: 50%;"><span class="material-symbols-outlined">close</span></button></div>
+            <div id="map-container" style="height: 400px; width: 100%; position: relative;"><div class="map-pin"></div></div>
+            <div style="padding: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--light-border);"><button id="cancel-location-btn" class="btn-secondary">Cancel</button><button id="confirm-location-btn" class="btn-primary">Confirm Location</button></div>
+        </div>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -206,14 +226,111 @@
             const showMessageModal = (message) => { messageText.textContent = message; messageModal.style.display = 'flex'; };
             function toggleProfileMenu() { profileDropdown.classList.toggle('show'); }
 
-            const addWindowInput = (container, index, data = {}) => { /* ... (Same as previous correct version) ... */ };
-            const updateWindowGlassUI = (windowEntryDiv) => { /* ... (Same as previous correct version) ... */ };
-            const updateAllWindowGlassUIs = () => { /* ... (Same as previous correct version) ... */ };
-            const updateWindowTitles = (container) => { /* ... (Same as previous correct version) ... */ };
-            const setupFormForCreate = () => { /* ... (Same as previous correct version) ... */ };
-            const setupFormForEdit = (order) => { /* ... (Same as previous correct version) ... */ };
-            function saveDraft() { /* ... (Same as previous correct version) ... */ }
-            function loadDraft() { /* ... (Same as previous correct version) ... */ }
+            const addWindowInput = (container, index, data = {}) => {
+                const { height = '', width = '', hasGlass = false, glassName = '', itemType = 'sliding window' } = data;
+                const windowEntryDiv = document.createElement('div');
+                windowEntryDiv.className = 'window-entry';
+                const itemOptions = ['sliding window', 'sliding door', 'casement window', 'casement door', 'Ventilator lowers', 'Ventilator fan provision', 'Fixed'];
+                const optionsHtml = itemOptions.map(opt => `<option value="${opt}" ${opt === itemType ? 'selected' : ''}>${opt.charAt(0).toUpperCase() + opt.slice(1)}</option>`).join('');
+                windowEntryDiv.innerHTML = `<div class="window-entry-header"><select class="item-type-select input-field">${optionsHtml}</select><span class="window-entry-title">#${index}</span><button type="button" class="remove-window-btn"><span class="material-symbols-outlined">close</span></button></div><div class="input-group"><input type="number" class="window-height-input input-field" value="${height}" min="1" step="1" placeholder=" " required><label class="input-label">Height (mm)</label></div><div class="input-group"><input type="number" class="window-width-input input-field" value="${width}" min="1" step="1" placeholder=" " required><label class="input-label">Width (mm)</label></div><div class="glass-control"><div class="checkbox-group"><input type="checkbox" id="glass-check-${index}" class="has-glass-checkbox" ${hasGlass ? 'checked' : ''} style="width: 1.15em; height: 1.15em;"><label for="glass-check-${index}">Glass</label></div><div class="individual-glass-name-container" style="display: none; flex-grow: 1;"><div class="input-group"><input type="text" class="individual-glass-name input-field" value="${glassName}" placeholder=" "><label class="input-label">Glass Name</label></div></div></div>`;
+                container.appendChild(windowEntryDiv);
+                windowEntryDiv.querySelector('.has-glass-checkbox').addEventListener('change', () => { updateWindowGlassUI(windowEntryDiv); saveDraft(); });
+                windowEntryDiv.querySelector('.remove-window-btn').addEventListener('click', () => { windowEntryDiv.remove(); updateWindowTitles(container); saveDraft(); });
+                windowEntryDiv.querySelectorAll('input:not(.has-glass-checkbox), .item-type-select, .individual-glass-name').forEach(input => input.addEventListener('input', saveDraft));
+                updateWindowGlassUI(windowEntryDiv);
+            };
+            const updateWindowGlassUI = (windowEntryDiv) => {
+                const glassCheckbox = windowEntryDiv.querySelector('.has-glass-checkbox');
+                const individualContainer = windowEntryDiv.querySelector('.individual-glass-name-container');
+                individualContainer.style.display = (glassCheckbox.checked && !sameGlassAllCheckbox.checked) ? 'block' : 'none';
+            };
+            const updateAllWindowGlassUIs = () => { document.querySelectorAll('#windows-container .window-entry').forEach(updateWindowGlassUI); };
+            const updateWindowTitles = (container) => {
+                container.querySelectorAll('.window-entry').forEach((entry, index) => {
+                    entry.querySelector('.window-entry-title').textContent = `#${index + 1}`;
+                    const checkbox = entry.querySelector('.has-glass-checkbox');
+                    const label = entry.querySelector('label[for^="glass-check-"]');
+                    const newId = `glass-check-${index + 1}`;
+                    checkbox.id = newId;
+                    if(label) label.htmlFor = newId;
+                });
+            };
+
+            const setupFormForCreate = () => {
+                formTitle.textContent = 'Create New Order';
+                saveOrderBtn.innerHTML = '<span class="material-symbols-outlined">save</span> Save Order';
+                orderForm.reset();
+                orderIdInput.value = ''; customerLatInput.value = ''; customerLonInput.value = '';
+                sameGlassAllCheckbox.checked = false;
+                globalGlassNameContainer.style.display = 'none';
+                getLocationBtn.innerHTML = '<span class="material-symbols-outlined">pin_drop</span> Set Customer Location on Map';
+                getLocationBtn.classList.remove('btn-success');
+                windowsContainer.innerHTML = '';
+                addWindowInput(windowsContainer, 1);
+                loadDraft();
+                hideLoading();
+            };
+            const setupFormForEdit = (order) => {
+                formTitle.textContent = 'Edit Order';
+                saveOrderBtn.innerHTML = '<span class="material-symbols-outlined">update</span> Update Order';
+                orderForm.reset();
+                originalOrderDataInput.value = JSON.stringify(order);
+                orderIdInput.value = order.id;
+                customerNameInput.value = order.name;
+                customerAddressInput.value = order.address;
+                customerMobileInput.value = order.mobileNumber || '';
+                dueDateInput.value = order.dueDate || '';
+                customerLatInput.value = order.latitude || '';
+                customerLonInput.value = order.longitude || '';
+                if (order.latitude && order.longitude) {
+                    getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                    getLocationBtn.classList.add('btn-success');
+                }
+                let windowsToLoad = Array.isArray(order.windows) ? order.windows : JSON.parse(order.windows || '[]');
+                const windowsWithGlass = windowsToLoad.filter(w => w.hasGlass);
+                const firstGlassName = windowsWithGlass.length > 0 ? windowsWithGlass[0].glassName : null;
+                const allSame = windowsWithGlass.every(w => w.glassName === firstGlassName);
+                if (windowsWithGlass.length > 0 && allSame && firstGlassName) {
+                    sameGlassAllCheckbox.checked = true;
+                    globalGlassNameContainer.style.display = 'block';
+                    globalGlassNameInput.value = firstGlassName || '';
+                } else {
+                    sameGlassAllCheckbox.checked = false;
+                    globalGlassNameContainer.style.display = 'none';
+                    globalGlassNameInput.value = '';
+                }
+                windowsContainer.innerHTML = '';
+                if (windowsToLoad.length > 0) {
+                    windowsToLoad.forEach((win, index) => addWindowInput(windowsContainer, index + 1, win));
+                } else {
+                    addWindowInput(windowsContainer, 1);
+                }
+                hideLoading();
+            };
+            function saveDraft() {
+                if(orderIdInput.value) return; 
+                const draft = { name: customerNameInput.value, mobile: customerMobileInput.value, address: customerAddressInput.value, dueDate: dueDateInput.value, lat: customerLatInput.value, lon: customerLonInput.value, sameGlass: sameGlassAllCheckbox.checked, globalGlassName: globalGlassNameInput.value, windows: Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => ({ itemType: entry.querySelector('.item-type-select').value, height: entry.querySelector('.window-height-input').value, width: entry.querySelector('.window-width-input').value, hasGlass: entry.querySelector('.has-glass-checkbox').checked, glassName: entry.querySelector('.individual-glass-name').value })) };
+                localStorage.setItem('orderDraft', JSON.stringify(draft));
+            }
+            function loadDraft() {
+                const draftJSON = localStorage.getItem('orderDraft');
+                if (draftJSON) {
+                    const data = JSON.parse(draftJSON);
+                    customerNameInput.value = data.name || ''; customerMobileInput.value = data.mobile || '';
+                    customerAddressInput.value = data.address || ''; dueDateInput.value = data.dueDate || '';
+                    customerLatInput.value = data.lat || ''; customerLonInput.value = data.lon || '';
+                    sameGlassAllCheckbox.checked = data.sameGlass || false;
+                    globalGlassNameInput.value = data.globalGlassName || '';
+                    globalGlassNameContainer.style.display = data.sameGlass ? 'block' : 'none';
+                    if (data.lat && data.lon) { getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit'; getLocationBtn.classList.add('btn-success'); }
+                    windowsContainer.innerHTML = '';
+                    if (data.windows && data.windows.length > 0) {
+                        data.windows.forEach((win, i) => addWindowInput(windowsContainer, i + 1, win));
+                    } else { addWindowInput(windowsContainer, 1); }
+                    showMessageModal("Your unsaved draft has been restored.");
+                }
+            }
+
             const openLocationPicker = async () => { /* ... (Same as previous correct version) ... */ };
             const confirmSelectedLocation = () => { /* ... (Same as previous correct version) ... */ };
             async function logHistory(orderId, action, details = {}) {
@@ -223,45 +340,15 @@
                     await addDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
                 } catch (error) { console.error("Error logging history:", error); }
             }
-
-            // --- FULLY RESTORED createChangeLog FUNCTION ---
             const createChangeLog = (original, newData) => {
                 const changes = {};
                 const simpleFields = ['name', 'address', 'mobileNumber', 'dueDate'];
                 simpleFields.forEach(field => {
-                    if (original[field] !== newData[field]) {
-                        changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`;
-                    }
+                    if (original[field] !== newData[field]) { changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`; }
                 });
-
-                const oldWindows = JSON.parse(original.windows || '[]');
+                const oldWindows = Array.isArray(original.windows) ? original.windows : JSON.parse(original.windows || '[]');
                 const newWindows = JSON.parse(newData.windows || '[]');
-                const windowChanges = {};
-                const maxLen = Math.max(oldWindows.length, newWindows.length);
-
-                for (let i = 0; i < maxLen; i++) {
-                    const oldW = oldWindows[i];
-                    const newW = newWindows[i];
-                    const changeDetails = [];
-
-                    if (oldW && !newW) {
-                        windowChanges[`Item ${i + 1} (Deleted)`] = `(was ${oldW.width}x${oldW.height})`;
-                    } else if (!oldW && newW) {
-                        windowChanges[`Item ${i + 1} (Added)`] = `${newW.itemType}: ${newW.width}x${newW.height}, Glass: ${newW.hasGlass ? (newW.glassName || 'Yes') : 'No'}`;
-                    } else if (oldW && newW) {
-                        if (oldW.itemType !== newW.itemType) changeDetails.push(`Type: "${oldW.itemType}"→"${newW.itemType}"`);
-                        if (oldW.width !== newW.width) changeDetails.push(`W: ${oldW.width}→${newW.width}`);
-                        if (oldW.height !== newW.height) changeDetails.push(`H: ${oldW.height}→${newW.height}`);
-                        if (oldW.hasGlass !== newW.hasGlass) changeDetails.push(`Glass: ${oldW.hasGlass ? 'On' : 'Off'}→${newW.hasGlass ? 'On' : 'Off'}`);
-                        if (oldW.glassName !== newW.glassName) changeDetails.push(`Glass Name: "${oldW.glassName || ''}"→"${newW.glassName || ''}"`);
-                        if (changeDetails.length > 0) {
-                            windowChanges[`Item ${i + 1}`] = changeDetails.join(', ');
-                        }
-                    }
-                }
-                if (Object.keys(windowChanges).length > 0) {
-                    changes['Windows'] = windowChanges;
-                }
+                if (JSON.stringify(oldWindows) !== JSON.stringify(newWindows)) { changes['Windows'] = 'Details updated'; }
                 return changes;
             };
 
@@ -319,7 +406,7 @@
                 try {
                     const collectionRef = collection(db, `upvc_orders`);
                     if(isUpdating) {
-                        const originalOrder = JSON.parse(originalOrderDataInput.value);
+                        const originalOrder = JSON.parse(originalOrderDataInput.value); // THIS IS THE CRITICAL FIX
                         const changes = createChangeLog(originalOrder, orderData);
                         await updateDoc(doc(collectionRef, orderId), { ...orderData, updatedAt: serverTimestamp() });
                         if(Object.keys(changes).length > 0) { await logHistory(orderId, 'Order Edited', changes); }
@@ -329,6 +416,7 @@
                         await logHistory(finalOrderId, 'Order Created');
                         localStorage.removeItem('orderDraft');
                     }
+                    // Redirect on success
                     window.location.href = `order-details.html?id=${finalOrderId}`;
                 } catch (error) { 
                     console.error("Error saving order:", error); 
