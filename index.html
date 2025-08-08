@@ -1,0 +1,1641 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KS Enterprises - Order Dashboard</title>
+    <!-- Google Fonts for IBM Plex Sans & Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <!-- Leaflet Map Library -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <style>
+        /* --- 1. MODERN DESIGN SYSTEM & UI PALETTE --- */
+        :root {
+            --font-main: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+            --font-icon: "Material Symbols Outlined";
+            
+            --light-bg-primary: #ffffff;
+            --light-bg-secondary: #f7f9fc;
+            --light-bg-tertiary: #f1f3f6;
+
+            --light-text-primary: #012726; /* Dark Teal */
+            --light-text-secondary: #52616b;
+            --light-text-muted: #9ca3af;
+
+            --light-border: #e5e7eb;
+            --light-border-hover: #d1d5db;
+
+            --color-primary: #012726; /* Dark Teal */
+            --color-primary-hover: #023d3c;
+            --color-primary-text: #ffffff;
+
+            --color-accent: #33C375; /* Green Accent */
+            --color-accent-hover: #2CAC66;
+            --color-accent-text: #012726;
+
+            --color-danger: #ef4444;
+            --color-danger-hover: #dc2626;
+            --color-danger-text: #ffffff;
+            
+            --color-reopen: #6f42c1;
+            --color-reopen-hover: #5a3d9a;
+            --color-reopen-text: #ffffff;
+
+            --status-pending-bg: #eef2ff;
+            --status-pending-text: #4338ca;
+            --status-completed-bg: #f0fdf4;
+            --status-completed-text: #166534;
+            --status-overdue-bg: #fff1f2;
+            --status-overdue-text: #be123c;
+            --status-upcoming-bg: #fefce8;
+            --status-upcoming-text: #854d0e;
+            
+            --color-focus-ring: rgba(51, 195, 117, 0.35);
+            --radius-sm: 0.25rem; /* 4px */
+            --radius-md: 0.5rem;  /* 8px */
+            --radius-lg: 1rem;    /* 16px */
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+            --shadow-lg: 0 10px 20px -3px rgb(0 0 0 / 0.07), 0 4px 8px -4px rgb(0 0 0 / 0.07);
+            --ease: cubic-bezier(.4,0,.2,1);
+        }
+
+        /* --- 2. BASE STYLES & ANIMATIONS --- */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--light-bg-secondary);
+            color: var(--light-text-secondary);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .app-container {
+            max-width: 72rem;
+            margin: 2rem auto;
+            padding: 0;
+            width: 100%;
+        }
+        h1, h2, h3 { font-weight: 600; color: var(--light-text-primary); margin: 0; }
+        h1 { font-size: 1.875rem; line-height: 2.25rem; }
+        h2 { font-size: 1.5rem; line-height: 2rem; }
+        h3 { font-size: 1.25rem; line-height: 1.75rem; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+        
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeUp 0.5s var(--ease) forwards; }
+
+        /* --- 3. GLOBAL COMPONENTS (Buttons, Tags) --- */
+        button, .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-md);
+            font-weight: 600; font-size: 0.875rem;
+            transition: all 0.2s var(--ease);
+            border: 1px solid transparent; cursor: pointer;
+            -webkit-user-select: none; user-select: none;
+        }
+        button:hover:not(:disabled), .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        button:active:not(:disabled), .btn:active:not(:disabled) { transform: translateY(0); box-shadow: var(--shadow-sm); }
+        button:disabled, .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        button:focus-visible, .btn:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+
+        .btn-primary { background-color: var(--color-primary); color: var(--color-primary-text); }
+        .btn-primary:hover:not(:disabled) { background-color: var(--color-primary-hover); }
+
+        .btn-secondary { background-color: var(--light-bg-primary); color: var(--light-text-secondary); border-color: var(--light-border); box-shadow: var(--shadow-sm); }
+        .btn-secondary:hover:not(:disabled) { background-color: var(--light-bg-tertiary); border-color: var(--light-border-hover); color: var(--light-text-primary); }
+
+        .btn-danger { background-color: var(--color-danger); color: var(--color-danger-text); }
+        .btn-danger:hover:not(:disabled) { background-color: var(--color-danger-hover); }
+
+        .btn-success { background-color: var(--color-accent); color: var(--color-accent-text); }
+        .btn-success:hover:not(:disabled) { background-color: var(--color-accent-hover); }
+        
+        .btn-reopen { background-color: var(--color-reopen); color: var(--color-reopen-text); }
+        .btn-reopen:hover:not(:disabled) { background-color: var(--color-reopen-hover); }
+        
+        .status-tag {
+            display: inline-flex; align-items: center; gap: 0.375rem;
+            padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;
+        }
+        .status-tag::before { content: ''; display: block; width: 0.5rem; height: 0.5rem; border-radius: 50%; }
+        .status-tag.pending { background-color: var(--status-pending-bg); color: var(--status-pending-text); }
+        .status-tag.pending::before { background-color: var(--status-pending-text); }
+        .status-tag.completed { background-color: var(--status-completed-bg); color: var(--status-completed-text); }
+        .status-tag.completed::before { background-color: var(--status-completed-text); }
+        .status-tag.overdue { background-color: var(--status-overdue-bg); color: var(--status-overdue-text); }
+        .status-tag.overdue::before { background-color: var(--status-overdue-text); }
+        .status-tag.upcoming-due { background-color: var(--status-upcoming-bg); color: var(--status-upcoming-text); }
+        .status-tag.upcoming-due::before { background-color: var(--status-upcoming-text); }
+
+        /* --- 4. LAYOUT & CARDS --- */
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 2rem; padding: 0 1.5rem;
+        }
+        .card {
+            background-color: var(--light-bg-primary);
+            border: 1px solid var(--light-border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* --- 5. FORM & INPUT STYLES --- */
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        @media (min-width: 768px) { .form-grid { grid-template-columns: 1fr 1fr; } .form-grid .grid-col-span-2 { grid-column: span 2 / span 2; } }
+        
+        .input-group { position: relative; }
+        .input-field {
+            width: 100%; background-color: var(--light-bg-primary);
+            border: 1px solid var(--light-border); border-radius: var(--radius-md);
+            font-size: 1rem; padding: 1rem; color: var(--light-text-primary);
+            transition: all 0.2s; outline: none;
+        }
+        .input-label {
+            position: absolute; top: 1rem; left: 1rem;
+            color: var(--light-text-secondary); pointer-events: none;
+            transition: all 0.2s var(--ease);
+            background-color: var(--light-bg-primary); padding: 0 0.25rem;
+        }
+        .input-field:focus + .input-label,
+        .input-field:not(:placeholder-shown) + .input-label {
+            top: -0.625rem; font-size: 0.75rem; color: var(--color-primary);
+        }
+        .input-field:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-focus-ring); }
+        
+        .window-entry {
+            border: 1px solid var(--light-border); padding: 1.5rem;
+            margin-bottom: 1rem; border-radius: var(--radius-md);
+            background-color: var(--light-bg-secondary); position: relative;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            align-items: center;
+        }
+        .window-entry-header {
+            grid-column: span 2; display: flex; justify-content: space-between; align-items: center;
+            padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid var(--light-border);
+            gap: 1rem;
+        }
+        .window-entry-title { font-size: 1rem; font-weight: 600; color: var(--light-text-primary); flex-grow: 1; }
+        .remove-window-btn {
+            background: none; border: none; padding: 0.25rem;
+            color: var(--light-text-muted); cursor: pointer; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center;
+            transition: color 0.2s, background-color 0.2s;
+            position: static;
+        }
+        .remove-window-btn:hover { background-color: var(--light-bg-tertiary); color: var(--color-danger); }
+        
+        .glass-options {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: var(--light-bg-secondary);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checkbox-group label {
+            font-weight: 500;
+            color: var(--light-text-primary);
+            cursor: pointer;
+        }
+        .glass-control {
+            grid-column: span 2;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--light-border);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* --- 6. ORDER LIST & SKELETON LOADER --- */
+        .order-list-container {
+            display: flex; flex-direction: column; gap: 1.5rem; padding: 0 1rem;
+        }
+        .order-card {
+            background-color: white; border: 1px solid var(--light-border);
+            border-radius: var(--radius-md); padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s var(--ease); cursor: pointer;
+            display: flex; flex-direction: column; gap: 1rem;
+        }
+        .order-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--light-border-hover); }
+        
+        .order-card-header { display: flex; flex-direction: column; gap: 0.25rem; }
+        .order-card-customer { font-size: 1.125rem; font-weight: 600; color: var(--light-text-primary); }
+        .order-card-mobile { font-size: 0.875rem; color: var(--light-text-secondary); }
+        .order-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 1rem; border-top: 1px dashed var(--light-border); }
+        .order-card-date { font-size: 0.875rem; font-weight: 500; color: var(--light-text-primary); }
+
+        .skeleton-card {
+            background-color: var(--light-bg-primary); border: 1px solid var(--light-border);
+            border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-sm);
+        }
+        .skeleton {
+            background-color: var(--light-bg-tertiary); border-radius: var(--radius-sm);
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse { 50% { opacity: .5; } }
+        .skeleton.h-6 { height: 1.5rem; } .skeleton.w-3_4 { width: 75%; }
+        .skeleton.h-4 { height: 1rem; } .skeleton.w-1_2 { width: 50%; } .skeleton.w-1_3 { width: 33.33%; }
+        .skeleton.mt-4 { margin-top: 1rem; } .skeleton.mt-2 { margin-top: 0.5rem; }
+
+        /* --- 7. MODAL & OVERLAY STYLES --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000; inset: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(17, 24, 39, 0.6); backdrop-filter: blur(4px);
+            align-items: center; justify-content: center;
+            animation: fadeIn 0.3s var(--ease);
+        }
+        .modal-content {
+            background-color: white; padding: 2rem; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg); width: 90%; max-width: 420px;
+            text-align: center; animation: popIn 0.3s var(--ease);
+        }
+        .modal-message { font-size: 1.125rem; font-weight: 500; margin-bottom: 1.5rem; color: var(--light-text-primary); }
+        .modal-buttons { display: flex; justify-content: center; gap: 1rem; }
+
+        .loading-overlay {
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.9); z-index: 1001;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .spinner {
+            border: 6px solid var(--light-bg-tertiary); border-top: 6px solid var(--color-primary);
+            border-radius: 50%; width: 50px; height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        /* --- 8. HISTORY MODAL STYLES --- */
+        .history-item { padding: 1rem; border-bottom: 1px solid var(--light-border); }
+        .history-item:last-child { border-bottom: none; }
+        .history-item-meta { font-size: 0.8rem; color: var(--light-text-muted); margin-bottom: 0.25rem; }
+        .history-item-action { font-weight: 500; color: var(--light-text-primary); }
+        .history-detail {
+            font-size: 0.85rem; color: var(--light-text-secondary);
+            padding-left: 1rem; margin-top: 0.5rem;
+            list-style-type: none;
+        }
+        .history-detail ul {
+            padding-left: 1.25rem;
+            margin-top: 0.25rem;
+        }
+        
+        /* --- 9. QUOTE, MAP & DETAILS LIST STYLES --- */
+        .detail-window-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background-color: var(--light-bg-tertiary);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+        }
+        .item-number {
+            flex-shrink: 0;
+            width: 2.25rem;
+            height: 2.25rem;
+            background-color: var(--color-primary);
+            color: var(--color-primary-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .item-info {
+            font-size: 0.9rem;
+            color: var(--light-text-primary);
+            line-height: 1.4;
+        }
+        .item-info small {
+            display: block;
+            color: var(--light-text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        #quote-screen { background: #e9e9e9; padding: 20px; font-size: 14px; }
+        #quote-screen .quote-controls { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 20px; }
+        #quote-screen .btn { width: auto; }
+        
+        #quote-screen .invoice-box {
+            max-width: 794px; 
+            margin: auto;
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 6px;
+            color: #2d3748; 
+            display: flex; 
+            flex-direction: column;
+        }
+        #quote-screen .header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            border-bottom: 2px solid #e2e8f0; padding-bottom: 20px;
+        }
+        #quote-screen .logo-img { max-width: 160px; height: auto; }
+        #quote-screen .invoice-details { text-align: right; font-size: 13px; line-height: 1.5; color: #718096; }
+        #quote-screen .invoice-details strong { color: #2d3748; }
+        #quote-screen .bill-to { margin-top: 25px; }
+        #quote-screen .bill-to h3 { font-weight: 600; font-size: 16px; margin-bottom: 8px; }
+        #quote-screen .bill-to p { font-size: 13px; color: #718096; margin: 3px 0; line-height: 1.6; }
+        #quote-screen table { width: 100%; margin-top: 25px; border-collapse: collapse; font-size: 13px; }
+        #quote-screen table th {
+            background-color: #535456; color: #fff; font-weight: 600;
+            padding: 12px 8px; text-align: left; border-bottom: none;
+        }
+        #quote-screen table td { padding: 10px 8px; border-bottom: 1px solid #e2e8f0; color: #718096; }
+        #quote-screen table td:nth-child(2) { color: #2d3748; font-weight: 500; }
+        #quote-screen tbody tr:nth-child(even) { background-color: #f8f8f7; }
+        #quote-screen tbody tr:nth-child(odd) { background-color: #FFFFFF; }
+        #quote-screen table th:not(:first-child):not(:nth-child(2)),
+        #quote-screen table td:not(:first-child):not(:nth-child(2)) { text-align: right; }
+        
+        #quote-screen .invoice-summary { 
+            margin-top: auto;
+            padding-top: 20px; 
+            display: flex; 
+            justify-content: flex-end; 
+        }
+        #quote-screen .invoice-summary table { width: 40%; font-size: 14px; margin-top:0; }
+        #quote-screen .invoice-summary table td { border-bottom: 1px solid #e2e8f0; padding: 8px; background-color: #fff !important; }
+        #quote-screen .invoice-summary table tr:last-child { font-weight: 700; font-size: 18px; color: #2d3748; }
+        #quote-screen .invoice-summary table tr:last-child td { background-color: #f7fafc !important; border-bottom: none; padding: 12px 8px; }
+
+        #quote-screen .terms { margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 11px; color: #888; line-height: 1.5; }
+        #quote-screen .terms strong { color: #718096; font-weight: 600; font-size: 12px; }
+        #quote-screen .terms ol { padding-left: 15px; margin-top: 8px; }
+        #quote-screen .terms ol li { margin-bottom: 8px; }
+        
+        #quote-screen .footer { margin-top: auto; padding-top: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #718096; }
+        #quote-screen .signature p { margin-top: 0; font-weight: 600; color: #2d3748; }
+        
+        #map-container { background-color: var(--light-bg-tertiary); }
+        .map-pin {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -100%); width: 40px; height: 40px;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ef4444" width="40px" height="40px"><path d="M12 11.5A2.5 2.5 0 0 1 9.5 9A2.5 2.5 0 0 1 12 6.5A2.5 2.5 0 0 1 14.5 9a2.5 2.5 0 0 1-2.5 2.5M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Z"/></svg>');
+            background-size: contain; pointer-events: none; z-index: 1000;
+        }
+
+        /* --- 10. RESPONSIVE ADJUSTMENTS --- */
+        @media (max-width: 640px) {
+            body { padding: 0; background-color: var(--light-bg-primary); }
+            .app-container { margin: 0; padding: 0; }
+            h1 { font-size: 1.5rem; } h2 { font-size: 1.25rem; } h3 { font-size: 1.1rem; }
+            .page-header { flex-direction: row; justify-content: flex-start; align-items: center; gap: 1rem; padding: 1.5rem; background-color: var(--light-bg-secondary); border-bottom: 1px solid var(--light-border); }
+            .page-header h2 { text-align: left; }
+            .page-header .btn-secondary { width: auto; padding: 0.5rem; }
+            .card { padding: 1.5rem; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
+            .card:first-of-type { border-top: 0; }
+            .modal-content { width: calc(100% - 2rem); }
+            #login-screen, #main-menu { padding: 1.5rem; }
+            #main-menu .card { border-radius: var(--radius-lg); }
+            .main-menu-actions { display: flex; flex-direction: column; gap: 1rem; }
+            .main-menu-actions .btn { width: 100%; }
+            #form-screen .card { padding-top: 0; }
+            .form-grid { grid-template-columns: 1fr; }
+            .window-entry { grid-template-columns: 1fr 1fr; }
+            .window-entry-header { grid-column: span 2; }
+            #order-form button[type="submit"] { width: calc(100% - 3rem); position: fixed; bottom: 1.5rem; left: 1.5rem; right: 1.5rem; z-index: 10; }
+            #order-form { padding-bottom: 6rem; }
+            #view-orders-screen .card { margin-bottom: 0; }
+            .order-list-container { padding: 1rem 0; gap: 1rem; background-color: var(--light-bg-secondary); }
+            .order-card { margin: 0 1.5rem; }
+            #detail-info-grid { grid-template-columns: 1fr !important; }
+            .details-action-buttons { flex-direction: column; align-items: stretch !important; gap: 0.75rem; }
+            .details-action-buttons .btn { width: 100%; margin: 0; }
+            
+            #quote-screen { padding: 0; background-color: #fff; }
+            #quote-screen .quote-controls { margin: 15px; }
+            #quote-screen .invoice-box { padding: 15px; min-height: unset; border-radius: 0; box-shadow: none; }
+            #quote-screen .header { padding-bottom: 10px; }
+            #quote-screen .logo-img { max-width: 100px; }
+            #quote-screen .invoice-details, #quote-screen .bill-to p, #quote-screen table { font-size: 10px; }
+            #quote-screen .bill-to h3 { font-size: 12px; }
+            #quote-screen table th, #quote-screen table td { padding: 5px 4px; }
+            #quote-screen .invoice-summary { margin-top: 15px; padding-top: 15px; }
+            #quote-screen .invoice-summary table { width: 80%; font-size: 10px; }
+            #quote-screen .invoice-summary table tr:last-child { font-size: 12px; }
+            #quote-screen .terms { font-size: 8px; margin-top: 15px; padding-top: 15px;}
+            #quote-screen .terms strong, #quote-screen .terms li { font-size: 8px; }
+            #quote-screen .terms ol li { margin-bottom: 4px; }
+            #quote-screen .footer { font-size: 8px; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 15px; padding-top: 15px;}
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            body { background: #fff; padding: 0; margin: 0; }
+            body > .app-container > *:not(#quote-screen) { display: none; }
+            #quote-screen { display: block !important; padding: 0; }
+            #quote-screen-printable { display: block !important; }
+            #quote-screen .quote-controls { display: none !important; }
+            #quote-screen .invoice-box {
+                box-shadow: none !important;
+                border-radius: 0;
+                margin: 0;
+                padding: 15mm !important; /* A4 printable area padding */
+                max-width: 100%;
+                min-height: initial;
+            }
+            #quote-screen table th {
+                background-color: #535456 !important; /* Keep dark header for print */
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            #quote-screen tbody tr:nth-child(even) {
+                background-color: #f8f8f7 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Login Screen (Initial View) -->
+        <div id="login-screen" class="screen text-center">
+            <h1 style="margin-bottom: 0.5rem;">Welcome to KS Enterprises</h1>
+            <p style="margin-bottom: 2rem; color: var(--light-text-muted);">Sign in to manage your orders.</p>
+            <button id="google-sign-in-btn" class="btn-primary">
+                <span class="material-symbols-outlined">account_circle</span>
+                Sign in with Google
+            </button>
+        </div>
+
+        <!-- Main Menu Screen (Hidden until login) -->
+        <div id="main-menu" class="screen text-center">
+            <h1 style="margin-bottom: 0.5rem;">KS Enterprises Dashboard</h1>
+            <p style="margin-bottom: 2rem; color: var(--light-text-muted);">
+                Logged in as: <span id="user-id-display" class="font-mono" style="color: var(--color-primary);">Loading...</span>
+            </p>
+            <div id="due-date-summary" class="card" style="margin-bottom: 2rem; text-align: left;">
+                <h3 style="margin-bottom: 1rem;">Upcoming & Overdue Orders</h3>
+                <ul id="upcoming-overdue-list" style="list-style-type: none; padding-left: 0; margin-bottom: 0;">
+                    <li style="color: var(--light-text-secondary);">No critical orders.</li>
+                </ul>
+            </div>
+            <div class="main-menu-actions">
+                <button id="add-new-btn" class="btn-primary">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    Add New Order
+                </button>
+                <button id="view-orders-btn" class="btn-secondary">
+                    <span class="material-symbols-outlined">view_list</span>
+                    View All Orders
+                </button>
+                <button id="sign-out-btn" class="btn-secondary">
+                    <span class="material-symbols-outlined">logout</span>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+
+        <!-- Add/Edit Order Screen -->
+        <div id="form-screen" class="screen">
+            <div class="page-header">
+                 <button class="back-to-main btn-secondary">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2 id="form-title">Create New Order</h2>
+            </div>
+            <div class="card">
+                <form id="order-form">
+                    <input type="hidden" id="order-id">
+                    <input type="hidden" id="customer-lat">
+                    <input type="hidden" id="customer-lon">
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--light-border);">Customer Information</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <input type="text" id="customer-name" class="input-field" placeholder=" " required>
+                            <label for="customer-name" class="input-label">Customer Name</label>
+                        </div>
+                        <div class="input-group">
+                            <input type="tel" id="customer-mobile" class="input-field" placeholder=" " pattern="[0-9]{10}" title="10-digit mobile number" required>
+                            <label for="customer-mobile" class="input-label">Mobile Number</label>
+                        </div>
+                        <div class="input-group grid-col-span-2">
+                            <textarea id="customer-address" rows="2" class="input-field" placeholder=" " required></textarea>
+                            <label for="customer-address" class="input-label">Customer Address</label>
+                        </div>
+                        <div class="input-group grid-col-span-2">
+                            <button type="button" id="get-location-btn" class="btn-secondary" style="width: 100%;">
+                                <span class="material-symbols-outlined">pin_drop</span>
+                                Set Customer Location on Map
+                            </button>
+                        </div>
+                        <div class="input-group grid-col-span-2">
+                            <input type="date" id="due-date" class="input-field" placeholder=" " required>
+                            <label for="due-date" class="input-label">Due Date</label>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin-top: 2.5rem; margin-bottom: 1rem;">Window Details</h3>
+                    
+                    <div id="glass-options-container" class="glass-options">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="same-glass-all" style="width: 1.15em; height: 1.15em;">
+                            <label for="same-glass-all">Same glass for all windows</label>
+                        </div>
+                        <div id="global-glass-name-container" style="display: none;">
+                            <div class="input-group">
+                                <input type="text" id="global-glass-name" class="input-field" placeholder=" ">
+                                <label for="global-glass-name" class="input-label">Glass Name</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="windows-container"></div>
+                    
+                    <button type="button" id="add-window-btn" class="btn-secondary" style="width: 100%; margin: 1rem 0;">
+                        <span class="material-symbols-outlined">add</span>
+                        Add Another Window
+                    </button>
+                    
+                    <div style="display: flex; justify-content: flex-end; margin-top: 2rem; border-top: 1px solid var(--light-border); padding-top: 2rem;">
+                        <button type="submit" id="save-order-btn" class="btn-success">
+                            <span class="material-symbols-outlined">save</span>
+                            Save Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- View Existing Orders Screen -->
+        <div id="view-orders-screen" class="screen">
+            <div class="page-header">
+                <button class="back-to-main btn-secondary">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h2>All Orders</h2>
+            </div>
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="input-group">
+                        <input type="text" id="order-search" class="input-field" placeholder=" ">
+                        <label for="order-search" class="input-label">Search by name, mobile, etc...</label>
+                    </div>
+                    <div class="input-group">
+                        <select id="order-filter" class="input-field" style="padding-top: 1rem; padding-bottom: 1rem;">
+                            <option value="all">All Orders</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="overdue">Overdue</option>
+                            <option value="upcoming-due">Upcoming Due</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="order-list-container" class="order-list-container"></div>
+            <div id="order-list-empty" class="text-center" style="display: none; padding: 3rem; background: var(--light-bg-tertiary); border-radius: var(--radius-lg);">
+                <span class="material-symbols-outlined" style="font-size: 3rem; color: var(--light-text-muted);">folder_off</span>
+                <p style="margin-top: 1rem; color: var(--light-text-secondary);">No orders found.</p>
+            </div>
+        </div>
+        
+        <!-- Order Details Screen -->
+        <div id="order-details-screen" class="screen">
+            <div class="page-header">
+                <button class="back-to-view-orders btn-secondary">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                 <h2>Order Details</h2>
+            </div>
+            <div class="card">
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <p id="detail-customer-name" style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary);"></p>
+                        <p id="detail-customer-address" style="color: var(--light-text-secondary);"></p>
+                    </div>
+                    <div id="detail-status-tag" class="status-tag" style="align-self: flex-start;"></div>
+                </div>
+                <div id="detail-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; font-size: 0.875rem;">
+                    <p><strong>Mobile:</strong> <span id="detail-customer-mobile"></span></p>
+                    <p><strong>Placed:</strong> <span id="detail-order-taken-date"></span></p>
+                    <p><strong>Due Date:</strong> <span id="detail-due-date"></span></p>
+                    <p id="detail-completed-date-row" style="display: none;"><strong>Completed:</strong> <span id="detail-completed-date"></span></p>
+                    <p id="detail-created-by-row" style="display: none;"><strong>Created By:</strong> <span id="detail-created-by"></span></p>
+                    <p id="detail-completed-by-row" style="display: none;"><strong>Completed By:</strong> <span id="detail-completed-by"></span></p>
+                </div>
+                <h3 style="margin-bottom: 1rem;">Windows (<span id="detail-window-count"></span>)</h3>
+                <div id="detail-windows-list"></div>
+                <div class="details-action-buttons" style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.75rem; margin-top: 2rem; border-top: 1px solid var(--light-border); padding-top: 2rem;">
+                    <button id="detail-get-directions-btn" class="btn-secondary"><span class="material-symbols-outlined">directions</span>Get Directions</button>
+                    <button id="detail-complete-btn" class="btn-success"><span class="material-symbols-outlined">check_circle</span>Mark as Complete</button>
+                    <button id="detail-edit-btn" class="btn-primary"><span class="material-symbols-outlined">edit</span>Edit Order</button>
+                    <button id="detail-view-quote-btn" class="btn-secondary"><span class="material-symbols-outlined">request_quote</span>View Quote</button>
+                    <button id="detail-show-history-btn" class="btn-secondary"><span class="material-symbols-outlined">history</span>Show History</button>
+                    <button id="detail-delete-btn" class="btn-danger"><span class="material-symbols-outlined">delete</span>Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Quote Screen -->
+        <div id="quote-screen" class="screen">
+            <div id="quote-screen-printable">
+                <!-- Content will be injected by JavaScript -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+    <div id="confirmation-modal" class="modal"><div class="modal-content"><p id="modal-message" class="modal-message"></p><div class="modal-buttons"><button id="cancel-action-btn" class="btn-secondary">Cancel</button><button id="confirm-action-btn" class="btn-danger">Confirm</button></div></div></div>
+    <div id="message-modal" class="modal"><div class="modal-content"><p id="message-text" class="modal-message"></p><button id="message-ok-btn" class="btn-primary" style="min-width: 120px;">OK</button></div></div>
+    <div id="history-modal" class="modal"><div class="modal-content" style="max-width: 600px; text-align: left;"><div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;"><h3 id="history-modal-title">Order History</h3><button id="history-close-btn" class="remove-window-btn" style="position: static; border-radius: 50%;"><span class="material-symbols-outlined">close</span></button></div><ul id="history-list" style="list-style-type: none; padding: 0; max-height: 60vh; overflow-y: auto;"></ul></div></div>
+    <div id="loading-overlay" class="loading-overlay"><div class="spinner"></div></div>
+    
+    <!-- Location Picker Modal -->
+    <div id="location-picker-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px; text-align: left; padding: 0; animation: popIn 0.3s var(--ease);">
+            <div style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-border);">
+                <h3>Select Customer Location</h3>
+                <button id="location-picker-close-btn" class="remove-window-btn" style="position: static; border-radius: 50%;">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="map-container" style="height: 400px; width: 100%; position: relative;">
+                <div class="map-pin"></div>
+            </div>
+            <div style="padding: 1.5rem; display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--light-border);">
+                <button id="cancel-location-btn" class="btn-secondary">Cancel</button>
+                <button id="confirm-location-btn" class="btn-primary">Confirm Location</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Price Input Modal -->
+    <div id="price-modal" class="modal">
+        <div class="modal-content" style="max-width: 480px; text-align: left;">
+             <form id="price-form">
+                <h3 style="margin-bottom: 2rem;">Enter Pricing Details</h3>
+                <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <input type="number" id="price-per-sft" class="input-field" min="0" step="0.01" placeholder=" " required>
+                    <label for="price-per-sft" class="input-label">Price per SFT (₹)</label>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="transport-charges" class="input-field" min="0" step="1" placeholder=" " value="0" required>
+                    <label for="transport-charges" class="input-label">Transport Charges (₹)</label>
+                </div>
+                <div class="modal-buttons" style="margin-top: 2rem; justify-content: flex-end;">
+                    <button type="button" id="price-cancel-btn" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Generate Quote</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules directly into this script module
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, addDoc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, onSnapshot, collection, serverTimestamp, deleteField, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Use a self-executing anonymous function to encapsulate the script
+        (function() {
+            // --- CACHED DOM ELEMENTS ---
+            const mainMenuScreen = document.getElementById('main-menu');
+            const formScreen = document.getElementById('form-screen');
+            const viewOrdersScreen = document.getElementById('view-orders-screen');
+            const orderDetailsScreen = document.getElementById('order-details-screen');
+            const loginScreen = document.getElementById('login-screen'); 
+            const quoteScreen = document.getElementById('quote-screen');
+            const quoteScreenPrintable = document.getElementById('quote-screen-printable');
+
+            const addNewBtn = document.getElementById('add-new-btn');
+            const viewOrdersBtn = document.getElementById('view-orders-btn');
+
+            // Reusable Form Elements
+            const orderForm = document.getElementById('order-form');
+            const formTitle = document.getElementById('form-title');
+            const orderIdInput = document.getElementById('order-id');
+            const customerNameInput = document.getElementById('customer-name');
+            const customerAddressInput = document.getElementById('customer-address');
+            const customerMobileInput = document.getElementById('customer-mobile');
+            const customerLatInput = document.getElementById('customer-lat');
+            const customerLonInput = document.getElementById('customer-lon');
+            const getLocationBtn = document.getElementById('get-location-btn');
+            const dueDateInput = document.getElementById('due-date');
+            const windowsContainer = document.getElementById('windows-container');
+            const addWindowBtn = document.getElementById('add-window-btn');
+            const saveOrderBtn = document.getElementById('save-order-btn');
+            const sameGlassAllCheckbox = document.getElementById('same-glass-all');
+            const globalGlassNameContainer = document.getElementById('global-glass-name-container');
+            const globalGlassNameInput = document.getElementById('global-glass-name');
+            
+            const orderListContainer = document.getElementById('order-list-container');
+            const orderListEmpty = document.getElementById('order-list-empty');
+            const userIdDisplay = document.getElementById('user-id-display');
+            const orderSearchInput = document.getElementById('order-search');
+            const orderFilterSelect = document.getElementById('order-filter');
+            const upcomingOverdueList = document.getElementById('upcoming-overdue-list');
+
+            const googleSignInBtn = document.getElementById('google-sign-in-btn'); 
+            const signOutBtn = document.getElementById('sign-out-btn'); 
+
+            // Order Details Screen Elements
+            const detailCustomerName = document.getElementById('detail-customer-name');
+            const detailCustomerAddress = document.getElementById('detail-customer-address');
+            const detailCustomerMobile = document.getElementById('detail-customer-mobile');
+            const detailOrderTakenDate = document.getElementById('detail-order-taken-date');
+            const detailDueDate = document.getElementById('detail-due-date');
+            const detailStatusTag = document.getElementById('detail-status-tag');
+            const detailCompletedDateRow = document.getElementById('detail-completed-date-row');
+            const detailCompletedDate = document.getElementById('detail-completed-date');
+            const detailCreatedByRow = document.getElementById('detail-created-by-row');
+            const detailCreatedBy = document.getElementById('detail-created-by');
+            const detailCompletedByRow = document.getElementById('detail-completed-by-row');
+            const detailCompletedBy = document.getElementById('detail-completed-by');
+            const detailWindowsList = document.getElementById('detail-windows-list');
+            const detailWindowCount = document.getElementById('detail-window-count');
+            const detailEditBtn = document.getElementById('detail-edit-btn');
+            const detailDeleteBtn = document.getElementById('detail-delete-btn');
+            const detailViewQuoteBtn = document.getElementById('detail-view-quote-btn');
+            const detailCompleteBtn = document.getElementById('detail-complete-btn');
+            const detailShowHistoryBtn = document.getElementById('detail-show-history-btn');
+            const detailGetDirectionsBtn = document.getElementById('detail-get-directions-btn');
+
+            const confirmationModal = document.getElementById('confirmation-modal');
+            const modalMessage = document.getElementById('modal-message');
+            const confirmActionBtn = document.getElementById('confirm-action-btn');
+            const cancelActionBtn = document.getElementById('cancel-action-btn');
+
+            const messageModal = document.getElementById('message-modal');
+            const messageText = document.getElementById('message-text');
+            const messageOkBtn = document.getElementById('message-ok-btn');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            // History Modal Elements
+            const historyModal = document.getElementById('history-modal');
+            const historyList = document.getElementById('history-list');
+            const historyCloseBtn = document.getElementById('history-close-btn');
+
+            // Location Picker Modal Elements
+            const locationPickerModal = document.getElementById('location-picker-modal');
+            const locationPickerCloseBtn = document.getElementById('location-picker-close-btn');
+            const confirmLocationBtn = document.getElementById('confirm-location-btn');
+            const cancelLocationBtn = document.getElementById('cancel-location-btn');
+            
+            // Price Input Modal Elements
+            const priceModal = document.getElementById('price-modal');
+            const priceForm = document.getElementById('price-form');
+            const pricePerSftInput = document.getElementById('price-per-sft');
+            const transportChargesInput = document.getElementById('transport-charges');
+            const priceCancelBtn = document.getElementById('price-cancel-btn');
+
+            // --- APP STATE ---
+            let orders = [];
+            let currentAction = { type: null, id: null, callback: null };
+            let currentViewedOrderId = null;
+            let db, auth;
+            let currentUserId = null;
+            let currentUserName = "Unknown User";
+            let map;
+            
+            // --- UI & UX FUNCTIONS ---
+            const showLoading = () => loadingOverlay.style.display = 'flex';
+            const hideLoading = () => loadingOverlay.style.display = 'none';
+
+            const showMessageModal = (message) => {
+                messageText.textContent = message;
+                messageModal.style.display = 'flex';
+            };
+
+            const showConfirmationModal = (message, confirmClass, confirmText, actionType, orderId, callback) => {
+                modalMessage.textContent = message;
+                confirmActionBtn.className = 'btn';
+                confirmActionBtn.classList.add(confirmClass);
+                confirmActionBtn.textContent = confirmText;
+                currentAction = { type: actionType, id: orderId, callback: callback };
+                confirmationModal.style.display = 'flex';
+            };
+            
+            const hideConfirmationModal = () => {
+                confirmationModal.style.display = 'none';
+            };
+
+            const showScreen = (screenToShow) => {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                screenToShow.classList.add('active');
+                if (screenToShow === mainMenuScreen) {
+                    populateUpcomingOverdueList();
+                }
+            };
+
+            const createSkeletonCard = () => `<div class="skeleton-card"><div class="skeleton h-6 w-3_4"></div><div class="skeleton h-4 w-1_2 mt-2"></div><div class="skeleton h-4 w-1_3 mt-4"></div></div>`;
+
+            const showSkeletonLoaders = (count = 6) => {
+                orderListContainer.innerHTML = Array(count).fill(createSkeletonCard()).join('');
+                orderListContainer.style.display = 'flex';
+                orderListEmpty.style.display = 'none';
+            };
+
+            const addWindowInput = (container, index, data = {}) => {
+                const { height = '', width = '', hasGlass = false, glassName = '', itemType = 'sliding window' } = data;
+                const windowEntryDiv = document.createElement('div');
+                windowEntryDiv.className = 'window-entry';
+                
+                const itemOptions = ['sliding window', 'sliding door', 'casement window', 'casement door', 'Ventilator lowers', 'Ventilator fan provision', 'Fixed'];
+                const optionsHtml = itemOptions.map(opt => `<option value="${opt}" ${opt === itemType ? 'selected' : ''}>${opt.charAt(0).toUpperCase() + opt.slice(1)}</option>`).join('');
+
+                windowEntryDiv.innerHTML = `
+                    <div class="window-entry-header">
+                        <select class="item-type-select input-field">${optionsHtml}</select>
+                        <span class="window-entry-title">#${index}</span>
+                        <button type="button" class="remove-window-btn"><span class="material-symbols-outlined">close</span></button>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" class="window-height-input input-field" value="${height}" min="1" step="1" placeholder=" " required>
+                        <label class="input-label">Height (mm)</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="number" class="window-width-input input-field" value="${width}" min="1" step="1" placeholder=" " required>
+                        <label class="input-label">Width (mm)</label>
+                    </div>
+                    <div class="glass-control">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="glass-check-${index}" class="has-glass-checkbox" ${hasGlass ? 'checked' : ''} style="width: 1.15em; height: 1.15em;">
+                            <label for="glass-check-${index}">Glass</label>
+                        </div>
+                        <div class="individual-glass-name-container" style="display: none; flex-grow: 1;">
+                            <div class="input-group">
+                                <input type="text" class="individual-glass-name input-field" value="${glassName}" placeholder=" ">
+                                <label class="input-label">Glass Name</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(windowEntryDiv);
+
+                const glassCheckbox = windowEntryDiv.querySelector('.has-glass-checkbox');
+                glassCheckbox.addEventListener('change', () => {
+                    updateWindowGlassUI(windowEntryDiv);
+                    saveDraft();
+                });
+
+                windowEntryDiv.querySelector('.remove-window-btn').addEventListener('click', () => {
+                    windowEntryDiv.remove();
+                    updateWindowTitles(container);
+                    saveDraft();
+                });
+
+                windowEntryDiv.querySelectorAll('input:not(.has-glass-checkbox), .item-type-select').forEach(input => input.addEventListener('input', saveDraft));
+                updateWindowGlassUI(windowEntryDiv);
+            };
+            
+            const updateWindowGlassUI = (windowEntryDiv) => {
+                const glassCheckbox = windowEntryDiv.querySelector('.has-glass-checkbox');
+                const individualContainer = windowEntryDiv.querySelector('.individual-glass-name-container');
+
+                if (glassCheckbox.checked) {
+                    individualContainer.style.display = sameGlassAllCheckbox.checked ? 'none' : 'block';
+                } else {
+                    individualContainer.style.display = 'none';
+                }
+            };
+            
+            const updateAllWindowGlassUIs = () => {
+                document.querySelectorAll('#windows-container .window-entry').forEach(updateWindowGlassUI);
+            };
+
+            const updateWindowTitles = (container) => {
+                container.querySelectorAll('.window-entry').forEach((entry, index) => {
+                    entry.querySelector('.window-entry-title').textContent = `#${index + 1}`;
+                    const checkbox = entry.querySelector('.has-glass-checkbox');
+                    const label = entry.querySelector('.has-glass-checkbox + label');
+                    checkbox.id = `glass-check-${index + 1}`;
+                    label.htmlFor = `glass-check-${index + 1}`;
+                });
+            };
+
+            const setupFormForCreate = () => {
+                formTitle.textContent = 'Create New Order';
+                saveOrderBtn.innerHTML = '<span class="material-symbols-outlined">save</span> Save Order';
+                orderForm.reset();
+                orderIdInput.value = ''; customerLatInput.value = ''; customerLonInput.value = '';
+                sameGlassAllCheckbox.checked = false;
+                globalGlassNameContainer.style.display = 'none';
+
+                getLocationBtn.innerHTML = '<span class="material-symbols-outlined">pin_drop</span> Set Customer Location on Map';
+                getLocationBtn.classList.remove('btn-success');
+                getLocationBtn.classList.add('btn-secondary');
+
+                windowsContainer.innerHTML = '';
+                addWindowInput(windowsContainer, 1);
+                loadDraft();
+                showScreen(formScreen);
+            };
+
+            const setupFormForEdit = (order) => {
+                formTitle.textContent = 'Edit Order';
+                saveOrderBtn.innerHTML = '<span class="material-symbols-outlined">update</span> Update Order';
+                orderForm.reset();
+                orderIdInput.value = order.id; customerNameInput.value = order.name; customerAddressInput.value = order.address;
+                customerMobileInput.value = order.mobileNumber || ''; dueDateInput.value = order.dueDate || '';
+                customerLatInput.value = order.latitude || ''; customerLonInput.value = order.longitude || '';
+
+                if (order.latitude && order.longitude) {
+                    getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                    getLocationBtn.classList.remove('btn-secondary');
+                    getLocationBtn.classList.add('btn-success');
+                } else {
+                    getLocationBtn.innerHTML = '<span class="material-symbols-outlined">pin_drop</span> Set Customer Location on Map';
+                    getLocationBtn.classList.remove('btn-success');
+                    getLocationBtn.classList.add('btn-secondary');
+                }
+
+                windowsContainer.innerHTML = '';
+                let windowsToLoad = [];
+                if (typeof order.windows === 'string') { try { windowsToLoad = JSON.parse(order.windows); } catch (e) { windowsToLoad = []; }
+                } else if (Array.isArray(order.windows)) { windowsToLoad = order.windows; }
+
+                const windowsWithGlass = windowsToLoad.filter(w => w.hasGlass);
+                const firstGlassName = windowsWithGlass.length > 0 ? windowsWithGlass[0].glassName : null;
+                const allSame = windowsWithGlass.every(w => w.glassName === firstGlassName);
+                
+                if (windowsWithGlass.length > 0 && allSame && firstGlassName) {
+                    sameGlassAllCheckbox.checked = true;
+                    globalGlassNameContainer.style.display = 'block';
+                    globalGlassNameInput.value = firstGlassName || '';
+                } else {
+                    sameGlassAllCheckbox.checked = false;
+                    globalGlassNameContainer.style.display = 'none';
+                    globalGlassNameInput.value = '';
+                }
+
+                if (windowsToLoad.length > 0) {
+                    windowsToLoad.forEach((win, index) => addWindowInput(windowsContainer, index + 1, win));
+                } else {
+                    addWindowInput(windowsContainer, 1);
+                }
+                showScreen(formScreen);
+            };
+
+            // --- DATA & RENDERING FUNCTIONS ---
+            const getStatusInfo = (order, today) => {
+                if (order.status === 'completed') { return { text: 'Completed', className: 'completed' }; }
+                const dueDate = order.dueDate ? new Date(order.dueDate + 'T00:00:00') : null; 
+                if (dueDate && dueDate < today) { return { text: 'Overdue', className: 'overdue' }; }
+                if (dueDate) {
+                    const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+                    if (daysDiff >= 0 && daysDiff <= 3) { return { text: `Due in ${daysDiff} day${daysDiff !== 1 ? 's' : ''}`, className: 'upcoming-due' }; }
+                }
+                return { text: 'Pending', className: 'pending' };
+            };
+            
+            const renderOrderList = () => {
+                const searchQuery = orderSearchInput.value.toLowerCase();
+                const filterStatus = orderFilterSelect.value;
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+
+                const filteredOrders = orders.filter(order => {
+                    const matchesSearch = order.name.toLowerCase().includes(searchQuery) || order.address.toLowerCase().includes(searchQuery) || (order.mobileNumber && order.mobileNumber.includes(searchQuery));
+                    const statusInfo = getStatusInfo(order, today);
+                    let matchesFilter = false;
+                    if (filterStatus === 'all') { matchesFilter = true; }
+                    else if (filterStatus === 'pending') { matchesFilter = statusInfo.className === 'pending'; }
+                    else if (filterStatus === 'completed') { matchesFilter = statusInfo.className === 'completed'; }
+                    else if (filterStatus === 'overdue') { matchesFilter = statusInfo.className === 'overdue'; }
+                    else if (filterStatus === 'upcoming-due') { matchesFilter = statusInfo.className === 'upcoming-due'; }
+                    return matchesSearch && matchesFilter;
+                });
+                
+                if (filteredOrders.length === 0) { orderListEmpty.style.display = 'block'; orderListContainer.style.display = 'none'; return; }
+                orderListEmpty.style.display = 'none'; orderListContainer.style.display = 'flex'; 
+                orderListContainer.innerHTML = ''; 
+
+                filteredOrders
+                    .sort((a, b) => {
+                        const dateA = a.dueDate ? new Date(a.dueDate) : null;
+                        const dateB = b.dueDate ? new Date(b.dueDate) : null;
+                        const statusA = getStatusInfo(a, today).className;
+                        const statusB = getStatusInfo(b, today).className;
+                        const statusOrder = { 'overdue': 1, 'upcoming-due': 2, 'pending': 3, 'completed': 4 };
+                        if (statusOrder[statusA] !== statusOrder[statusB]) { return statusOrder[statusA] - statusOrder[statusB]; }
+                        return (dateA?.getTime() || 0) - (dateB?.getTime() || 0);
+                    })
+                    .forEach(order => {
+                        const card = document.createElement('div');
+                        card.className = 'order-card';
+                        card.dataset.id = order.id;
+                        const statusInfo = getStatusInfo(order, today);
+                        card.innerHTML = `<div class="order-card-header"><span class="order-card-customer">${order.name}</span><span class="order-card-mobile">${order.mobileNumber || 'No mobile'}</span></div><div class="status-tag ${statusInfo.className}">${statusInfo.text}</div><div class="order-card-footer"><span class="order-card-date">Due: ${order.dueDate || 'Not set'}</span><span class="material-symbols-outlined" style="color: var(--light-text-muted);">arrow_forward_ios</span></div>`;
+                        card.addEventListener('click', () => showOrderDetails(order.id));
+                        orderListContainer.appendChild(card);
+                    });
+                
+                populateUpcomingOverdueList();
+            };
+
+            const populateUpcomingOverdueList = () => {
+                upcomingOverdueList.innerHTML = '';
+                const today = new Date(); today.setHours(0,0,0,0);
+
+                const criticalOrders = orders.filter(order => {
+                    if (order.status === 'completed') return false;
+                    const dueDate = order.dueDate ? new Date(order.dueDate + 'T00:00:00') : null;
+                    if (!dueDate) return false;
+                    const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+                    return (dueDate < today) || (daysDiff >= 0 && daysDiff <= 3);
+                }).sort((a,b) => (new Date(a.dueDate)?.getTime() || 0) - (new Date(b.dueDate)?.getTime() || 0));
+
+                if (criticalOrders.length === 0) {
+                    upcomingOverdueList.innerHTML = '<li style="color: var(--light-text-secondary);">No critical orders.</li>';
+                } else {
+                    criticalOrders.forEach(order => {
+                        const dueDate = new Date(order.dueDate);
+                        const daysDiff = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 3600 * 24));
+                        let summaryText = ''; let summaryColor = '';
+                        if (dueDate < today) {
+                            summaryText = `Overdue (${order.dueDate})`; summaryColor = 'var(--status-overdue-text)';
+                        } else {
+                            summaryText = `Due in ${daysDiff} day${daysDiff !== 1 ? 's' : ''} (${order.dueDate})`; summaryColor = 'var(--status-upcoming-text)';
+                        }
+                        const li = document.createElement('li'); li.style.color = summaryColor;
+                        li.innerHTML = `<span style="font-weight: 600;">${order.name}</span> - ${summaryText}`;
+                        upcomingOverdueList.appendChild(li);
+                    });
+                }
+            };
+            
+            const showOrderDetails = (orderId) => {
+                currentViewedOrderId = orderId;
+                const order = orders.find(o => o.id === orderId);
+                if (!order) { showMessageModal('Order details not found.'); return; }
+                
+                detailCustomerName.textContent = order.name; detailCustomerAddress.textContent = order.address;
+                detailCustomerMobile.textContent = order.mobileNumber || 'N/A';
+                detailOrderTakenDate.textContent = order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                detailDueDate.textContent = order.dueDate || 'N/A';
+                
+                const today = new Date(); today.setHours(0,0,0,0);
+                const statusInfo = getStatusInfo(order, today);
+                detailStatusTag.className = 'status-tag ' + statusInfo.className; detailStatusTag.textContent = statusInfo.text;
+                
+                detailCompletedDateRow.style.display = (order.status === 'completed' && order.completedAt) ? 'block' : 'none';
+                detailCompletedDate.textContent = (order.status === 'completed' && order.completedAt?.toDate) ? new Date(order.completedAt.toDate()).toLocaleDateString() : '';
+
+                detailCreatedByRow.style.display = order.createdBy ? 'block' : 'none';
+                detailCreatedBy.textContent = order.createdBy || '';
+
+                detailCompletedByRow.style.display = (order.completedBy && order.status === 'completed') ? 'block' : 'none';
+                detailCompletedBy.textContent = order.completedBy || '';
+
+                let windowsToDisplay = [];
+                if (typeof order.windows === 'string') { try { windowsToDisplay = JSON.parse(order.windows); } catch(e) {} }
+                else if (Array.isArray(order.windows)) { windowsToDisplay = order.windows; }
+                
+                detailWindowsList.innerHTML = '';
+                if(windowsToDisplay.length > 0) {
+                    windowsToDisplay.forEach((win, i) => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'detail-window-item';
+                        let glassInfo = win.hasGlass ? `<small>Glass: ${win.glassName || 'Not specified'}</small>` : '<small>No Glass</small>';
+
+                        itemDiv.innerHTML = `
+                            <div class="item-number">${i + 1}</div>
+                            <div class="item-info">
+                                <strong>${win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Window'}:</strong> H: ${win.height} mm, W: ${win.width} mm
+                                ${glassInfo}
+                            </div>
+                        `;
+                        detailWindowsList.appendChild(itemDiv);
+                    });
+                } else { 
+                    const itemDiv = document.createElement('div');
+                    itemDiv.textContent = 'No window details available.';
+                    detailWindowsList.appendChild(itemDiv);
+                }
+                detailWindowCount.textContent = windowsToDisplay.length;
+
+                detailEditBtn.dataset.id = order.id; detailViewQuoteBtn.dataset.id = order.id; detailCompleteBtn.dataset.id = order.id; detailShowHistoryBtn.dataset.id = order.id;
+                detailGetDirectionsBtn.style.display = (order.latitude && order.longitude) ? 'inline-flex' : 'none';
+                detailGetDirectionsBtn.dataset.lat = order.latitude; detailGetDirectionsBtn.dataset.lon = order.longitude;
+
+                const currentUserEmail = auth.currentUser ? auth.currentUser.email : null;
+                detailDeleteBtn.style.display = (currentUserEmail === 'harshavardhanjw@gmail.com') ? 'inline-flex' : 'none';
+                detailDeleteBtn.dataset.id = order.id;
+
+                if (order.status === 'completed') {
+                    detailCompleteBtn.innerHTML = '<span class="material-symbols-outlined">refresh</span>Reopen Order';
+                    detailCompleteBtn.className = 'btn btn-reopen'; detailEditBtn.disabled = true;
+                } else {
+                    detailCompleteBtn.innerHTML = '<span class="material-symbols-outlined">check_circle</span>Mark as Complete';
+                    detailCompleteBtn.className = 'btn btn-success'; detailEditBtn.disabled = false;
+                }
+                showScreen(orderDetailsScreen);
+            };
+
+            const createQuoteHtml = (order, pricePerSft, transportCharges) => {
+                let windowsForPdf = [];
+                if (typeof order.windows === 'string') { try { windowsForPdf = JSON.parse(order.windows); } catch(e){} }
+                else if (Array.isArray(order.windows)) { windowsForPdf = order.windows; }
+                
+                let tableRows = ''; let subTotal = 0;
+
+                windowsForPdf.forEach((win, index) => {
+                    const heightMm = parseFloat(win.height || 0); const widthMm = parseFloat(win.width || 0);
+                    const sft = (widthMm / 304) * (heightMm / 304); const windowCost = sft * pricePerSft;
+                    subTotal += windowCost;
+                    const itemName = win.itemType ? (win.itemType.charAt(0).toUpperCase() + win.itemType.slice(1)) : 'Item';
+                    tableRows += `<tr><td>${(index + 1).toString().padStart(2, '0')}</td><td>${itemName}${win.hasGlass && win.glassName ? ` <br><small>(${win.glassName})</small>` : ''}</td><td>${widthMm}</td><td>${heightMm}</td><td>304</td><td>${sft.toFixed(2)}</td><td>${pricePerSft.toLocaleString('en-IN')}</td><td>${windowCost.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td></tr>`;
+                });
+
+                const gst = subTotal * 0.18; const grandTotal = subTotal + gst + transportCharges;
+                
+                return `
+                    <div class="quote-controls">
+                        <button id="quote-back-btn" class="btn btn-secondary"><span class="material-symbols-outlined">arrow_back</span>Back</button>
+                        <button onclick="window.print()" class="btn btn-primary print-button"><span class="material-symbols-outlined">print</span>Print / Save PDF</button>
+                    </div>
+                    <div class="invoice-box">
+                        <div> <!-- Flex container for top content -->
+                            <div class="header">
+                                <div class="logo">
+                                    <img src="https://via.placeholder.com/160x50?text=KS+Enterprises" alt="Company Logo" class="logo-img">
+                                </div>
+                                <div class="invoice-details">
+                                    <div><strong>Quotation Date:</strong> ${new Date().toLocaleDateString()}</div>
+                                    <div><strong>Prepared by:</strong> ${order.createdBy || 'N/A'}</div>
+                                </div>
+                            </div>
+
+                            <div class="bill-to">
+                                <h3>QUOTATION FOR</h3>
+                                <p>
+                                    <strong>${order.name}</strong><br>
+                                    ${order.address.replace(/\n/g, '<br>')}<br>
+                                    Phone: ${order.mobileNumber || 'N/A'}
+                                </p>
+                            </div>
+                            
+                            <table>
+                                <thead>
+                                    <tr><th>S.No</th><th>Item Name</th><th>Width (mm)</th><th>Height (mm)</th><th>Mesh</th><th>SFT</th><th>Price (₹)</th><th>Total Cost (₹)</th></tr>
+                                </thead>
+                                <tbody>${tableRows}</tbody>
+                            </table>
+                        </div>
+
+                        <div class="invoice-summary">
+                            <table>
+                                <tr>
+                                    <td>Total:</td>
+                                    <td style="text-align: right;">${subTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                </tr>
+                                <tr>
+                                    <td>GST 18%:</td>
+                                    <td style="text-align: right;">+${gst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                </tr>
+                                <tr>
+                                    <td>Transport:</td>
+                                    <td style="text-align: right;">+${transportCharges.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                </tr>
+                                <tr>
+                                    <td>Grand Total:</td>
+                                    <td style="text-align: right;">₹ ${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="terms">
+                            <strong>Terms & Conditions</strong>
+                            <ol>
+                                <li>This quotation is based on the <strong>approximate measurements</strong> shared by the customer. <strong>Final measurements</strong> will be taken after the order is confirmed. The total square footage (SFT) may <strong>increase or decrease</strong> accordingly.</li>
+                                <li>A <strong>signed work order</strong> with full contract details must be submitted on the customer's <strong>official letterhead</strong> along with the <strong>advance payment</strong>.</li>
+                                <li><strong>Payment terms:</strong> <strong>60% advance</strong>, <strong>30% after material delivery</strong>, and remaining <strong>10% after installation</strong>.</li>
+                                <li>All payments by <strong>cheque or demand draft</strong> in favour of <strong>“PREMIUM U-PVC DOORS & WINDOWS”</strong>.</li>
+                                <li>Customer is responsible for: <strong>safe storage</strong> of materials, <strong>scaffolding</strong>, and <strong>power supply</strong> at site.</li>
+                                <li>This quotation is <strong>valid for 30 days</strong>.</li>
+                                <li><strong>Delivery timeline:</strong> <strong>30 days from the date of final measurement</strong>.</li>
+                                <li>Customer must arrange any <strong>masonry chipping or leveling</strong> at their own expense.</li>
+                            </ol>
+                        </div>
+
+                        <div class="footer">
+                            <div class="icons">
+                                <span>📞 +91 79815 99155</span> |
+                                <span>✉️ kolatapu.k@gmail.com</span> |
+                                <span>📍 K.S Enterprises, Jewellery Park, Machilipatnam</span>
+                            </div>
+                            <div class="signature">
+                                <p>K.KIRAN KUMAR</p>
+                            </div>
+                        </div>
+                    </div>`;
+            };
+            
+            // --- LOCATION PICKER LOGIC ---
+            const openLocationPicker = async () => {
+                locationPickerModal.style.display = 'flex'; showLoading();
+                let initialLat = customerLatInput.value || 20.5937; let initialLon = customerLonInput.value || 78.9629;
+                let initialZoom = customerLatInput.value ? 16 : 5;
+
+                const setupMap = (lat, lon, zoom) => {
+                    if (!map) {
+                        map = L.map('map-container').setView([lat, lon], zoom);
+                        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles &copy; Esri' }).addTo(map);
+                    } else { map.setView([lat, lon], zoom); }
+                    setTimeout(() => { map.invalidateSize() }, 10); hideLoading();
+                };
+
+                if ("geolocation" in navigator && !customerLatInput.value) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => { setupMap(position.coords.latitude, position.coords.longitude, 18); },
+                        (error) => { console.warn(`Geolocation error: ${error.message}`); setupMap(initialLat, initialLon, initialZoom); },
+                        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                    );
+                } else { setupMap(initialLat, initialLon, initialZoom); }
+            };
+
+            const confirmSelectedLocation = () => {
+                const center = map.getCenter();
+                customerLatInput.value = center.lat.toFixed(6); customerLonInput.value = center.lng.toFixed(6);
+                getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                getLocationBtn.classList.remove('btn-secondary'); getLocationBtn.classList.add('btn-success');
+                locationPickerModal.style.display = 'none'; saveDraft();
+            };
+
+
+            // --- FIREBASE & CORE LOGIC ---
+            async function initializeFirebase() {
+                try {
+                    const firebaseConfig = {"apiKey":"AIzaSyBp4XoqX-MYvOlweR5dPfEqAP9qXu2P81E","authDomain":"harsha-jw.firebaseapp.com","projectId":"harsha-jw","storageBucket":"harsha-jw.appspot.com","messagingSenderId":"471408120499","appId":"1:471408120499:web:91e61514ad3703ce3b16c6","measurementId":"G-NBC16X4R1T"};
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app); auth = getAuth(app);
+                    onAuthStateChanged(auth, async (user) => {
+                        if (user) {
+                            currentUserId = user.uid; await fetchOrCreateUserProfile(user.uid, user.displayName); 
+                            listenForOrders(); showScreen(mainMenuScreen);
+                        } else {
+                            if(unsubscribe) unsubscribe();
+                            orders = []; currentUserId = null; currentUserName = "Unknown User";
+                            renderOrderList(); populateUpcomingOverdueList(); showScreen(loginScreen);
+                        }
+                        hideLoading();
+                    });
+                } catch (error) {
+                    console.error("Firebase Initialization Error:", error);
+                    showMessageModal("Critical error initializing application."); hideLoading();
+                }
+            }
+
+            async function handleGoogleSignIn() {
+                showLoading(); const provider = new GoogleAuthProvider();
+                try { await signInWithPopup(auth, provider); }
+                catch (error) { console.error("Google Sign-In Error:", error); showMessageModal(`Sign-in failed: ${error.message}`); hideLoading(); }
+            }
+
+            async function handleSignOut() {
+                showLoading();
+                try { await signOut(auth); }
+                catch (error) { console.error("Sign Out Error:", error); showMessageModal("Failed to sign out."); hideLoading(); }
+            }
+
+            async function fetchOrCreateUserProfile(userId, googleDisplayName) {
+                const userProfileRef = doc(db, `artifacts/default-app-id/user_profiles`, userId);
+                try {
+                    const userDoc = await getDoc(userProfileRef);
+                    if (userDoc.exists() && userDoc.data().userName) { currentUserName = userDoc.data().userName; }
+                    else {
+                        currentUserName = googleDisplayName || "Anonymous User";
+                        await setDoc(userProfileRef, { userName: currentUserName, createdAt: serverTimestamp() }, { merge: true });
+                    }
+                } catch (error) { console.error("User Profile Error:", error);
+                } finally { userIdDisplay.textContent = currentUserName; }
+            }
+
+            function getOrdersCollectionRef() { return collection(db, `upvc_orders`); }
+
+            async function logHistory(orderId, action, details = {}) {
+                if (!orderId) return;
+                try {
+                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
+                    await addDoc(historyCollectionRef, { action, details, modifiedBy: currentUserName, timestamp: serverTimestamp() });
+                } catch (error) { console.error("Error logging history:", error); }
+            }
+
+            let unsubscribe;
+            function listenForOrders() {
+                if(unsubscribe) unsubscribe(); 
+                showSkeletonLoaders();
+                const ordersCollectionRef = getOrdersCollectionRef();
+                unsubscribe = onSnapshot(query(ordersCollectionRef, orderBy('createdAt', 'desc')), (snapshot) => {
+                    orders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    renderOrderList();
+                    if (currentViewedOrderId) {
+                        const updatedOrder = orders.find(o => o.id === currentViewedOrderId);
+                        if (updatedOrder) {
+                            showOrderDetails(currentViewedOrderId);
+                        } else {
+                            currentViewedOrderId = null;
+                            showScreen(viewOrdersScreen);
+                        }
+                    }
+                }, (error) => {
+                    console.error("Firestore Snapshot Error:", error); showMessageModal("Error fetching real-time data.");
+                });
+            }
+            
+            const createChangeLog = (original, newData) => {
+                const changes = {};
+                const simpleFields = ['name', 'address', 'mobileNumber', 'dueDate'];
+                simpleFields.forEach(field => {
+                    if (original[field] !== newData[field]) {
+                        changes[field.charAt(0).toUpperCase() + field.slice(1)] = `"${original[field] || ''}" → "${newData[field] || ''}"`;
+                    }
+                });
+
+                const oldWindows = JSON.parse(original.windows || '[]');
+                const newWindows = JSON.parse(newData.windows || '[]');
+                const windowChanges = {};
+                const maxLen = Math.max(oldWindows.length, newWindows.length);
+
+                for (let i = 0; i < maxLen; i++) {
+                    const oldW = oldWindows[i];
+                    const newW = newWindows[i];
+                    const changeDetails = [];
+
+                    if (oldW && !newW) {
+                        windowChanges[`Item ${i + 1} (Deleted)`] = `(was ${oldW.width}x${oldW.height})`;
+                    } else if (!oldW && newW) {
+                        windowChanges[`Item ${i + 1} (Added)`] = `${newW.itemType}: ${newW.width}x${newW.height}, Glass: ${newW.hasGlass ? (newW.glassName || 'Yes') : 'No'}`;
+                    } else if (oldW && newW) {
+                        if (oldW.itemType !== newW.itemType) changeDetails.push(`Type: "${oldW.itemType}"→"${newW.itemType}"`);
+                        if (oldW.width !== newW.width) changeDetails.push(`W: ${oldW.width}→${newW.width}`);
+                        if (oldW.height !== newW.height) changeDetails.push(`H: ${oldW.height}→${newW.height}`);
+                        if (oldW.hasGlass !== newW.hasGlass) {
+                            changeDetails.push(`Glass: ${oldW.hasGlass ? 'On' : 'Off'}→${newW.hasGlass ? 'On' : 'Off'}`);
+                        }
+                        if (oldW.glassName !== newW.glassName) {
+                            changeDetails.push(`Glass Name: "${oldW.glassName || ''}"→"${newW.glassName || ''}"`);
+                        }
+                        if (changeDetails.length > 0) {
+                            windowChanges[`Item ${i + 1}`] = changeDetails.join(', ');
+                        }
+                    }
+                }
+                if (Object.keys(windowChanges).length > 0) {
+                    changes['Windows'] = windowChanges;
+                }
+                return changes;
+            };
+
+            async function handleFormSubmit(e) {
+                e.preventDefault(); showLoading();
+                const orderId = orderIdInput.value;
+                const isUpdating = !!orderId;
+                
+                const isSameGlass = sameGlassAllCheckbox.checked;
+                const globalGlass = globalGlassNameInput.value.trim();
+
+                const windowsData = Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => {
+                    const hasGlass = entry.querySelector('.has-glass-checkbox').checked;
+                    let glassName = '';
+                    if (hasGlass) { glassName = isSameGlass ? globalGlass : entry.querySelector('.individual-glass-name').value.trim(); }
+                    return { 
+                        itemType: entry.querySelector('.item-type-select').value,
+                        height: entry.querySelector('.window-height-input').value, 
+                        width: entry.querySelector('.window-width-input').value, 
+                        hasGlass, 
+                        glassName 
+                    };
+                });
+
+                const orderData = {
+                    name: customerNameInput.value.trim(), address: customerAddressInput.value.trim(),
+                    mobileNumber: customerMobileInput.value.trim(), dueDate: dueDateInput.value,
+                    windows: JSON.stringify(windowsData),
+                    latitude: customerLatInput.value, longitude: customerLonInput.value
+                };
+
+                let finalOrderId = orderId;
+
+                try {
+                    const collectionRef = getOrdersCollectionRef();
+                    if(isUpdating) {
+                        const originalOrder = orders.find(o => o.id === orderId);
+                        const changes = createChangeLog(originalOrder, orderData);
+                        const updateData = { ...orderData, updatedAt: serverTimestamp() };
+                        await updateDoc(doc(collectionRef, orderId), updateData);
+                        if(Object.keys(changes).length > 0) {
+                           await logHistory(orderId, 'Order Edited', changes);
+                        }
+                    } else {
+                        const newData = { ...orderData, status: 'pending', createdBy: currentUserName, createdAt: serverTimestamp() };
+                        const newDocRef = await addDoc(collectionRef, newData);
+                        finalOrderId = newDocRef.id;
+                        await logHistory(finalOrderId, 'Order Created');
+                        localStorage.removeItem('orderDraft');
+                    }
+                    showMessageModal(`Order successfully ${isUpdating ? 'updated' : 'saved'}!`);
+                    
+                    showOrderDetails(finalOrderId);
+
+                } catch (error) { console.error("Error saving order: ", error); showMessageModal("Failed to save order.");
+                } finally { hideLoading(); }
+            }
+            
+            async function performConfirmedAction() {
+                hideConfirmationModal(); showLoading();
+                try { await currentAction.callback(doc(getOrdersCollectionRef(), currentAction.id)); }
+                catch (error) { console.error(`Error performing action '${currentAction.type}':`, error); showMessageModal(`Action failed.`); }
+                finally { currentAction = { type: null, id: null, callback: null }; hideLoading(); }
+            }
+
+            async function showHistoryModal(orderId) {
+                showLoading();
+                historyList.innerHTML = '<li>Loading history...</li>';
+                historyModal.style.display = 'flex';
+                try {
+                    const historyCollectionRef = collection(db, `upvc_orders/${orderId}/history`);
+                    const q = query(historyCollectionRef, orderBy('timestamp', 'desc'));
+                    const snapshot = await getDocs(q);
+                    const historyData = snapshot.docs.map(doc => doc.data());
+                    if (historyData.length === 0) { historyList.innerHTML = '<li>No history found.</li>'; return; }
+                    historyList.innerHTML = '';
+                    historyData.forEach(entry => {
+                        const li = document.createElement('li');
+                        li.className = 'history-item';
+                        const timestamp = entry.timestamp?.toDate ? entry.timestamp.toDate().toLocaleString() : 'Just now';
+                        let detailsHtml = '';
+                        if (entry.details && Object.keys(entry.details).length > 0) {
+                            detailsHtml += '<ul class="history-detail">';
+                            for (const [key, value] of Object.entries(entry.details)) {
+                                if (typeof value === 'object') {
+                                    detailsHtml += `<li><strong>${key}:</strong><ul>`;
+                                    for (const [subKey, subValue] of Object.entries(value)) {
+                                        detailsHtml += `<li><strong>${subKey}:</strong> ${subValue}</li>`;
+                                    }
+                                    detailsHtml += '</ul></li>';
+                                } else {
+                                    detailsHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+                                }
+                            }
+                            detailsHtml += '</ul>';
+                        }
+                        li.innerHTML = `<div class="history-item-meta">${timestamp} by <strong>${entry.modifiedBy || 'System'}</strong></div><div class="history-item-action">${entry.action}</div>${detailsHtml}`;
+                        historyList.appendChild(li);
+                    });
+                } catch (error) { console.error("Error fetching history:", error); historyList.innerHTML = '<li>Could not load history.</li>';
+                } finally { hideLoading(); }
+            }
+
+            function saveDraft() {
+                const isSameGlass = sameGlassAllCheckbox.checked;
+                const globalGlass = globalGlassNameInput.value;
+                const draft = {
+                    name: customerNameInput.value, mobile: customerMobileInput.value, address: customerAddressInput.value, dueDate: dueDateInput.value,
+                    lat: customerLatInput.value, lon: customerLonInput.value,
+                    sameGlass: isSameGlass, globalGlassName: globalGlass,
+                    windows: Array.from(windowsContainer.querySelectorAll('.window-entry')).map(entry => ({
+                        itemType: entry.querySelector('.item-type-select').value,
+                        height: entry.querySelector('.window-height-input').value,
+                        width: entry.querySelector('.window-width-input').value,
+                        hasGlass: entry.querySelector('.has-glass-checkbox').checked,
+                        glassName: entry.querySelector('.individual-glass-name').value
+                    }))
+                };
+                localStorage.setItem('orderDraft', JSON.stringify(draft));
+            }
+
+            function loadDraft() {
+                const draft = localStorage.getItem('orderDraft');
+                if (draft) {
+                    const data = JSON.parse(draft);
+                    customerNameInput.value = data.name || ''; customerMobileInput.value = data.mobile || '';
+                    customerAddressInput.value = data.address || ''; dueDateInput.value = data.dueDate || '';
+                    customerLatInput.value = data.lat || ''; customerLonInput.value = data.lon || '';
+                    
+                    sameGlassAllCheckbox.checked = data.sameGlass || false;
+                    globalGlassNameInput.value = data.globalGlassName || '';
+                    globalGlassNameContainer.style.display = data.sameGlass ? 'block' : 'none';
+
+                    if (data.lat && data.lon) {
+                        getLocationBtn.innerHTML = '<span class="material-symbols-outlined">edit_location</span> Location Set - Edit';
+                        getLocationBtn.classList.remove('btn-secondary'); getLocationBtn.classList.add('btn-success');
+                    }
+                    windowsContainer.innerHTML = '';
+                    if (data.windows && data.windows.length > 0) {
+                        data.windows.forEach((win, i) => addWindowInput(windowsContainer, i + 1, win));
+                    } else { addWindowInput(windowsContainer, 1); }
+                    showMessageModal("Your unsaved draft has been restored.");
+                }
+            }
+
+            // --- EVENT LISTENERS ---
+            googleSignInBtn.addEventListener('click', handleGoogleSignIn);
+            signOutBtn.addEventListener('click', handleSignOut);
+            addNewBtn.addEventListener('click', setupFormForCreate);
+            viewOrdersBtn.addEventListener('click', () => showScreen(viewOrdersScreen));
+            document.querySelectorAll('.back-to-main').forEach(btn => btn.addEventListener('click', () => showScreen(mainMenuScreen)));
+            document.querySelectorAll('.back-to-view-orders').forEach(btn => btn.addEventListener('click', () => showScreen(viewOrdersScreen)));
+            addWindowBtn.addEventListener('click', () => addWindowInput(windowsContainer, windowsContainer.children.length + 1));
+            orderForm.addEventListener('submit', handleFormSubmit);
+            orderSearchInput.addEventListener('input', renderOrderList);
+            orderFilterSelect.addEventListener('change', renderOrderList);
+            detailEditBtn.addEventListener('click', (e) => setupFormForEdit(orders.find(o => o.id === e.currentTarget.dataset.id)));
+            detailDeleteBtn.addEventListener('click', (e) => {
+                showConfirmationModal('Delete this order permanently?', 'btn-danger', 'Delete Order', 'delete', e.currentTarget.dataset.id,
+                    async (docRef) => { await deleteDoc(docRef); showMessageModal('Order deleted.'); showScreen(viewOrdersScreen); });
+            });
+            detailCompleteBtn.addEventListener('click', (e) => {
+                const orderId = e.currentTarget.dataset.id; const order = orders.find(o => o.id === orderId);
+                if (order.status === 'completed') {
+                    showConfirmationModal('Reopen this order?', 'btn-reopen', 'Reopen Order', 'reopen', orderId,
+                        async (docRef) => { await updateDoc(docRef, { status: 'pending', completedAt: deleteField(), completedBy: deleteField() }); await logHistory(orderId, 'Order Reopened'); showMessageModal('Order reopened.'); });
+                } else {
+                    showConfirmationModal('Mark this order as complete?', 'btn-success', 'Mark Complete', 'complete', orderId,
+                        async (docRef) => { await updateDoc(docRef, { status: 'completed', completedAt: serverTimestamp(), completedBy: currentUserName }); await logHistory(orderId, 'Order Completed'); showMessageModal('Order marked as complete!'); });
+                }
+            });
+            detailShowHistoryBtn.addEventListener('click', (e) => showHistoryModal(e.currentTarget.dataset.id));
+            
+            detailViewQuoteBtn.addEventListener('click', (e) => {
+                priceForm.dataset.id = e.currentTarget.dataset.id;
+                priceModal.style.display = 'flex'; 
+                pricePerSftInput.focus();
+            });
+
+            priceForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const orderId = e.currentTarget.dataset.id;
+                const price = parseFloat(pricePerSftInput.value);
+                const transport = parseFloat(transportChargesInput.value);
+                
+                const order = orders.find(o => o.id === orderId);
+                if (!order) {
+                    showMessageModal("Could not find order to generate quote.");
+                    return;
+                }
+                
+                quoteScreenPrintable.innerHTML = createQuoteHtml(order, price, transport);
+                priceModal.style.display = 'none';
+                priceForm.reset();
+                showScreen(quoteScreen);
+
+                document.getElementById('quote-back-btn').addEventListener('click', () => {
+                    showScreen(orderDetailsScreen);
+                });
+            });
+
+            priceCancelBtn.addEventListener('click', () => { priceModal.style.display = 'none'; priceForm.reset(); });
+            messageOkBtn.addEventListener('click', () => messageModal.style.display = 'none');
+            cancelActionBtn.addEventListener('click', () => confirmationModal.style.display = 'none');
+            confirmActionBtn.addEventListener('click', performConfirmedAction);
+            historyCloseBtn.addEventListener('click', () => historyModal.style.display = 'none');
+            getLocationBtn.addEventListener('click', openLocationPicker);
+            confirmLocationBtn.addEventListener('click', confirmSelectedLocation);
+            locationPickerCloseBtn.addEventListener('click', () => locationPickerModal.style.display = 'none');
+            cancelLocationBtn.addEventListener('click', () => locationPickerModal.style.display = 'none');
+            detailGetDirectionsBtn.addEventListener('click', (e) => {
+                const lat = e.currentTarget.dataset.lat; const lon = e.currentTarget.dataset.lon;
+                if(lat && lon) { window.open(`https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`, '_blank');
+                } else { showMessageModal("Location not available for this order."); }
+            });
+            sameGlassAllCheckbox.addEventListener('change', () => {
+                globalGlassNameContainer.style.display = sameGlassAllCheckbox.checked ? 'block' : 'none';
+                updateAllWindowGlassUIs(); saveDraft();
+            });
+            customerNameInput.addEventListener('input', saveDraft);
+            customerMobileInput.addEventListener('input', saveDraft);
+            customerAddressInput.addEventListener('input', saveDraft);
+            dueDateInput.addEventListener('change', saveDraft);
+            globalGlassNameInput.addEventListener('input', saveDraft);
+
+            // --- INITIALIZATION ---
+            initializeFirebase();
+        })();
+    </script>
+</body>
+</html>
