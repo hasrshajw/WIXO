@@ -482,7 +482,7 @@
             .page-header { flex-direction: row; justify-content: flex-start; align-items: center; gap: 1rem; padding: 1.5rem; background-color: var(--light-bg-secondary); border-bottom: 1px solid var(--light-border); }
             .page-header h2 { text-align: left; }
             .page-header .btn-secondary { width: auto; padding: 0.5rem; }
-            .card { padding: 1.5rem; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
+            .card { padding: 1.5rem 0rem; border-radius: 0; border-left: 0; border-right: 0; box-shadow: none; }
             .card:first-of-type { border-top: 0; }
             .modal-content { width: calc(100% - 2rem); }
             #login-screen, #main-menu { padding: 1.5rem; }
@@ -530,7 +530,7 @@
                 box-shadow: none !important;
                 border-radius: 0;
                 margin: 0;
-                padding: 0 !important; /* This padding is ONLY for the final print/PDF output */
+                padding: 15mm !important; /* This padding is ONLY for the final print/PDF output */
                 max-width: 100%;
                 min-height: initial;
             }
@@ -1282,7 +1282,7 @@
                         <div> <!-- Flex container for top content -->
                             <div class="header">
                                 <div class="logo">
-                                    <img src="https://ihtnas.com/assets/ihtnas-nav.png" alt="Company Logo" class="logo-img">
+                                    <img src="https://via.placeholder.com/160x50?text=KS+Enterprises" alt="Company Logo" class="logo-img">
                                 </div>
                                 <div class="invoice-details">
                                     <div><strong>Quotation Date:</strong> ${new Date().toLocaleDateString()}</div>
