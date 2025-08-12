@@ -267,7 +267,7 @@
 
 
 <section class="trusted-section">
-  <h2>20+ Indexing Partners</h2>
+  <h1>20+ Indexing Partners</h2>
 
   <div class="logo-row">
     <div class="logos">
@@ -300,19 +300,19 @@
     margin-left: auto;
     margin-right: auto;
     padding-top: 2rem;
-    padding-bottom: 2rem;
+
     /* Horizontal padding is now handled by width/margin */
   }
 
-  .trusted-section h2 {
-    font-size: 1.3rem;
+  .trusted-section h1 {
+    font-size: clamp(22px, 2.8vw, 32px);
     font-weight: 600;
-    margin-bottom: 2rem;
-    color: #444;
+    margin-bottom: 12px;
+    color: #0f172a;
     letter-spacing: 0.3px;
     text-align: left;
   }
-
+    
   .logo-row {
     overflow: hidden;
     white-space: nowrap;
@@ -380,6 +380,216 @@
     }
   }
 </style>
+
+
+
+
+
+
+
+
+
+
+  <style>
+    .x5body {
+      margin: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 50px 0;
+    }
+
+    .x5hero {
+      text-align: left;
+      margin-bottom: 50px;
+      max-width: 1500px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .x5h1 {
+      font-size: clamp(22px, 2.8vw, 32px);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .x5p {
+      font-size: clamp(14px, 1.9vw, 18px);
+      max-width: 800px;
+      line-height: 1.6;
+      color: #555;
+      margin: 0;
+    }
+
+    .x5cards {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1500px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .x5card {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 32px;
+      text-align: left;
+    }
+
+    .x5iconwrap {
+      margin-bottom: 20px;
+    }
+
+    .x5iconimg {
+      width: 50px;
+      height: 50px;
+      display: block;
+    }
+
+    .x5h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 12px;
+      color: #111827;
+    }
+
+    .x5desc {
+      font-size: 15px;
+      color: #6b7280;
+      margin: 0 0 18px;
+      line-height: 1.6;
+    }
+
+    .x5link {
+      font-size: 15px;
+      font-weight: 500;
+      color: #6759ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .x5link:hover .x5svg {
+      transform: translateX(2px);
+    }
+
+    .x5svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2;
+      transition: transform 0.2s ease;
+    }
+
+    @media (min-width: 48rem) {
+      .x5cards,
+      .x5hero {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .x5cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .x5cards {
+        grid-template-columns: 1fr;
+      }
+      .x5h1 { font-size: 20px; }
+      .x5p { font-size: 14px; }
+      .x5card { padding: 20px; border-radius: 14px; }
+      .x5iconimg { width: 40px; height: 40px; }
+      .x5h3 { font-size: 18px; margin-bottom: 8px; }
+      .x5desc { font-size: 14px; margin-bottom: 12px; }
+      .x5link { font-size: 14px; }
+      .x5svg { width: 13px; height: 13px; }
+    }
+
+    @media (max-width: 480px) {
+      .x5cards,
+      .x5hero {
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+
+<div class="x5body">
+
+  <section class="x5hero">
+    <h1 class="x5h1">Our Web Services — Built for Growth, Designed for You</h1>
+    <p class="x5p">
+      From your first idea to a fully optimized online presence, we handle it all so you can focus on running your business.
+    </p>
+  </section>
+
+  <div class="x5cards">
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">Website Design & Development</h3>
+      <p class="x5desc">Custom, fast, and mobile-friendly websites that convert visitors into paying customers.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">Hosting & Domain Management</h3>
+      <p class="x5desc">Fast, secure hosting with full domain setup and zero downtime.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">SEO & Google Ranking Setup</h3>
+      <p class="x5desc">Get found by the right customers with SEO strategies built in from day one.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">Ongoing Maintenance & Updates</h3>
+      <p class="x5desc">We keep your site secure, fast, and always up-to-date — without you lifting a finger.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
 
 
 
