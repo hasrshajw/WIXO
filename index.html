@@ -266,269 +266,124 @@
 
 
 
+<section class="trusted-section">
+  <h2>20+ Indexing Partners</h2>
 
+  <div class="logo-row">
+    <div class="logos">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
 
-
-
-    <style>
-        
-        /* --- Main Container for the Split Layout --- */
-        .split-showcase-container {
-            /* Base styles (Mobile-first) */
-            width: 90%; /* Default width for mobile and tablet */
-            margin-left: auto;
-            margin-right: auto;
-            max-width: 1500px; /* Keeps an upper limit on very wide screens */
-            display: grid;
-            grid-template-columns: 3fr 1fr; /* 75% / 25% ratio */
-            gap: 24px;
-            box-sizing: border-box; /* Ensures padding is included in width calculation */
-        }
-    
-        /* Shared styling for both left and right showcase boxes */
-        .showcase-box {
-            background-color: #FFFFFF;
-            border-radius: 20px;
-            /* UPDATED: Increased bottom padding */
-            padding: 24px 40px 36px;
-            border: 1px solid #E5E7EB;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .showcase-box.rating-section {
-             justify-content: flex-start;
-        }
-        
-        .showcase-box.logo-section {
-             background-image: radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
-             background-size: 16px 16px;
-        }
-    
-        @keyframes fadeInSlideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    
-        .showcase-heading {
-            color: #1A1A1A;
-            font-size: clamp(1.25rem, 3vw, 1.5rem);
-            font-weight: 600;
-            margin: 0 0 8px 0;
-            animation: fadeInSlideUp 0.8s ease-out forwards;
-        }
-    
-        .showcase-subheading {
-            color: #6B7280;
-            font-size: clamp(0.9rem, 2vw, 1rem);
-            font-weight: 400;
-            margin: 0 0 24px 0;
-            max-width: 500px;
-            line-height: 1.6;
-            animation: fadeInSlideUp 1s ease-out forwards;
-        }
-    
-        /* --- LOGO SCROLLER STYLES (LEFT) --- */
-        .logo-row {
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-       
-        .logos {
-            display: inline-block;
-            animation: scroll-left 40s linear infinite;
-            will-change: transform;
-        }
-        .logos img {
-            width: 110px;
-            height: 44px;
-            object-fit: contain;
-            margin: 0 28px;
-            vertical-align: middle;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            filter: grayscale(100%);
-            opacity: 0.6;
-        }
-        .logo-row:hover .logos { animation-play-state: paused; }
-        .logo-row:hover .logos img {
-            filter: grayscale(0%);
-            opacity: 1;
-            transform: scale(1.05);
-        }
-        @keyframes scroll-left {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-        }
-    
-        /* --- RATING CARD ANIMATION STYLES (RIGHT) --- */
-        .rating-animation-container {
-            position: relative;
-            width: 100%;
-            height: 45px;
-            margin-top: auto;
-        }
-    
-        .rating-card {
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            padding: 8px 12px;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: absolute;
-            width: 100%;
-            box-sizing: border-box;
-            will-change: opacity;
-            animation: card-fade 9s infinite ease-in-out;
-            opacity: 0;
-        }
-    
-        #trustpilot-card { animation-delay: -6s; }
-        #google-card { animation-delay: -3s; }
-        #linkedin-card { animation-delay: 0s; }
-    
-        .rating-card .logo {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-        }
-    
-        .rating-card .details { font-family: 'IBM Plex Sans', sans-serif; }
-        .rating-card .platform-name {
-            display: block;
-            color: #6B7280;
-            font-size: 11px;
-            font-weight: 500;
-            margin-bottom: 0;
-        }
-        .rating-card .rating-value {
-            color: #1A1A1A;
-            font-size: 12px;
-            font-weight: 600;
-        }
-    
-        @keyframes card-fade {
-            0%, 5% { opacity: 0; }
-            10%, 33% { opacity: 1; }
-            38%, 100% { opacity: 0; }
-        }
-        
-        /* --- Responsive Stacking & Mobile Optimizations --- */
-        
-        /* For large screens (desktops), use 80% width */
-        @media (min-width: 48rem) {
-            .split-showcase-container {
-                width: 80%;
-            }
-        }
-    
-        /* For tablets and medium screens */
-        @media (max-width: 992px) {
-            .split-showcase-container {
-                grid-template-columns: 1fr; /* Switch to a single column */
-            }
-            .showcase-box {
-                padding: 32px 24px;
-                justify-content: flex-start;
-            }
-            
-            .showcase-box.logo-section .logos img {
-                width: 90px;
-                height: 36px;
-                margin: 0 20px;
-            }
-            .showcase-box.logo-section .showcase-heading {
-                font-size: 1.25rem;
-            }
-            .showcase-box.logo-section .showcase-subheading {
-                font-size: 0.95rem;
-                margin-bottom: 32px;
-            }
-        }
-    
-        /* For very small screens, use full width with padding */
-        @media (max-width: 480px) {
-            .split-showcase-container {
-                width: 100%;
-                padding-left: 1rem;
-                padding-right: 1rem;
-            }
-        }
-    
-    </style>
-
-    <div class="split-showcase-container">
-    
-        <!-- Left Section (75%): Scrolling Logos -->
-        <section class="showcase-box logo-section">
-            <div>
-                <h2 class="showcase-heading">Trusted by the World's Best</h2>
-                <p class="showcase-subheading">Our programs are leveraged by innovators and market leaders across the globe.</p>
-                <div class="logo-row">
-                    <div class="logos">
-                        <!-- Actual Company Logos -->
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg" alt="Salesforce">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" alt="SAP">
-                        
-                        <!-- Repeat for seamless loop -->
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg" alt="Salesforce">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" alt="SAP">
-                    </div>
-                </div>
-            </div>
-        </section>
-    
-        <!-- Right Section (25%): Animated Ratings -->
-        <section class="showcase-box rating-section">
-            <div>
-                <h2 class="showcase-heading">Highly Rated</h2>
-                <p class="showcase-subheading">Recognized for our commitment to quality and customer success.</p>
-            </div>
-            <div class="rating-animation-container">
-                <!-- Card 1: Trustpilot -->
-                <div class="rating-card" id="trustpilot-card">
-                    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/2/22/Trustpilot_Logo_2022.svg" alt="Trustpilot Logo">
-                    <div class="details">
-                        <span class="platform-name">Trustpilot</span>
-                        <span class="rating-value">Rated 4.5 / 5</span>
-                    </div>
-                </div>
-                <!-- Card 2: Google Reviews -->
-                <div class="rating-card" id="google-card">
-                    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo">
-                    <div class="details">
-                        <span class="platform-name">Google Reviews</span>
-                        <span class="rating-value">Rated 4.6 / 5</span>
-                    </div>
-                </div>
-                <!-- Card 3: LinkedIn -->
-                <div class="rating-card" id="linkedin-card">
-                    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/e/e9/Linkedin_icon.svg" alt="LinkedIn Logo">
-                    <div class="details">
-                        <span class="platform-name">LinkedIn</span>
-                        <span class="rating-value">Industry Leader</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    
+      <!-- repeat for continuous scroll -->
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
     </div>
+  </div>
+</section>
+
+<style>
+  .trusted-section {
+    /* Base styles (Mobile-first) - Applied from reference */
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    /* Horizontal padding is now handled by width/margin */
+  }
+
+  .trusted-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #444;
+    letter-spacing: 0.3px;
+    text-align: left;
+  }
+
+  .logo-row {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .logos {
+    display: inline-block;
+    animation: scroll-left 25s linear infinite;
+  }
+
+  .logos img {
+    width: 110px;
+    height: 50px;
+    object-fit: contain;
+    margin: 0 16px;
+    vertical-align: middle;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    filter: grayscale(100%) brightness(0.9);
+  }
+
+  .logos img:hover {
+    transform: scale(1.05);
+    filter: grayscale(0%) brightness(1);
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* =================================================================== */
+  /* --- Responsive Design (Rules applied from reference) --- */
+  /* =================================================================== */
+
+  /* For large screens (desktops), use 80% width */
+  @media (min-width: 48rem) { /* 768px breakpoint */
+    .trusted-section {
+      width: 80%;
+    }
+  }
+
+  /* Responsive adjustments for content INSIDE the section */
+  @media (max-width: 768px) {
+    /* The padding rule for .trusted-section is removed from here */
+    .trusted-section h2 {
+      font-size: 1.1rem;
+      text-align: left;
+    }
+    .logos img {
+      width: 80px;
+      margin: 0 12px;
+    }
+  }
+
+  /* For very small screens, switch to full width with padding */
+  @media (max-width: 480px) {
+    .trusted-section {
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box; /* Ensures padding is included in the width */
+    }
+  }
+</style>
+
+
+
+
 
 
 
