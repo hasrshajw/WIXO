@@ -1049,6 +1049,171 @@
 
 
     
+    <style>
+        /* --- Layout Containers --- */
+        .upper-half {
+            background-color: #ffffff;
+            position: relative;
+            padding-top: 80px; 
+            padding-bottom: 150px; 
+        }
 
+        .lower-half {
+            background-color: #002726;
+            padding: 190px 40px 60px 40px; 
+        }
+        
+        /* --- Subscribe Card --- */
+        .subscribe-card {
+            background: linear-gradient(135deg, #003d3b, #002726);
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            box-shadow: 0 10px 40px rgba(0, 39, 38, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            width: 90%;
+            max-width: 1500px;
+            z-index: 10;
+        }
+
+        .subscribe-info { flex: 1; }
+        .subscribe-info h2 { font-size: 2.8rem; font-weight: 600; line-height: 1.2; margin-bottom: 1rem; }
+        .subscribe-info p { font-size: 1rem; color: #d1d5db; line-height: 1.6; max-width: 90%; }
+        .subscribe-form-area { flex-basis: 45%; }
+        .subscribe-form-area label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: #ffffff; }
+        .subscribe-form { display: flex; gap: 12px; }
+        
+        .input-with-prefix {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 0 20px;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .input-with-prefix .prefix {
+            color: #ffffff;
+            font-size: 1rem;
+            margin-right: 8px;
+            pointer-events: none;
+        }
+        
+        .subscribe-form input[type="tel"] {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            color: #ffffff;
+            padding: 16px 0;
+            font-size: 1rem;
+            outline: none;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        .subscribe-form input[type="tel"]::placeholder { color: #b3d1d0; }
+        
+        .input-with-prefix:focus-within {
+            border-color: #33c375;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .subscribe-form button { background-color: #33c375; color: #002726; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; white-space: nowrap; font-family: 'IBM Plex Sans', sans-serif; transition: background-color 0.3s ease; }
+        .subscribe-form button:hover { background-color: #2da765; }
+        .form-disclaimer { font-size: 0.8rem; color: #b3d1d0; margin-top: 16px; }
+        .form-disclaimer a { color: #b3d1d0; text-decoration: underline; }
+
+        /* --- Bottom Footer Area (Links) --- */
+        .footer-bottom { display: flex; justify-content: space-between; align-items: flex-start; max-width: 1200px; margin: 0 auto; }
+        .footer-logo-area { display: flex; flex-direction: column; gap: 16px; }
+        .logo-tagline { font-size: 0.95rem; color: #d1d5db; }
+        .footer-links-container { display: flex; gap: 120px; }
+        .footer-column h3 { font-size: 1rem; font-weight: 600; color: #ffffff; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 18px; }
+        .footer-column ul li a { text-decoration: none; color: #d1d5db; font-size: 1rem; transition: color 0.2s ease-in-out; }
+        .footer-column ul li a:hover { color: #33c375; }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .subscribe-card { flex-direction: column; align-items: flex-start; padding: 40px; }
+            .subscribe-form-area { width: 100%; margin-top: 20px; }
+            .footer-bottom { flex-direction: column; gap: 50px; }
+            .footer-links-container { gap: 60px; width: 100%; justify-content: space-between; }
+        }
+
+        @media (max-width: 768px) {
+            .subscribe-info h2 { font-size: 2.2rem; }
+            .subscribe-form { flex-direction: column; }
+            .footer-links-container { justify-content: flex-start; }
+            .upper-half { padding-top: 60px; padding-bottom: 240px; }
+            .lower-half { padding-top: 340px; padding-left: 20px; padding-right: 20px; }
+
+            /* CHANGE: Added rule to decrease placeholder size on mobile */
+            .subscribe-form input[type="tel"]::placeholder {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+    <div class="page-container">
+        <div class="upper-half">
+            <div class="subscribe-card">
+                <div class="subscribe-info">
+                    <h2>Need Assistance?</h2>
+                    <p>From web development to digital services, we’re here to turn your vision into reality. Let’s collaborate today.</p>
+                </div>
+                <div class="subscribe-form-area">
+                    <label for="mobile">Request a callback</label>
+                    <form action="#" method="POST" class="subscribe-form">
+                        <div class="input-with-prefix">
+                            <span class="prefix">+91</span>
+                            <!-- CHANGE: Added maxlength, pattern, and autocomplete -->
+                            <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required maxlength="10" pattern="\d{10}" autocomplete="off">
+                        </div>
+                        <button type="submit">Get a Call</button>
+                    </form>
+                    <p class="form-disclaimer">By requesting a call, you agree to our <a href="#">Privacy Policy</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lower-half">
+            <div class="footer-bottom">
+                <div class="footer-logo-area">
+                    <img src="https://placehold.co/150x40/ffffff?text=Logo&font=ibmplexsans" alt="Company Logo">
+                    <p class="logo-tagline">Your vision, realized through technology.</p>
+                </div>
+                <div class="footer-links-container">
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Web Development</a></li>
+                            <li><a href="#">Digital Marketing</a></li>
+                            <li><a href="#">App Development</a></li>
+                            <li><a href="#">UI/UX Design</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
