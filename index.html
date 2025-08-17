@@ -1083,6 +1083,334 @@
 
 
 
+    <style>
+        .faq-section {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 48px;
+            align-items: start;
+            padding: 4rem 2rem; 
+            margin: 0 auto;
+        }
+
+        /* --- Left Column --- */
+        .faq-info {
+            position: sticky;
+            top: 4rem;
+        }
+
+        .faq-title {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        /* --- Right Column --- */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .accordion-item {
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            gap: 16px;
+        }
+
+        .accordion-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .accordion-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.4s ease-in-out, background-color 0.4s ease-in-out;
+        }
+        
+        .accordion-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #7C4DFF;
+            transition: color 0.3s ease;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), padding-top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .accordion-content p {
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        /* Active State */
+        .accordion-item.active .accordion-icon {
+            background-color: #7C4DFF;
+            transform: rotate(180deg);
+        }
+
+        .accordion-item.active .accordion-icon svg {
+            color: white;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 300px; 
+            padding-top: 16px; 
+        }
+
+        /* --- Animated CTA Box --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cta-box {
+            background-color: #F9F8FE;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.8s;
+        }
+
+        .cta-box h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .cta-box p {
+            font-size: 14px;
+            color: #6B7280;
+            line-height: 1.6;
+            margin: 0 0 16px 0;
+        }
+        
+        .cta-link-button {
+            display: block;
+            box-sizing: border-box;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            background-color: #7C4DFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .cta-link-button:hover {
+            background-color: #6a3ee6;
+        }
+
+        @media (max-width: 992px) {
+            .faq-section {
+                grid-template-columns: 1fr;
+            }
+            .faq-info {
+                position: static;
+                top: 0;
+                margin-bottom: -16px;
+            }
+            .faq-title {
+                font-size: 40px;
+                margin-bottom: 32px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .faq-section {
+                padding: 2rem 1rem;
+            }
+            .faq-title {
+                font-size: 32px;
+            }
+
+            /* --- NEW CSS FOR MOBILE --- */
+            /* Hide accordion items from the 6th one onwards on mobile */
+            .accordion .accordion-item:nth-child(n + 6) {
+                display: none;
+            }
+            
+            /* Make the CTA appear faster on the shorter mobile list */
+            .cta-box {
+                animation-delay: 0.2s;
+            }
+        }
+
+    </style>
+    <section class="faq-section">
+        <div class="faq-info">
+            <h1 class="faq-title">Frequently asked questions</h1>
+        </div>
+
+        <div class="accordion">
+            <!-- Item 1 -->
+            <div class="accordion-item active">
+                <div class="accordion-header">
+                    <h3>What is finance analytics and how can it help my business?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Finance analytics helps you understand your financial data better, so you can make smarter decisions, spot trends, and improve your business strategy.</p>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>How do I start using your finance analytics platform?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Getting started is easy! Simply sign up for an account, connect your financial data sources, and our platform will guide you through the setup process step-by-step.</p>
+                </div>
+            </div>
+            <!-- Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Is my financial data secure on your platform?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Absolutely. We use bank-level 256-bit SSL encryption for all data transmission and storage. Your security and privacy are our top priorities.</p>
+                </div>
+            </div>
+            <!-- Item 4 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Can I integrate this with other software like QuickBooks?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, our platform offers seamless integrations with popular accounting software including QuickBooks, Xero, and FreshBooks, as well as various bank accounts and payment gateways.</p>
+                </div>
+            </div>
+            <!-- Item 5 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>What kind of support do you offer?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>We provide 24/7 email support, comprehensive documentation, and live chat support for our premium plan subscribers during business hours.</p>
+                </div>
+            </div>
+            <!-- Item 6 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>How is the pricing structured?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>We offer a tiered pricing model based on the features you need and the volume of your financial transactions. We have plans for small businesses, growing mid-sized companies, and large enterprises.</p>
+                </div>
+            </div>
+            <!-- Item 7 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Can I cancel my subscription at any time?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, you can cancel your subscription at any time directly from your account dashboard. There are no hidden fees or long-term contracts.</p>
+                </div>
+            </div>
+             <!-- Item 8 (Now hidden on mobile) -->
+             <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Do you offer a free trial?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, we offer a 14-day free trial with no credit card required. You can explore all the features of our premium plan to see if it's the right fit for your business.</p>
+                </div>
+            </div>
+            <!-- Item 9 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>What types of reports can I generate?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>You can generate a wide variety of reports, including profit and loss statements, cash flow forecasts, balance sheets, burn rate analysis, and custom KPI dashboards.</p>
+                </div>
+            </div>
+
+            <div class="cta-box">
+                <h2>Still have questions?</h2>
+                <p>Can't find the answer you're looking for? Please visit our full FAQ page for more information.</p>
+                <a href="/faq" class="cta-link-button">View all FAQs</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.accordion-item.active');
+                
+                if (currentlyActive && currentlyActive !== item) {
+                    currentlyActive.classList.remove('active');
+                }
+                
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     <style>
         /* --- Layout Containers --- */
