@@ -1404,20 +1404,40 @@
     
     
     
-    <button id="autopay-btn">Setup Autopay ₹1</button>
+<button id="autopay-btn">Setup Autopay ₹1</button>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
   document.getElementById("autopay-btn").onclick = async () => {
-    const res = await fetch("/.netlify/functions/createMandate");
-    const data = await res.json();
+    try {
+      // Call your Netlify Function to create a subscription (mandate)
+      const res = await fetch("/netlify/functions/createMandate");
+      const data = await res.json();
 
-    var options = {
-      key: "YOUR_RAZORPAY_KEY_ID", 
-      subscription_id: data.id,
-      name: "Your Company",
-      description: "UPI Autopay Setup",
-      handler:
+      var options = {
+        key: "rzp_live_R6hpO2LH5uIOyV", // from Razorpay Dashboard
+        subscription_id: data.id, // subscription ID returned by server
+        name: "Your Company",
+        description: "UPI Autopay Setup",
+        handler: function (response) {
+          // This will be called after mandate approval
+          console.log("Mandate setup success:", response);
+          alert("Autopay Setup Successful!");
+        },
+        theme: {
+          color: "#3399cc"
+        }
+      };
+
+      var rzp = new Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Error setting up mandate:", err);
+      alert("Something went wrong, please try again.");
+    }
+  };
+</script>
+
 
     
     
