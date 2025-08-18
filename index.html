@@ -1354,7 +1354,7 @@
     document.getElementById("autopay-btn").onclick = async () => {
       try {
         // Call Netlify Function to create subscription
-        const res = await fetch("/netlify/functions/createMandate");
+        const res = await fetch("/netlify/functions/createMandate.js");
         const data = await res.json();
 
         if (!data.id) {
