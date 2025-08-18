@@ -3,26 +3,20 @@ const Razorpay = require("razorpay");
 exports.handler = async function (event, context) {
   try {
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,      // set in Netlify dashboard
+      key_id: process.env.RAZORPAY_KEY_ID,
       key_secret: process.env.RAZORPAY_KEY_SECRET
     });
 
-    // Create a plan (₹1) if you don’t already have one
-    const plan = await razorpay.plans.create({
-      period: "monthly",     // repeat cycle
-      interval: 1,
-      item: {
-        name: "UPI Autopay Setup Plan",
-        amount: 100,          // amount in paise (₹1 = 100p)
-        currency: "INR"
-      }
-    });
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+      throw new Error("Missing Razorpay API Keys in Netlify Environment Variables");
+    }
 
-    // Create subscription using the plan
+    // ✅ Instead of creating a plan every time, just create once in dashboard
+    // and use its plan_id directly
     const subscription = await razorpay.subscriptions.create({
-      plan_id: plan.id,
+      plan_id: "plan_R6hsImxfDwwzPr", // replace with your actual plan_id from Razorpay dashboard
       customer_notify: 1,
-      total_count: 12, // 12 months (1 year mandate)
+      total_count: 12,
       notes: { purpose: "UPI Autopay Setup" }
     });
 
@@ -31,7 +25,7 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ id: subscription.id })
     };
   } catch (error) {
-    console.error("Error creating mandate:", error);
+    console.error("Razorpay Function Error:", error); // logs in Netlify function logs
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message })
