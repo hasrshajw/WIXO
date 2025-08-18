@@ -1,0 +1,10 @@
+{
+  "name": "razorpay-autopay-netlify",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'No build step required'"
+  },
+  "dependencies": {
+    "razorpay": "^2.9.4"
+  }
+}
