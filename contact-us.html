@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - WIXO</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        h1, h2 {
+            color: #212529;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 30px;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .contact-info, .business-hours {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .contact-info li, .business-hours li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .contact-info .icon {
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+        /* Form Styling */
+        .contact-form {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box; /* Important for padding and width */
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📞 Contact Us</h1>
+        <p><strong>Let’s Build Something Amazing Together</strong></p>
+        <p>Whether you’re looking to start a new project, need help with your existing website, or simply want to ask a question — we’d love to hear from you.</p>
+
+        <h2>📧 Get in Touch</h2>
+        <ul class="contact-info">
+            <li><span class="icon">📧</span> Email: <a href="mailto:HARSHAVARDHANJW@GMAIL.COM">HARSHAVARDHANJW@GMAIL.COM</a></li>
+            <li><span class="icon">📞</span> Phone/WhatsApp: <a href="tel:+917799181716">+91 77991 81716</a></li>
+            <li><span class="icon">🏢</span> Office Address: WESTREN STREET CHALLAPALLI</li>
+        </ul>
+
+        <h2>📝 Quick Contact Form</h2>
+        <!-- 
+            IMPORTANT: This form is a template. 
+            To make it work, you need a backend script or a service like Formspree.
+            Replace the '#' in action="#" with your form processing URL.
+        -->
+        <form action="#" method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="full-name">Full Name</label>
+                <input type="text" id="full-name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number (optional)</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="message">Message / Project Details</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="terms-and-conditions.html" target="_blank">Terms</a> & <a href="privacy-policy.html" target="_blank">Privacy Policy</a></label>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+
+        <h2>⏰ Business Hours</h2>
+        <ul class="business-hours">
+            <li><strong>Monday – Friday:</strong> 9:00 AM – 6:00 PM</li>
+            <li><strong>Saturday:</strong> 10:00 AM – 4:00 PM</li>
+            <li><strong>Sunday:</strong> Closed</li>
+        </ul>
+    </div>
+
+</body>
+</html>
