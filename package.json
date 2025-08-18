@@ -1,5 +1,5 @@
 {
-  "name": "razorpay-subscription",
+  "name": "razorpay-subscription-netlify",
   "version": "1.0.0",
   "scripts": {
     "build": "echo 'No build step required'"
