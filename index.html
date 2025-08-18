@@ -1346,7 +1346,7 @@
     
     
     
-<h2>Subscribe (₹100 / month)</h2>
+<h2>Subscribe for ₹100/month (First Charge After 10 Days)</h2>
   <button id="subscribe-btn">Start Subscription</button>
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -1362,13 +1362,13 @@
         }
 
         var options = {
-          key: "rzp_live_R6hpO2LH5uIOyV", // Replace with your Razorpay Key ID
+          key: "rzp_live_R6hpO2LH5uIOyV", // Replace with actual Key ID
           subscription_id: data.id,
           name: "My Company",
-          description: "₹100 Monthly Subscription",
+          description: "Monthly ₹100 Subscription - First Charge After 10 Days",
           handler: function (response) {
             console.log("Subscription Success:", response);
-            alert("Subscription Setup Successful!");
+            alert("Subscription Activated!");
           },
           theme: {
             color: "#3399cc"
