@@ -12,7 +12,7 @@
   <script>
     document.getElementById("subscribe-btn").onclick = async () => {
       try {
-        const res = await fetch("/.netlify/functions/createSubscription");
+        const res = await fetch("/netlify/functions/createSubscription");
         const data = await res.json();
 
         if (!data.id) {
