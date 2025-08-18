@@ -1346,19 +1346,18 @@
     
     
     
-  <h2>Setup UPI Autopay (₹1 Test)</h2>
-  <button id="autopay-btn">Setup Autopay ₹1</button>
+<h2>Subscribe (₹100 / month)</h2>
+  <button id="subscribe-btn">Start Subscription</button>
 
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script>
-    document.getElementById("autopay-btn").onclick = async () => {
+    document.getElementById("subscribe-btn").onclick = async () => {
       try {
-        // Call Netlify Function to create subscription
-        const res = await fetch("/netlify/functions/createMandate.js");
+        const res = await fetch("/.netlify/functions/createSubscription");
         const data = await res.json();
 
         if (!data.id) {
-          alert("Error: " + (data.error || "Unable to create mandate"));
+          alert("Error: " + (data.error || "Unable to create subscription"));
           return;
         }
 
@@ -1366,10 +1365,10 @@
           key: "rzp_live_R6hpO2LH5uIOyV", // Replace with your Razorpay Key ID
           subscription_id: data.id,
           name: "My Company",
-          description: "UPI Autopay Setup",
+          description: "₹100 Monthly Subscription",
           handler: function (response) {
-            console.log("Mandate Success:", response);
-            alert("Autopay Setup Successful!");
+            console.log("Subscription Success:", response);
+            alert("Subscription Setup Successful!");
           },
           theme: {
             color: "#3399cc"
