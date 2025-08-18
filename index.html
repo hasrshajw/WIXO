@@ -1443,7 +1443,7 @@
             left: 50%;
             transform: translate(-50%, 50%);
             width: 90%;
-            max-width: 1500px;
+            max-width: 1200px;
             z-index: 10;
         }
 
@@ -1506,6 +1506,33 @@
         .footer-column ul li a { text-decoration: none; color: #d1d5db; font-size: 1rem; transition: color 0.2s ease-in-out; }
         .footer-column ul li a:hover { color: #33c375; }
 
+        .footer-copyright-bar {
+            max-width: 1200px;
+            margin: 60px auto 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .copyright-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .copyright-links a {
+            text-decoration: none;
+            color: #d1d5db;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .copyright-links a:hover {
+            color: #33c375;
+        }
+
         /* --- Responsive Design --- */
         @media (max-width: 1024px) {
             .subscribe-card { flex-direction: column; align-items: flex-start; padding: 40px; }
@@ -1519,11 +1546,24 @@
             .subscribe-form { flex-direction: column; }
             .footer-links-container { justify-content: flex-start; }
             .upper-half { padding-top: 60px; padding-bottom: 240px; }
-            .lower-half { padding-top: 340px; padding-left: 20px; padding-right: 20px; }
+            .lower-half { padding-top: 340px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
+            .subscribe-form input[type="tel"]::placeholder { font-size: 0.9rem; }
 
-            /* CHANGE: Added rule to decrease placeholder size on mobile */
-            .subscribe-form input[type="tel"]::placeholder {
-                font-size: 0.9rem;
+            .footer-copyright-bar {
+                /* CHANGE: Set direction to column to put text on top */
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .copyright-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px 20px;
+            }
+            /* CHANGE: Added rule to reduce font size */
+            .copyright-text,
+            .copyright-links a {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -1539,7 +1579,6 @@
                     <form action="#" method="POST" class="subscribe-form">
                         <div class="input-with-prefix">
                             <span class="prefix">+91</span>
-                            <!-- CHANGE: Added maxlength, pattern, and autocomplete -->
                             <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required maxlength="10" pattern="\d{10}" autocomplete="off">
                         </div>
                         <button type="submit">Get a Call</button>
@@ -1559,8 +1598,8 @@
                     <div class="footer-column">
                         <h3>Company</h3>
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="about-us.html">About Us</a></li>
+                            <li><a href="/contact-us.html">Contact Us</a></li>
                             <li><a href="#">Careers</a></li>
                             <li><a href="#">Help</a></li>
                         </ul>
@@ -1576,6 +1615,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="footer-copyright-bar">
+                <p class="copyright-text">&copy; Wixo. All rights reserved.</p>
+                <div class="copyright-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/refund-policy.html">Refund Policy</a>
+                    <a href="/terms-and-conditions.html">Terms & Conditions</a>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>
