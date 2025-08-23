@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -22,15 +26,11 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background-color 0.8s var(--ease-out-quint);
         }
         
         body.light-theme {
             background-color: #f0f0f0;
-        }
-
-        :root {
-            --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .scroll-container { height: 200vh; position: relative; background-color: #002726; }
@@ -50,17 +50,17 @@
             justify-content: center;
             align-items: center;
             padding: 5vh 40px;
-            position: relative; /* For scroll indicator positioning */
+            position: relative;
         }
         .panel-two .layout-container { max-width: 1200px; width: 100%; display: flex; align-items: center; gap: clamp(40px, 5vw, 80px); }
         .panel-two .left-column { flex-basis: 45%; }
         .panel-two .right-column { flex-basis: 55%; }
         .panel-two .pre-heading { font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; color: #fecb00; margin-bottom: 20px; text-shadow: 0 0 15px rgba(254, 203, 0, 0.3); }
         .panel-two h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500; line-height: 1.2; margin: 0 0 25px 0; }
-        .panel-two .description { line-height: 1.7; font-size: clamp(1rem, 2.5vw, 1.1rem); color: rgba(255, 255, 255, 0.75); }
+        .panel-two .description { line-height: 1.7; font-size: clamp(1rem, 2.5vw, 1.1rem); color: rgba(255, 255, 255, 0.75); max-width: 65ch; }
         .features-stack { display: flex; flex-direction: column; gap: 25px; }
-        .feature-item { display: flex; align-items: center; gap: 25px; padding: 25px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint), background-color 0.3s var(--ease-out-quint); }
-        .feature-item:hover { transform: translateY(-5px); background-color: rgba(255, 255, 255, 0.08); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); }
+        .feature-item { display: flex; align-items: center; gap: 25px; padding: 25px; border-radius: 16px; background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint), background-color 0.3s var(--ease-out-quint), border-color 0.3s var(--ease-out-quint); }
+        .feature-item:hover { transform: translateY(-5px); background-color: rgba(255, 255, 255, 0.08); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); border-color: rgba(255, 255, 255, 0.2); }
         .feature-item .icon-circle { width: 60px; height: 60px; background-color: #fecb00; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
         .feature-item .icon-circle svg { width: 50%; height: auto; }
         .feature-item h2 { font-size: 1.1rem; font-weight: 900; margin: 0 0 8px 0; text-transform: uppercase; color: #ffffff;}
@@ -68,7 +68,8 @@
 
         /* --- Panel 3 Redesign --- */
         .panel-three { display: flex; justify-content: center; align-items: center; padding: 40px 20px; box-sizing: border-box; background-color: transparent; color: #000000; position: relative; z-index: 2; }
-        .cta-card { width: 100%; max-width: 1000px; background-color: #ffffff; padding: clamp(40px, 8vw, 80px); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; }
+        .cta-card { width: 100%; max-width: 1000px; background-color: #ffffff; padding: clamp(40px, 8vw, 80px); border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: center; transition: box-shadow 0.3s var(--ease-out-quint); }
+        .cta-card:hover { box-shadow: 0 35px 60px -15px rgba(0,0,0,0.3); }
         .panel-three .pre-heading { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 400; margin: 0 0 25px 0; }
         .panel-three h1 { font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 500; line-height: 1.15; margin: 0 auto 60px auto; max-width: 900px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
         .panel-three h1 .word { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform 0.8s var(--ease-out-quint), opacity 0.6s ease; }
@@ -86,44 +87,26 @@
         .fade-in { opacity: 0; transform: translateY(40px) scale(0.98); transition: opacity 0.8s var(--ease-out-quint), transform 0.8s var(--ease-out-quint); }
         .fade-in.is-visible { opacity: 1; transform: translateY(0) scale(1); }
 
-        /* NEW: Scroll Indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 30px;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            z-index: 10;
-        }
-        .scroll-indicator.is-visible {
-            opacity: 0.7;
-            animation: bounce 2s infinite;
-        }
-        .scroll-indicator.is-scrolling {
-            opacity: 0;
-        }
+        .scroll-indicator { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 30px; height: 30px; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 10; }
+        .scroll-indicator.is-visible { opacity: 0.7; animation: bounce 2s infinite; }
+        .scroll-indicator.is-scrolling { opacity: 0; }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); } 40% { transform: translate(-50%, -10px); } 60% { transform: translate(-50%, -5px); } }
 
         /* ============================================= */
         /* === MOBILE & TABLET REFINEMENTS === */
         /* ============================================= */
         @media (max-width: 992px) {
-            /* CRITICAL FIX: Allow Panel 2 to scroll internally on mobile */
             .panel-two {
-                align-items: flex-start; /* Align content to top */
-                overflow-y: auto; /* Enable vertical scroll */
-                -webkit-overflow-scrolling: touch; /* Native feel on iOS */
-                padding: 15vh 20px 10vh; /* Generous padding for scroll area */
+                align-items: flex-start;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 100px 20px 60px; /* Refined padding for scrolling */
             }
             .panel-two .layout-container { flex-direction: column; gap: 60px; }
             .panel-two .left-column, .panel-two .right-column { flex-basis: auto; width: 100%; }
-            .panel-two .left-column { text-align: center; }
-            .panel-two .description { margin: 0 auto; max-width: 550px; }
-            .features-stack { max-width: 550px; margin: 0 auto; }
+            /* FIX: Revert to left-align for superior readability */
+            .panel-two .left-column { text-align: left; }
+            .panel-two .description, .features-stack { max-width: 550px; margin: 0; }
         }
 
         @media (max-width: 768px) {
@@ -161,10 +144,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- NEW: Scroll Indicator -->
-                    <div class="scroll-indicator">
-                        <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 10L12 14L8 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
+                    <div class="scroll-indicator"><svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 10L12 14L8 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 </section>
             </div>
         </div>
@@ -185,7 +165,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // ... (word reveal logic remains the same)
             const revealText = document.querySelector('.reveal-text');
             if (revealText) {
                 const textContent = revealText.innerHTML;
@@ -204,7 +183,6 @@
                 });
             }
 
-            // --- Main Scroll Logic ---
             const scrollContainer = document.querySelector('.scroll-container');
             const panelsContainer = document.querySelector('.panels-container');
             const introText = document.querySelector('.intro-text');
@@ -229,7 +207,6 @@
             };
             window.addEventListener('scroll', handleScroll, { passive: true });
 
-            // --- General Animation Observer ---
             const animatedElements = document.querySelectorAll('[data-animation]');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -241,42 +218,39 @@
             }, { threshold: 0.1 });
             animatedElements.forEach(el => observer.observe(el));
 
-            // --- Theme Change Observer ---
             const themeObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     document.body.classList.toggle('light-theme', entry.isIntersecting);
                 });
-            }, { threshold: 0.4 });
+            }, { threshold: 0.5 });
             if (panelThree) {
                 themeObserver.observe(panelThree);
             }
 
-            // --- Smart Scroll Indicator Logic ---
             const panelTwo = document.querySelector('.panel-two');
             const scrollIndicator = panelTwo.querySelector('.scroll-indicator');
             
-            // Check if panel is scrollable on mobile
             const checkScrollable = () => {
                 if (window.innerWidth <= 992) {
-                    if (panelTwo.scrollHeight > panelTwo.clientHeight) {
-                        scrollIndicator.classList.add('is-visible');
-                    } else {
-                        scrollIndicator.classList.remove('is-visible');
-                    }
+                    const isScrollable = panelTwo.scrollHeight > panelTwo.clientHeight;
+                    scrollIndicator.classList.toggle('is-visible', isScrollable);
+                } else {
+                    scrollIndicator.classList.remove('is-visible');
                 }
             };
             
-            // Hide indicator once user scrolls
             const handlePanelScroll = () => {
                 if (panelTwo.scrollTop > 20) {
                     scrollIndicator.classList.add('is-scrolling');
-                    panelTwo.removeEventListener('scroll', handlePanelScroll); // Only need to fire once
+                    panelTwo.removeEventListener('scroll', handlePanelScroll);
                 }
             };
 
             panelTwo.addEventListener('scroll', handlePanelScroll);
             window.addEventListener('resize', checkScrollable);
-            checkScrollable(); // Initial check
+            
+            // A small timeout allows the layout to settle before the initial check.
+            setTimeout(checkScrollable, 100);
         });
     </script>
 </body>
