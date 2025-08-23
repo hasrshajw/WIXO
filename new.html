@@ -56,46 +56,38 @@
             height: 100vh;
             flex-shrink: 0;
             box-sizing: border-box;
+            display: flex; /* Use flex for centering content */
+            justify-content: center;
+            align-items: center;
         }
 
         /* --- Panel 1: "Why Choose Us?" Section --- */
-        .panel-one {
-            color: #ffffff;
-            font-family: 'IBM Plex Sans', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .panel-one .content-wrapper {
             text-align: center;
             padding: 0 20px;
         }
-
         .panel-one .intro-text {
             transition: transform 0.5s ease-out, opacity 0.5s ease-out;
             will-change: transform, opacity;
+            font-family: 'IBM Plex Sans', sans-serif;
         }
-
         .panel-one .intro-text.is-scrolling {
             transform: scale(0.8);
             opacity: 0;
         }
-
         .panel-one h1 {
             font-size: clamp(3.5rem, 10vw, 10rem);
             font-weight: 600;
             margin: 0;
             line-height: 1.1;
+            color: #ffffff;
         }
 
         /* --- Panel 2: Professional Two-Column Layout --- */
         .panel-two {
             color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto; /* Allow scrolling on small screens if content overflows */
             padding: 5vh 40px;
         }
-
         .panel-two .layout-container {
             max-width: 1200px;
             width: 100%;
@@ -103,76 +95,54 @@
             align-items: center;
             gap: 60px;
         }
-
         .panel-two .left-column { flex-basis: 45%; }
         .panel-two .right-column { flex-basis: 55%; }
-
         .panel-two .pre-heading {
-            font-weight: 700;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #fecb00;
-            margin-bottom: 20px;
-            text-shadow: 0 0 15px rgba(254, 203, 0, 0.3);
+            font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase;
+            color: #fecb00; margin-bottom: 20px; text-shadow: 0 0 15px rgba(254, 203, 0, 0.3);
         }
-
         .panel-two h1 {
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 500;
-            line-height: 1.2;
-            margin: 0 0 25px 0;
+            font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500;
+            line-height: 1.2; margin: 0 0 25px 0;
         }
-
         .panel-two .description {
-            line-height: 1.7;
-            font-size: clamp(1rem, 2.5vw, 1.1rem);
-            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7; font-size: clamp(1rem, 2.5vw, 1.1rem); color: rgba(255, 255, 255, 0.75);
         }
-
         .features-stack { 
-            display: flex;
-            flex-direction: column;
-            gap: 30px; /* Adjusted gap for desktop */
+            display: flex; flex-direction: column; gap: 30px;
         }
         .feature-item { 
-            display: flex; 
-            align-items: flex-start; 
-            gap: 25px; 
-            transition: transform 0.2s ease;
-        }
-        .feature-item:active {
-            transform: scale(0.98); /* Tactile feedback for mobile tap */
+            display: flex; align-items: flex-start; gap: 25px;
         }
         .feature-item .icon-circle {
-            width: 70px; height: 70px; background-color: #fecb00; border: 2px solid #ffffff; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 20px rgba(254, 203, 0, 0.4);
+            width: 70px; height: 70px; background-color: #fecb00; border: 2px solid #ffffff; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 0 20px rgba(254, 203, 0, 0.4);
         }
         .feature-item:hover .icon-circle { transform: scale(1.1) rotate(5deg); }
         .feature-item .icon-circle svg { width: 50%; height: auto; }
         .feature-item h2 { font-size: 1.1rem; font-weight: 900; margin: 0 0 8px 0; text-transform: uppercase; color: #ffffff;}
         .feature-item p { margin: 0; line-height: 1.6; font-size: 0.95rem; color: rgba(255, 255, 255, 0.75); }
 
-        /* --- Panel 3: "Let's Make Something Great" Section --- */
-        .panel-three {
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-            min-height: 100vh; padding: 40px 20px; box-sizing: border-box; background-color: transparent;
-            color: #000000; position: relative; z-index: 2;
+        /* --- Panel 3 --- */
+        .panel-three .content-wrapper {
+            text-align: center;
         }
-        
+        .panel-three {
+             color: #000000;
+        }
         .panel-three .pre-heading { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 400; margin: 0 0 25px 0; }
         .panel-three h1 {
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-size: clamp(3rem, 7vw, 6rem);
-            font-weight: 500; line-height: 1.15; margin: 0 0 60px 0; max-width: 1000px;
+            font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 500;
+            line-height: 1.15; margin: 0 0 60px 0; max-width: 1000px;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         }
         .panel-three h1 .word { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease; }
         .panel-three .fade-in.is-visible .word { transform: translateY(0); opacity: 1; }
         .panel-three .cta-button {
-            display: flex; justify-content: center; align-items: center;
-            width: 220px; height: 220px; background-color: #fecb00;
-            border-radius: 50%; border: 1.5px solid #000000; text-decoration: none; color: #000000;
+            display: inline-flex; justify-content: center; align-items: center; width: 220px; height: 220px;
+            background-color: #fecb00; border-radius: 50%; border: 1.5px solid #000000;
+            text-decoration: none; color: #000000;
             transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
         }
         .panel-three .cta-button:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); background-color: #ffd94a; }
@@ -181,67 +151,75 @@
         .panel-three .cta-arrow { width: 30px; height: 30px; flex-shrink: 0; transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
         .panel-three .cta-button:hover .cta-arrow { transform: rotate(45deg) scale(1.1); }
         
-        /* --- Scroll Progress Bar --- */
+        /* --- Utilities --- */
         .scroll-progress-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 5px; z-index: 1001; pointer-events: none; }
         .scroll-progress-bar-fill { width: 0; height: 100%; background-color: #fecb00; transition: opacity 0.3s ease; }
-
-        /* --- Animation Classes --- */
         .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .fade-in.is-visible { opacity: 1; transform: translateY(0); }
 
-        /* ============================================= */
-        /* === TOP-TIER MOBILE UI/UX REDESIGN === */
-        /* ============================================= */
+        /* ========================================================= */
+        /* === MOBILE VIEW OVERHAUL (THE DEFINITIVE SOLUTION) === */
+        /* ========================================================= */
         @media (max-width: 992px) {
+            /* --- GOAL: Ensure Panel 2 content fits in 100vh without internal scroll --- */
             .panel-two {
-                padding: 10vh 20px; /* Generous vertical padding */
+                padding: 4vh 20px; /* Reduced padding to gain vertical space */
             }
             .panel-two .layout-container {
                 flex-direction: column;
-                gap: 60px; /* Generous gap between header and features */
+                gap: 4vh; /* Tighter gap between header and features */
+                justify-content: center; /* Center content vertically */
             }
             .panel-two .left-column, .panel-two .right-column {
                 flex-basis: auto;
                 width: 100%;
             }
+            /* STRATEGY: Center header for impact, keep it compact */
             .panel-two .left-column {
-                text-align: center; /* Center the main heading for impact */
+                text-align: center;
+            }
+            .panel-two h1 {
+                font-size: clamp(1.8rem, 6vw, 2.2rem); /* Smaller H1 */
+                margin-bottom: 15px;
             }
             .panel-two .description {
-                max-width: 500px; /* Improve readability */
+                font-size: 0.9rem; /* Smaller description text */
+                max-width: 450px;
                 margin: 0 auto;
+                line-height: 1.6;
             }
+
+            /* STRATEGY: Use a compact horizontal layout for features */
             .features-stack {
-                gap: 20px; /* Gap between feature cards */
+                flex-direction: row; /* Horizontal layout */
+                gap: 15px; /* Gap between horizontal cards */
+                justify-content: center;
             }
-            /* NEW: Feature Card Styling */
             .feature-item {
-                flex-direction: column;
-                align-items: center;
+                flex-direction: column; /* Stack icon on top of text */
+                align-items: center; /* Center content within the card */
                 text-align: center;
-                gap: 20px;
+                gap: 10px; /* Tighter gap inside card */
+                flex: 1; /* Allow cards to share space */
+                min-width: 0; /* Important for flexbox shrinking */
                 background-color: rgba(255, 255, 255, 0.05);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                padding: 30px 25px;
-                border-radius: 16px;
+                padding: 15px 10px; /* Compact padding */
+                border-radius: 12px;
+            }
+            .feature-item .icon-circle {
+                width: 50px; height: 50px; /* Smaller icon */
+            }
+            .feature-item h2 {
+                font-size: 0.8rem; /* Compact heading */
+                line-height: 1.2;
+            }
+            .feature-item p {
+                display: none; /* HIDE paragraph on mobile to guarantee fit */
             }
         }
 
         @media (max-width: 768px) {
-            .panel-two h1 {
-                font-size: clamp(2.2rem, 8vw, 2.8rem);
-            }
-            .feature-item .icon-circle {
-                width: 60px;
-                height: 60px;
-            }
-            .feature-item h2 {
-                font-size: 1rem;
-            }
-            .feature-item p {
-                font-size: 0.9rem;
-            }
-
             .panel-three h1 {
                 font-size: clamp(2.5rem, 9vw, 4rem);
             }
@@ -257,6 +235,12 @@
                 height: 25px;
             }
         }
+         @media (max-width: 400px) {
+             /* Further tighten for very narrow screens */
+            .features-stack {
+                flex-direction: column;
+            }
+         }
     </style>
 </head>
 <body>
@@ -267,7 +251,9 @@
         <div class="sticky-wrapper">
             <div class="panels-container">
                 <section class="panel panel-one">
-                    <div class="intro-text"><h1>why<br>choose us ?</h1></div>
+                    <div class="content-wrapper">
+                        <div class="intro-text"><h1>why<br>choose us ?</h1></div>
+                    </div>
                 </section>
                 <section class="panel panel-two">
                     <div class="layout-container">
@@ -275,14 +261,14 @@
                             <p class="pre-heading">WHY CHOOSE US</p>
                             <h1>Our Work Aligns Your Goals.</h1>
                             <p class="description">
-                                Recognized as one of the "25 Most Trusted Marketing Companies in India 2019" by Business Connect Magazine. We are on a mission to bring crazy, raw, and unconventional ideas to life.
+                                Recognized as one of India's most trusted marketing companies, we're on a mission to bring unconventional ideas to life.
                             </p>
                         </div>
                         <div class="right-column">
                             <div class="features-stack">
-                                <div class="feature-item fade-in" data-animation style="transition-delay: 0.2s;"><div class="icon-circle"><svg viewBox="0 0 60 40" fill="black" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="9" rx="4.5" ry="5"></ellipse><path d="M22 23 C 22 15, 38 15, 38 23 L 38 26 L 22 26 Z"></path><ellipse cx="15" cy="18" rx="4" ry="4.5"></ellipse><path d="M8 32 C 8 25, 22 25, 22 32 L 22 35 L 8 35 Z"></path><ellipse cx="45" cy="18" rx="4" ry="4.5"></ellipse><path d="M38 32 C 38 25, 52 25, 52 32 L 52 35 L 38 35 Z"></path></svg></div><div class="text-content"><h2>Committed Support</h2><p>Think of us as your digital best friend. Always there when you need them, ready to help you conquer any challenge.</p></div></div>
-                                <div class="feature-item fade-in" data-animation style="transition-delay: 0.4s;"><div class="icon-circle"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="translate(35 35) rotate(-15)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g><g transform="translate(68 62) scale(0.7) rotate(20)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g></svg></div><div class="text-content"><h2>Transparent Reporting</h2><p>We scrutinize demographics, run campaigns that resonate, and give you the unfiltered data to prove it.</p></div></div>
-                                <div class="feature-item fade-in" data-animation style="transition-delay: 0.6s;"><div class="icon-circle"><svg viewBox="0 0 100 100" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M75 85 C 85 85, 85 75, 75 75 L 75 25 C 85 25, 85 15, 75 15 L 25 15 C 15 15, 15 25, 25 25"></path><path d="M25 25 L 25 85"></path><rect x="35" y="30" width="30" height="8"></rect><rect x="35" y="45" width="15" height="5"></rect><rect x="55" y="45" width="10" height="5"></rect><rect x="35" y="55" width="20" height="5"></rect><rect x="35" y="65" width="25" height="5"></rect><path d="M30 10 L 60 10 L 65 15 L 60 20 L 30 20 L 25 15 Z"></path><line x1="80" y1="30" x2="80" y2="45" stroke-width="3"></line><circle cx="80" cy="52" r="1.5" fill="black" stroke="none"></circle></svg></div><div class="text-content"><h2>Quality & Timely Results</h2><p>We deliver faster than a viral algorithm without compromising on the quality of our deliverables.</p></div></div>
+                                <div class="feature-item fade-in" data-animation style="transition-delay: 0.2s;"><div class="icon-circle"><svg viewBox="0 0 60 40" fill="black" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="9" rx="4.5" ry="5"></ellipse><path d="M22 23 C 22 15, 38 15, 38 23 L 38 26 L 22 26 Z"></path><ellipse cx="15" cy="18" rx="4" ry="4.5"></ellipse><path d="M8 32 C 8 25, 22 25, 22 32 L 22 35 L 8 35 Z"></path><ellipse cx="45" cy="18" rx="4" ry="4.5"></ellipse><path d="M38 32 C 38 25, 52 25, 52 32 L 52 35 L 38 35 Z"></path></svg></div><div class="text-content"><h2>Committed Support</h2><p>Think of us as your digital best friend.</p></div></div>
+                                <div class="feature-item fade-in" data-animation style="transition-delay: 0.4s;"><div class="icon-circle"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="translate(35 35) rotate(-15)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g><g transform="translate(68 62) scale(0.7) rotate(20)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g></svg></div><div class="text-content"><h2>Transparent Reporting</h2><p>We scrutinize demographics and give you the unfiltered data.</p></div></div>
+                                <div class="feature-item fade-in" data-animation style="transition-delay: 0.6s;"><div class="icon-circle"><svg viewBox="0 0 100 100" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M75 85 C 85 85, 85 75, 75 75 L 75 25 C 85 25, 85 15, 75 15 L 25 15 C 15 15, 15 25, 25 25"></path><path d="M25 25 L 25 85"></path><rect x="35" y="30" width="30" height="8"></rect><rect x="35" y="45" width="15" height="5"></rect><rect x="55" y="45" width="10" height="5"></rect><rect x="35" y="55" width="20" height="5"></rect><rect x="35" y="65" width="25" height="5"></rect><path d="M30 10 L 60 10 L 65 15 L 60 20 L 30 20 L 25 15 Z"></path><line x1="80" y1="30" x2="80" y2="45" stroke-width="3"></line><circle cx="80" cy="52" r="1.5" fill="black" stroke="none"></circle></svg></div><div class="text-content"><h2>Quality & Timely Results</h2><p>We deliver faster than a viral algorithm without compromise.</p></div></div>
                             </div>
                         </div>
                     </div>
@@ -291,8 +277,8 @@
         </div>
     </div>
 
-    <section class="panel-three">
-        <div class="fade-in" data-animation>
+    <section class="panel panel-three">
+        <div class="content-wrapper fade-in" data-animation>
             <p class="pre-heading">Have a project in mind?</p>
             <h1 class="reveal-text">Let's make something<br>great together!</h1>
             <a href="#" class="cta-button" aria-label="Contact Us">
