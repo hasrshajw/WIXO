@@ -1,49 +1,554 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Why Choose Us? - A Flawless Scrolling Experience</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-            --spotlight-x: 50%;
-        }
+    <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+       <style>
+        /* Universal box-sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         html {
             scroll-behavior: smooth;
         }
+        /* Root variables */
+        :root {
+            --spacing: 0.25rem;
+            --color-gray-200: oklch(92.8% 0.006 264.531);
+            --color-white: #fff;
+            --color-black: #000;
+            --color-dark-teal: #012726;
+            --color-teal-hover: #004D4B;
+            --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-weight-medium: 500;
+            --font-weight-normal: 400;
+            --font-weight-bold: 700;
+            --text-base: 1rem;
+            --text-base--line-height: 1.5;
+            --radius-md: 0.375rem;
+            --default-transition-duration: 0.15s;
+            --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
+        /* Body styles */
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #0d1a19;
-            font-family: 'Montserrat', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at var(--spotlight-x) 50%, #002726 0%, #0d1a19 45%);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            padding-top: 72px;
         }
-        
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
-            opacity: 0.025;
-            z-index: -1;
-            pointer-events: none;
-        }
+         </style>
+         </head>
+<body>
 
+
+
+
+
+
+
+
+<style>
+    /* Base styling */
+
+    /* The page container now just adds vertical spacing */
+    .page-container {
+        width: 100%;
+        padding: 2rem 0; /* Only top and bottom padding */
+        box-sizing: border-box;
+    }
+
+    /* The main card now controls its own width and centering */
+    .content-card {
+        width: 90%; 
+        max-width: 1500px; 
+        margin: auto; 
+        position: relative;
+        border-radius: 1.5rem; 
+        overflow: hidden;
+        background-color: #002726;
+        background-image: url('https://d31bwppm8yl9g2.cloudfront.net/learner/website/GS-Grid.png');
+        background-size: cover;
+        background-position: center;
+        padding: 5rem 2rem; /* INCREASED PADDING FOR MORE HEIGHT */
+        box-sizing: border-box;
+    }
+
+    /* Main flex container for the two-column layout */
+    .flex-container {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    /* Left column for text content */
+    .left-column {
+        flex: 1.5;
+    }
+
+    /* Right column for the Lottie animation */
+    .right-column {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Heading style */
+    .heading {
+        font-size: 4rem; /* INCREASED FONT SIZE */
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 1.25;
+        margin: 0 0 1.5rem 0; /* INCREASED BOTTOM MARGIN */
+    }
+
+    /* Paragraph style */
+    .paragraph {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.25rem; /* INCREASED FONT SIZE */
+        font-weight: 400;
+        line-height: 1.6;
+        margin: 0 0 2.5rem 0; /* INCREASED BOTTOM MARGIN */
+        max-width: 550px; /* INCREASED MAX-WIDTH */
+    }
+
+    /* Button style */
+    .explore-button {
+        background-color: #33C375;
+        color: #012726;
+        font-weight: 500;
+        font-size: 1.125rem; /* INCREASED FONT SIZE */
+        padding: 1rem 2rem; /* INCREASED PADDING */
+        border-radius: 0.75rem;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: inset 0 0 0 1px rgba(0, 39, 38, 0.3);
+        transition: background-color 0.3s ease;
+    }
+
+    .explore-button:hover {
+        background-color: #6AD384;
+    }
+    
+    /* Responsive design for larger screens */
+    @media (min-width: 48rem) { /* 768px breakpoint */
+        .content-card {
+            width: 80%; 
+        }
+    }
+
+    /* Responsive design for smaller screens */
+    @media (max-width: 992px) {
+        .content-card {
+             padding: 3rem 1.5rem;
+        }
+        .flex-container {
+            flex-direction: column;
+        }
+        .left-column {
+            order: 1; 
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%; 
+            margin-bottom: 2rem; 
+        }
+        .right-column {
+            order: 2; 
+            width: 100%;
+        }
+        .heading {
+            font-size: 2.25rem;
+        }
+    }
+</style>
+    <div class="page-container">
+    <div class="content-card">
+        <div class="flex-container">
+
+            <!-- Left Column (Text Content) -->
+            <div class="left-column">
+                <h1 class="heading">Need a Website? <br>We Build It. You Own It.</h1>
+                <p class="paragraph">
+                    Whether you're a startup, institute, freelancer, or service provider — we build fast, modern websites that help you stand out and convert visitors into customers.
+                </p>
+                <button class="explore-button">
+                    <span>Book a Call</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
+                        <path d="M1 7.11108L6 12L11 7.11108" stroke="#002726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M1 1L6 5.88889L11 1" stroke="#002726" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Right Column (Lottie Animation) -->
+            <div class="right-column">
+                <lottie-player
+                    src="animation.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 100%; max-width: 420px;" /* INCREASED MAX-WIDTH */
+                    loop
+                    autoplay>
+                </lottie-player>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<section class="trusted-section">
+  <h1>20+ Indexing Partners</h2>
+
+  <div class="logo-row">
+    <div class="logos">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
+
+      <!-- repeat for continuous scroll -->
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
+      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
+    </div>
+  </div>
+</section>
+
+<style>
+  .trusted-section {
+    /* Base styles (Mobile-first) - Applied from reference */
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 2rem;
+
+    /* Horizontal padding is now handled by width/margin */
+  }
+
+  .trusted-section h1 {
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #0f172a;
+    letter-spacing: 0.3px;
+    text-align: left;
+  }
+    
+  .logo-row {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .logos {
+    display: inline-block;
+    animation: scroll-left 25s linear infinite;
+  }
+
+  .logos img {
+    width: 110px;
+    height: 50px;
+    object-fit: contain;
+    margin: 0 16px;
+    vertical-align: middle;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    filter: grayscale(100%) brightness(0.9);
+  }
+
+  .logos img:hover {
+    transform: scale(1.05);
+    filter: grayscale(0%) brightness(1);
+  }
+
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* =================================================================== */
+  /* --- Responsive Design (Rules applied from reference) --- */
+  /* =================================================================== */
+
+  /* For large screens (desktops), use 80% width */
+  @media (min-width: 48rem) { /* 768px breakpoint */
+    .trusted-section {
+      width: 80%;
+    }
+  }
+
+  /* Responsive adjustments for content INSIDE the section */
+  @media (max-width: 768px) {
+    /* The padding rule for .trusted-section is removed from here */
+    .trusted-section h2 {
+      font-size: 1.1rem;
+      text-align: left;
+    }
+    .logos img {
+      width: 80px;
+      margin: 0 12px;
+    }
+  }
+
+  /* For very small screens, switch to full width with padding */
+  @media (max-width: 480px) {
+    .trusted-section {
+      width: 100%;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      box-sizing: border-box; /* Ensures padding is included in the width */
+    }
+  }
+</style>
+
+
+
+
+
+
+
+
+
+
+  <style>
+    .x5body {
+      margin: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 50px 0;
+    }
+
+    .x5hero {
+      text-align: left;
+      margin-bottom: 50px;
+      max-width: 1500px;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .x5h1 {
+      font-size: clamp(22px, 2.8vw, 32px);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .x5p {
+      font-size: clamp(14px, 1.9vw, 18px);
+      max-width: 800px;
+      line-height: 1.6;
+      color: #555;
+      margin: 0;
+    }
+
+    .x5cards {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1500px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .x5card {
+      background: white;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 32px;
+      text-align: left;
+    }
+
+    .x5iconwrap {
+      margin-bottom: 20px;
+    }
+
+    .x5iconimg {
+      width: 50px;
+      height: 50px;
+      display: block;
+    }
+
+    .x5h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 12px;
+      color: #111827;
+    }
+
+    .x5desc {
+      font-size: 15px;
+      color: #6b7280;
+      margin: 0 0 18px;
+      line-height: 1.6;
+    }
+
+    .x5link {
+      font-size: 15px;
+      font-weight: 500;
+      color: #6759ff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .x5link:hover .x5svg {
+      transform: translateX(2px);
+    }
+
+    .x5svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2;
+      transition: transform 0.2s ease;
+    }
+
+    @media (min-width: 48rem) {
+      .x5cards,
+      .x5hero {
+        width: 80%;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .x5cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .x5cards {
+        grid-template-columns: 1fr;
+      }
+      .x5h1 { font-size: 20px; }
+      .x5p { font-size: 14px; }
+      .x5card { padding: 20px; border-radius: 14px; }
+      .x5iconimg { width: 40px; height: 40px; }
+      .x5h3 { font-size: 18px; margin-bottom: 8px; }
+      .x5desc { font-size: 14px; margin-bottom: 12px; }
+      .x5link { font-size: 14px; }
+      .x5svg { width: 13px; height: 13px; }
+    }
+
+    @media (max-width: 480px) {
+      .x5cards,
+      .x5hero {
+        width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+
+<div class="x5body">
+
+  <section class="x5hero">
+    <h1 class="x5h1">Our Web Services — Built for Growth, Designed for You</h1>
+    <p class="x5p">
+      From your first idea to a fully optimized online presence, we handle it all so you can focus on running your business.
+    </p>
+  </section>
+
+  <div class="x5cards">
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">Website Design & Development</h3>
+      <p class="x5desc">Custom, fast, and mobile-friendly websites that convert visitors into paying customers.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">Hosting & Domain Management</h3>
+      <p class="x5desc">Fast, secure hosting with full domain setup and zero downtime.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">SEO & Google Ranking Setup</h3>
+      <p class="x5desc">Get found by the right customers with SEO strategies built in from day one.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="x5card">
+      <div class="x5iconwrap">
+        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+      </div>
+      <h3 class="x5h3">Ongoing Maintenance & Updates</h3>
+      <p class="x5desc">We keep your site secure, fast, and always up-to-date — without you lifting a finger.</p>
+      <a class="x5link" href="#">
+        Learn More
+        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+    <style>
         /* --- Scroll Architecture --- */
         .scroll-container { 
             height: 200vh; 
             position: relative; 
+            background-color: #002726; /* MOVED HERE */
         }
         .sticky-wrapper { 
             position: sticky; 
@@ -57,7 +562,7 @@
 
         /* --- Panel 1 --- */
         .panel-one { display: flex; justify-content: center; align-items: center; padding: 0 20px; }
-        .intro { color: #ffffff; font-family: 'IBM Plex Sans', sans-serif; text-align: center; transition: transform 0.5s var(--ease-out-quint), opacity 0.5s var(--ease-out-quint); will-change: transform, opacity; }
+        .intro { color: #ffffff; font-family: 'IBM Plex Sans', sans-serif; text-align: center; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform, opacity; }
         .intro.is-scrolling { transform: scale(0.8); opacity: 0; }
         .intro__heading { font-size: clamp(3.5rem, 10vw, 10rem); font-weight: 600; margin: 0; line-height: 1.1; }
 
@@ -82,7 +587,7 @@
         }
         
         .feature-item-hover-wrapper { 
-            transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint); 
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1); 
             border-radius: 16px; 
         }
         .feature-item-hover-wrapper:hover { 
@@ -90,7 +595,7 @@
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); 
         }
 
-        .feature-item__content { display: flex; align-items: center; gap: 25px; padding: 25px; text-align: left; transform-style: preserve-3d; transition: transform 0.4s var(--ease-out-quint); }
+        .feature-item__content { display: flex; align-items: center; gap: 25px; padding: 25px; text-align: left; transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
         .feature-item__icon-wrapper { width: 50px; height: 50px; background-color: #fecb00; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; transform: translateZ(30px); }
         .feature-item__icon { width: 50%; height: auto; }
         .feature-item__text-wrapper { transform: translateZ(15px); }
@@ -122,8 +627,7 @@
             .feature-item__description { font-size: 0.8rem; line-height: 1.5; }
         }
     </style>
-</head>
-<body>
+
 
     <div class="scroll-container">
         <div class="sticky-wrapper">
@@ -192,31 +696,20 @@
                 const scrollableHeight = scrollContainer.offsetHeight - window.innerHeight;
                 const progress = Math.min(1, Math.max(0, -rect.top / scrollableHeight));
                 
-                // --- MAIN ANIMATIONS ---
                 const translateX = progress * (panelsContainer.offsetWidth - window.innerWidth);
                 panelsContainer.style.transform = `translateX(-${translateX}px)`;
+                
                 intro.classList.toggle('is-scrolling', progress > 0.01);
-                const spotlightX = 50 + progress * 100;
-                document.body.style.setProperty('--spotlight-x', `${spotlightX}%`);
 
-                // --- SCROLL-LINKED CARD ANIMATION ---
                 featureItems.forEach((item, index) => {
-                    // Define when each card's animation starts and ends based on the overall progress
                     const startProgress = 0.4 + index * 0.08;
                     const animationDuration = 0.4;
-                    const endProgress = startProgress + animationDuration;
-
-                    // Calculate the local progress for this specific card's animation
                     let localProgress = 0;
                     if (progress >= startProgress) {
                         localProgress = Math.min(1, (progress - startProgress) / animationDuration);
                     }
-                    
-                    // Map local progress (0 to 1) to CSS values
                     const opacity = localProgress;
-                    const translateY = 50 - (localProgress * 50); // Animate from 50px to 0px
-
-                    // Apply styles directly. This is what prevents the "stuck" state.
+                    const translateY = 50 - (localProgress * 50);
                     item.style.opacity = opacity;
                     item.style.transform = `translateY(${translateY}px)`;
                 });
@@ -231,7 +724,6 @@
 
             window.addEventListener('scroll', onScroll, { passive: true });
 
-            // --- 3D PARALLAX HOVER EFFECT ---
             if (!window.matchMedia("(pointer: coarse)").matches) {
                 const hoverWrappers = document.querySelectorAll('.feature-item-hover-wrapper');
                 hoverWrappers.forEach(wrapper => {
@@ -245,6 +737,7 @@
                         const rotateY = (x / width - 0.5) * 20;
                         cardContent.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                     });
+
                     wrapper.addEventListener('mouseleave', () => {
                         cardContent.style.transform = 'rotateX(0deg) rotateY(0deg)';
                     });
@@ -252,5 +745,1051 @@
             }
         });
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="sec3-section-wrapper">
+    <div class="sec3-sticky-container">
+
+        <!-- WRAPPER 1: Handles the sticky behavior for the first card -->
+        <div class="sec3-card-sticky-wrapper">
+            <!-- Left Card (The Problem) - This is now the visible, smaller card -->
+            <div class="sec3-content-card sec3-card-light">
+                <div class="sec3-card-body">
+                    <h2 class="sec3-h2">Your Business Isn’t Invisible — But It Feels Like It</h2>
+                    <ul class="sec3-feature-list">
+                        <li class="sec3-feature-item">
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>You're not professional</span>
+                        </li>
+                        <li class="sec3-feature-item">
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>You're not open</span>
+                        </li>
+                        <li class="sec3-feature-item">
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Or worse — you don’t exist</span>
+                        </li>
+                    </ul>
+                    <hr class="sec3-card-separator">
+                    <p class="sec3-concluding-text">
+                        <strong>Every day without a website = missed calls, missed trust, missed growth.</strong><br>
+                        Losing just 2–3 customers a week is thousands over a year.
+                    </p>
+                </div>
+                <div class="sec3-card-image">
+                    <img class="sec3-img" src="https://keyword.com/wp-content/uploads/Ranking-history-chart.png" alt="Chart showing declining business visibility">
+                </div>
+            </div>
+        </div>
+
+        <!-- WRAPPER 2: Handles the sticky behavior for the second card -->
+        <div class="sec3-card-sticky-wrapper">
+            <!-- Right Card (The Solution) - This is now the visible, smaller card -->
+            <div class="sec3-content-card sec3-card-dark">
+                <div class="sec3-card-body">
+                    <h2 class="sec3-h2">We Fix That — In Days, Not Months</h2>
+                    <ul class="sec3-feature-list">
+                        <li class="sec3-feature-item">
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>We craft fast, modern websites tailored for your business.</span>
+                        </li>
+                        <li class="sec3-feature-item">
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>You become visible, credible, and ready for growth.</span>
+                        </li>
+                        <li class="sec3-feature-item">
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>Customers find you, trust you, and reach out.</span>
+                        </li>
+                    </ul>
+                    <hr class="sec3-card-separator">
+                    <div class="sec3-card-footer">
+                        <p class="sec3-concluding-text">
+                            <strong>You’ll go from “Who’s this?” to “I want this.”</strong><br>
+                            Gain trust. Get leads. Grow faster.
+                        </p>
+                        <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                    </div>
+                </div>
+                <div class="sec3-card-image">
+                    <img class="sec3-img" src="https://keyword.com/wp-content/uploads/Ranking-chart-1.png" alt="Chart showing positive business growth">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .sec3-section-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        padding: 30px 0;
+        max-width: 1500px;
+        box-sizing: border-box;
+    }
+    
+    .sec3-sticky-container {
+        position: relative;
+        /* The total scrollable height for the effect. 200vh means 1st card visible for 100vh, then 2nd card scrolls over it for 100vh. */
+        height: 200vh; 
+    }
+
+    /* --- NEW: THE STICKY WRAPPER --- */
+    /* This invisible container handles the sticky positioning and is 100vh tall.
+       It also centers the actual content card within itself. */
+    .sec3-card-sticky-wrapper {
+        height: 100vh; /* This wrapper occupies the full viewport height */
+        width: 100%;
+        position: sticky;
+        top: 0; /* Pins to the top */
+        
+        display: flex; /* Centers the actual card horizontally and vertically */
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Control stacking order for the overlay effect */
+    .sec3-sticky-container .sec3-card-sticky-wrapper:nth-child(1) { z-index: 1; } /* First card wrapper behind */
+    .sec3-sticky-container .sec3-card-sticky-wrapper:nth-child(2) { z-index: 2; } /* Second card wrapper on top */
+    
+    /* --- MODIFIED: THE ACTUAL CARD --- */
+    /* This is now just a styled container with a specific, smaller size.
+       It no longer handles sticky positioning. */
+    .sec3-content-card {
+        /* Define the visible size of the card */
+        width: 90%; /* Max width relative to its wrapper */
+        max-width: 1500px; /* Absolute max width to prevent it from getting too wide on large screens */
+        height: 70vh; /* FIXED HEIGHT: Both cards will be this exact height, making them equal */
+        
+        /* Layout for internal content (image & text side-by-side) */
+        display: flex;
+        flex-direction: row;
+        align-items: center; /* Vertically centers content within its row */
+        gap: 40px; /* Space between image and text */
+
+        border-radius: 24px;
+        padding: 40px;
+        box-sizing: border-box; 
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Children of the card (body and image) take up 50% width each */
+    .sec3-card-body,
+    .sec3-card-image {
+        flex: 1;
+    }
+
+    /* --- ALTERNATING ORDER RULE --- */
+    /* This rule moves the image to the left for the light card */
+    .sec3-card-light .sec3-card-image {
+        order: -1;
+    }
+    
+    /* Card theming */
+    .sec3-card-light {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+    }
+    .sec3-card-light:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+    }
+    .sec3-card-dark {
+        background-color: #1a1d21;
+        color: #d1d5db;
+    }
+    .sec3-card-dark:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+    }
+    
+    /* --- CONTENT AREA: Allows scrolling if content exceeds fixed height --- */
+    .sec3-card-body { 
+        display: flex; 
+        flex-direction: column; 
+        flex-grow: 1; /* Allows it to take available space within the card */
+        
+        /* IMPORTANT for content fitting in fixed height card */
+        overflow-y: auto; /* Adds scrollbar if content is too tall */
+        -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS */
+    }
+
+    /* Standard content styles */
+    .sec3-content-card .sec3-h2 { font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: 24px; }
+    .sec3-card-light .sec3-h2 { color: #111827; }
+    .sec3-card-dark .sec3-h2 { color: #ffffff; }
+    .sec3-feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+    .sec3-feature-item { display: flex; align-items: flex-start; gap: 12px; font-size: 17px; line-height: 1.6; }
+    .sec3-feature-item .sec3-icon { flex-shrink: 0; width: 22px; height: 22px; margin-top: 3px; }
+    .sec3-card-light .sec3-icon { color: #ef4444; }
+    .sec3-card-dark .sec3-icon { color: #22c55e; }
+    .sec3-card-separator { border: none; height: 1px; margin: auto 0 24px 0; background-color: #e9ecef; }
+    .sec3-card-dark .sec3-card-separator { background-color: rgba(255, 255, 255, 0.1); }
+    .sec3-concluding-text { font-size: 18px; line-height: 1.6; }
+    .sec3-card-light .sec3-concluding-text { color: #4b5563; }
+    .sec3-card-dark .sec3-concluding-text { color: #d1d5db; }
+    .sec3-card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .sec3-card-footer .sec3-icon { width: 24px; height: 24px; color: #3b82f6; }
+    .sec3-card-image { padding-top: 0; }
+    .sec3-card-image .sec3-img { max-width: 100%; display: block; border-radius: 12px; margin-left: auto; margin-right: auto; }
+    
+    /* --- RESPONSIVE MEDIA QUERIES --- */
+
+    /* Desktop/Larger Screens */
+    @media (min-width: 48rem) {
+        .sec3-section-wrapper { width: 80%; }
+    }
+    
+    /* Tablet/Mobile Screens (Sticky effect remains. Only internal card layout and sizing adjust.) */
+    @media (max-width: 991px) {
+        /* sec3-card-sticky-wrapper continues to handle sticky behavior */
+
+        .sec3-content-card {
+            flex-direction: column; /* Stack image/text vertically on smaller screens */
+            padding: 24px; /* Adjust padding for mobile */
+            height: auto; /* Allow card height to adjust to content on mobile */
+            max-height: none; /* Remove max-height constraint for mobile */
+            width: 95%; /* Adjust width for mobile */
+            max-width: none; /* Remove max-width constraint for mobile */
+        }
+        
+        /* Ensure images are on top on mobile for consistency when stacked */
+        .sec3-card-light .sec3-card-image,
+        .sec3-card-dark .sec3-card-image {
+            order: -1; 
+        }
+        
+        /* Adjust image padding for stacked layout on mobile */
+        .sec3-card-image {
+            padding-top: 0; 
+            padding-bottom: 20px; /* Add space below image when stacked */
+        }
+
+        /* Allow content to fill naturally on mobile, avoid internal scrollbars unless really needed */
+        .sec3-card-body {
+            overflow-y: visible; 
+        }
+    }
+
+    /* Very small screens */
+    @media (max-width: 480px) {
+        .sec3-section-wrapper {
+            width: 100%;
+            padding: 1rem 0;
+        }
+        .sec3-content-card {
+            padding: 16px; /* Even smaller padding for tiny screens */
+            gap: 20px; /* Reduce gap between elements */
+        }
+        .sec3-content-card .sec3-h2 {
+            font-size: 28px; /* Slightly smaller heading */
+        }
+        .sec3-feature-item,
+        .sec3-concluding-text {
+            font-size: 16px; /* Slightly smaller text for better fit */
+        }
+    }
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    /* =================================================================== */
+    /* --- 2. Layout & Grid System --- */
+    /* =================================================================== */
+    .ContentWrapper_contentWrapper__CvQFo {
+        /* This wrapper correctly sets the max-width and initial centering */
+        margin: 0 auto;
+        max-width: 1500px;
+    }
+
+    .FeatureGrid_grid__xJPcm {
+        /* Base styles (Mobile-first) */
+        width: 90%; /* Default width for mobile and tablet */
+        margin-left: auto;
+        margin-right: auto;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 16px;
+        padding: 24px 0; /* Vertical padding only */
+    }
+
+    /* =================================================================== */
+    /* --- 3. Card Component --- */
+    /* =================================================================== */
+    .FeatureGrid_container__GuRmV {
+        background: #f3f0ec;
+        border: 1px solid #e9e4e0;
+        border-radius: 20px;
+        padding: 28px 24px;
+        grid-column: span 5;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .FeatureGrid_container__GuRmV.FeatureGrid_green__wt3n6 {
+        background-color: #04da8d;
+    }
+
+    .FeatureGrid_container__GuRmV:first-child,
+    .FeatureGrid_container__GuRmV:nth-child(4) {
+        grid-column: span 3;
+    }
+
+    /* =================================================================== */
+    /* --- 4. Content & Vertical Alignment --- */
+    /* =================================================================== */
+    .RichText_rich_text_headers__y_K9t {
+        margin-bottom: 8px !important;
+    }
+
+    .RichText_rich_text_spacing__5RysE {
+        margin-bottom: 20px;
+    }
+
+    .CTA_CTAButtonContainer__pkQFp {
+        margin-top: auto;
+    }
+
+    p.RichText_rich_text_spacing__5RysE:last-of-type {
+        display: none;
+    }
+
+    /* =================================================================== */
+    /* --- 5. Button Component --- */
+    /* =================================================================== */
+    .CTA_CTALinkButton__uuWrs {
+        display: inline-block;
+        padding: 10px 24px;
+        border-radius: 9999px;
+        background-color: #1c1c1c;
+        text-decoration: none;
+        text-align: center;
+        transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+    }
+
+    .CTA_CTALinkButton__uuWrs:hover,
+    .CTA_CTALinkButton__uuWrs:focus-visible {
+        background-color: #3a3a3a;
+        transform: translateY(-2px);
+    }
+
+    .CTA_CTALinkButton__uuWrs:active {
+        transform: translateY(0);
+    }
+
+    .CTA_WhiteButtonText__0azAO {
+        color: #ffffff;
+    }
+
+    /* =================================================================== */
+    /* --- 6. Typography (Using IBM Plex Fonts) --- */
+    /* =================================================================== */
+    .CDS_Typography_appearance-default__96c1da {
+        color: #2d2f29;
+    }
+
+    .CDS_Typography_prettyStyle__96c1da {
+        text-wrap: pretty;
+    }
+
+    .CDS_Typography_display-m__96c1da {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 1.25;
+    }
+
+    .CDS_Typography_body__96c1da,
+    .CDS_Typography_body-l__96c1da {
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.4;
+    }
+
+    .CDS_Typography_weight-heavy__96c1da {
+        font-weight: 200;
+    }
+
+    /* =================================================================== */
+    /* --- 7. Responsive Design --- */
+    /* =================================================================== */
+
+    /* For large screens (desktops), use 80% width */
+    @media (min-width: 48rem) { /* 768px breakpoint */
+        .FeatureGrid_grid__xJPcm {
+            width: 80%; 
+        }
+    }
+
+    /* For tablets and medium screens */
+    @media (max-width: 992px) {
+        .FeatureGrid_grid__xJPcm {
+            display: flex;
+            flex-direction: column;
+            /* REMOVED horizontal padding; width and margin now handle spacing */
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+    }
+
+    /* For phones */
+    @media (max-width: 768px) {
+        .CTA_CTALinkButton__uuWrs.CTA_fullWidthOnMobile__7o1cH {
+            display: block;
+            width: 100%;
+            padding: 14px 1.5rem;
+        }
+    }
+
+    /* For very small screens, switch to full width with padding */
+    @media (max-width: 480px) {
+        .FeatureGrid_grid__xJPcm {
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+    }
+
+    /* For larger typography on bigger screens */
+    @media (min-width: 1024px) {
+        .CDS_Typography_display-m__96c1da {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div class="ContentWrapper_contentWrapper__CvQFo max_width FeatureGrid_grid__xJPcm" data-testid="content-wrapper">
+    <div class="FeatureGrid_container__GuRmV">
+        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Salesforce integration</h1>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Seamlessly integrate Salesforce with Trustpilot and turn your CRM into a reliable hub for trusted review data.</p>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+            <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">Find out more</p>
+            </a>
+        </div>
+    </div>
+    <div class="FeatureGrid_container__GuRmV">
+        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Trustpilot is a founding member of the Coalition for Trusted reviews</h1>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Trustpilot, Amazon, Booking.com, Expedia Group, Glassdoor and Tripadvisor have formed the Coalition for Trusted Reviews. A shared commitment to protecting the integrity of online consumer reviews worldwide.</p>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+            <a rel="" target="" class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">View all referral partners</p>
+            </a>
+        </div>
+    </div>
+    <div class="FeatureGrid_container__GuRmV">
+        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Find the right Pricing plan for your business</h1>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Whether you’re a new business or a household name, we have a range of plans to help you reach more customers than ever before.</p>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+            <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">View our pricing plans</p>
+            </a>
+        </div>
+    </div>
+    <div class="FeatureGrid_container__GuRmV FeatureGrid_green__wt3n6">
+        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Trustpilot’s Marketing widgets</h1>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"><b>73.6%</b> of Trustpilot visitors say they are more likely to make a purchase from a website that's displaying Trustpilot reviews on-site.</p>
+        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+            <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">Learn more</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+    <style>
+        .faq-section {
+            width: 100%;
+            max-width: 1500px;
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 48px;
+            align-items: start;
+            padding: 4rem 2rem; 
+            margin: 0 auto;
+        }
+
+        /* --- Left Column --- */
+        .faq-info {
+            position: sticky;
+            top: 4rem;
+        }
+
+        .faq-title {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        /* --- Right Column --- */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .accordion-item {
+            background-color: #FFFFFF;
+            border-radius: 16px;
+            padding: 20px 24px;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            gap: 16px;
+        }
+
+        .accordion-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .accordion-icon {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.4s ease-in-out, background-color 0.4s ease-in-out;
+        }
+        
+        .accordion-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #7C4DFF;
+            transition: color 0.3s ease;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), padding-top 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .accordion-content p {
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        /* Active State */
+        .accordion-item.active .accordion-icon {
+            background-color: #7C4DFF;
+            transform: rotate(180deg);
+        }
+
+        .accordion-item.active .accordion-icon svg {
+            color: white;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 300px; 
+            padding-top: 16px; 
+        }
+
+        /* --- Animated CTA Box --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .cta-box {
+            background-color: #F9F8FE;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 16px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+            animation-delay: 0.8s;
+        }
+
+        .cta-box h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+        }
+
+        .cta-box p {
+            font-size: 14px;
+            color: #6B7280;
+            line-height: 1.6;
+            margin: 0 0 16px 0;
+        }
+        
+        .cta-link-button {
+            display: block;
+            box-sizing: border-box;
+            text-align: center;
+            text-decoration: none;
+            width: 100%;
+            background-color: #7C4DFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .cta-link-button:hover {
+            background-color: #6a3ee6;
+        }
+
+        @media (max-width: 992px) {
+            .faq-section {
+                grid-template-columns: 1fr;
+            }
+            .faq-info {
+                position: static;
+                top: 0;
+                margin-bottom: -16px;
+            }
+            .faq-title {
+                font-size: 40px;
+                margin-bottom: 32px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .faq-section {
+                padding: 2rem 1rem;
+            }
+            .faq-title {
+                font-size: 32px;
+            }
+
+            /* --- NEW CSS FOR MOBILE --- */
+            /* Hide accordion items from the 6th one onwards on mobile */
+            .accordion .accordion-item:nth-child(n + 6) {
+                display: none;
+            }
+            
+            /* Make the CTA appear faster on the shorter mobile list */
+            .cta-box {
+                animation-delay: 0.2s;
+            }
+        }
+
+    </style>
+    <section class="faq-section">
+        <div class="faq-info">
+            <h1 class="faq-title">Frequently asked questions</h1>
+        </div>
+
+        <div class="accordion">
+            <!-- Item 1 -->
+            <div class="accordion-item active">
+                <div class="accordion-header">
+                    <h3>What is finance analytics and how can it help my business?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Finance analytics helps you understand your financial data better, so you can make smarter decisions, spot trends, and improve your business strategy.</p>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>How do I start using your finance analytics platform?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Getting started is easy! Simply sign up for an account, connect your financial data sources, and our platform will guide you through the setup process step-by-step.</p>
+                </div>
+            </div>
+            <!-- Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Is my financial data secure on your platform?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Absolutely. We use bank-level 256-bit SSL encryption for all data transmission and storage. Your security and privacy are our top priorities.</p>
+                </div>
+            </div>
+            <!-- Item 4 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Can I integrate this with other software like QuickBooks?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, our platform offers seamless integrations with popular accounting software including QuickBooks, Xero, and FreshBooks, as well as various bank accounts and payment gateways.</p>
+                </div>
+            </div>
+            <!-- Item 5 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>What kind of support do you offer?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>We provide 24/7 email support, comprehensive documentation, and live chat support for our premium plan subscribers during business hours.</p>
+                </div>
+            </div>
+            <!-- Item 6 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>How is the pricing structured?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>We offer a tiered pricing model based on the features you need and the volume of your financial transactions. We have plans for small businesses, growing mid-sized companies, and large enterprises.</p>
+                </div>
+            </div>
+            <!-- Item 7 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Can I cancel my subscription at any time?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, you can cancel your subscription at any time directly from your account dashboard. There are no hidden fees or long-term contracts.</p>
+                </div>
+            </div>
+             <!-- Item 8 (Now hidden on mobile) -->
+             <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Do you offer a free trial?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, we offer a 14-day free trial with no credit card required. You can explore all the features of our premium plan to see if it's the right fit for your business.</p>
+                </div>
+            </div>
+            <!-- Item 9 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>What types of reports can I generate?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>You can generate a wide variety of reports, including profit and loss statements, cash flow forecasts, balance sheets, burn rate analysis, and custom KPI dashboards.</p>
+                </div>
+            </div>
+
+            <div class="cta-box">
+                <h2>Still have questions?</h2>
+                <p>Can't find the answer you're looking for? Please visit our full FAQ page for more information.</p>
+                <a href="/faq" class="cta-link-button">View all FAQs</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const accordionItems = document.querySelectorAll('.accordion-item');
+
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                const currentlyActive = document.querySelector('.accordion-item.active');
+                
+                if (currentlyActive && currentlyActive !== item) {
+                    currentlyActive.classList.remove('active');
+                }
+                
+                item.classList.toggle('active');
+            });
+        });
+    </script>
+
+    
+    
+    
+    
+    
+  
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    <style>
+        /* --- Layout Containers --- */
+        .upper-half {
+            background-color: #ffffff;
+            position: relative;
+            padding-top: 80px; 
+            padding-bottom: 150px; 
+        }
+
+        .lower-half {
+            background-color: #002726;
+            padding: 190px 40px 60px 40px; 
+        }
+        
+        /* --- Subscribe Card --- */
+        .subscribe-card {
+            background: linear-gradient(135deg, #003d3b, #002726);
+            color: #ffffff;
+            border-radius: 24px;
+            padding: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 40px;
+            box-shadow: 0 10px 40px rgba(0, 39, 38, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            width: 90%;
+            max-width: 1200px;
+            z-index: 10;
+        }
+
+        .subscribe-info { flex: 1; }
+        .subscribe-info h2 { font-size: 2.8rem; font-weight: 600; line-height: 1.2; margin-bottom: 1rem; }
+        .subscribe-info p { font-size: 1rem; color: #d1d5db; line-height: 1.6; max-width: 90%; }
+        .subscribe-form-area { flex-basis: 45%; }
+        .subscribe-form-area label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: #ffffff; }
+        .subscribe-form { display: flex; gap: 12px; }
+        
+        .input-with-prefix {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 0 20px;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .input-with-prefix .prefix {
+            color: #ffffff;
+            font-size: 1rem;
+            margin-right: 8px;
+            pointer-events: none;
+        }
+        
+        .subscribe-form input[type="tel"] {
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            color: #ffffff;
+            padding: 16px 0;
+            font-size: 1rem;
+            outline: none;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        .subscribe-form input[type="tel"]::placeholder { color: #b3d1d0; }
+        
+        .input-with-prefix:focus-within {
+            border-color: #33c375;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .subscribe-form button { background-color: #33c375; color: #002726; border: none; padding: 16px 32px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; white-space: nowrap; font-family: 'IBM Plex Sans', sans-serif; transition: background-color 0.3s ease; }
+        .subscribe-form button:hover { background-color: #2da765; }
+        .form-disclaimer { font-size: 0.8rem; color: #b3d1d0; margin-top: 16px; }
+        .form-disclaimer a { color: #b3d1d0; text-decoration: underline; }
+
+        /* --- Bottom Footer Area (Links) --- */
+        .footer-bottom { display: flex; justify-content: space-between; align-items: flex-start; max-width: 1200px; margin: 0 auto; }
+        .footer-logo-area { display: flex; flex-direction: column; gap: 16px; }
+        .logo-tagline { font-size: 0.95rem; color: #d1d5db; }
+        .footer-links-container { display: flex; gap: 120px; }
+        .footer-column h3 { font-size: 1rem; font-weight: 600; color: #ffffff; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 18px; }
+        .footer-column ul li a { text-decoration: none; color: #d1d5db; font-size: 1rem; transition: color 0.2s ease-in-out; }
+        .footer-column ul li a:hover { color: #33c375; }
+
+        .footer-copyright-bar {
+            max-width: 1200px;
+            margin: 60px auto 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .copyright-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .copyright-links a {
+            text-decoration: none;
+            color: #d1d5db;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .copyright-links a:hover {
+            color: #33c375;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .subscribe-card { flex-direction: column; align-items: flex-start; padding: 40px; }
+            .subscribe-form-area { width: 100%; margin-top: 20px; }
+            .footer-bottom { flex-direction: column; gap: 50px; }
+            .footer-links-container { gap: 60px; width: 100%; justify-content: space-between; }
+        }
+
+        @media (max-width: 768px) {
+            .subscribe-info h2 { font-size: 2.2rem; }
+            .subscribe-form { flex-direction: column; }
+            .footer-links-container { justify-content: flex-start; }
+            .upper-half { padding-top: 60px; padding-bottom: 240px; }
+            .lower-half { padding-top: 340px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
+            .subscribe-form input[type="tel"]::placeholder { font-size: 0.9rem; }
+
+            .footer-copyright-bar {
+                /* CHANGE: Set direction to column to put text on top */
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .copyright-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px 20px;
+            }
+            /* CHANGE: Added rule to reduce font size */
+            .copyright-text,
+            .copyright-links a {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+    <div class="page-container">
+        <div class="upper-half">
+            <div class="subscribe-card">
+                <div class="subscribe-info">
+                    <h2>Need Assistance?</h2>
+                    <p>From web development to digital services, we’re here to turn your vision into reality. Let’s collaborate today.</p>
+                </div>
+                <div class="subscribe-form-area">
+                    <label for="mobile">Request a callback</label>
+                    <form action="#" method="POST" class="subscribe-form">
+                        <div class="input-with-prefix">
+                            <span class="prefix">+91</span>
+                            <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required maxlength="10" pattern="\d{10}" autocomplete="off">
+                        </div>
+                        <button type="submit">Get a Call</button>
+                    </form>
+                    <p class="form-disclaimer">By requesting a call, you agree to our <a href="#">Privacy Policy</a>.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lower-half">
+            <div class="footer-bottom">
+                <div class="footer-logo-area">
+                    <img src="https://placehold.co/150x40/ffffff?text=Logo&font=ibmplexsans" alt="Company Logo">
+                    <p class="logo-tagline">Your vision, realized through technology.</p>
+                </div>
+                <div class="footer-links-container">
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="about-us.html">About Us</a></li>
+                            <li><a href="/contact-us.html">Contact Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Web Development</a></li>
+                            <li><a href="#">Digital Marketing</a></li>
+                            <li><a href="#">App Development</a></li>
+                            <li><a href="#">UI/UX Design</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-copyright-bar">
+                <p class="copyright-text">&copy; Wixo. All rights reserved.</p>
+                <div class="copyright-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/refund-policy.html">Refund Policy</a>
+                    <a href="/terms-and-conditions.html">Terms & Conditions</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
