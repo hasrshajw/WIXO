@@ -40,9 +40,10 @@
             pointer-events: none;
         }
 
-        /* --- Scroll Architecture --- */
+        /* --- DEFINITIVE SCROLL ARCHITECTURE --- */
         .scroll-container { 
-            height: 200vh; 
+            /* Height = 1 screen height + 1 screen width. This creates a perfect 1:1 scroll mapping. */
+            height: calc(100vh + 100vw);
             position: relative; 
         }
         .sticky-wrapper { 
@@ -66,7 +67,6 @@
         .why-us { width: 100%; max-width: 1200px; display: flex; align-items: center; gap: clamp(40px, 6vw, 100px); }
         .why-us__main-content { flex-basis: 45%; flex-shrink: 0; }
         .why-us__features { flex-basis: 55%; flex-shrink: 0; }
-
         .why-us__pre-heading { font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; color: #fecb00; margin-bottom: 20px; text-shadow: 0 0 15px rgba(254, 203, 0, 0.3); }
         .why-us__heading { font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500; line-height: 1.2; margin: 0 0 25px 0; }
         .why-us__description { line-height: 1.7; font-size: clamp(1rem, 2.5vw, 1.1rem); color: rgba(255, 255, 255, 0.8); }
@@ -88,56 +88,19 @@
         .feature-item__heading { font-size: 1rem; font-weight: 900; margin: 0 0 8px 0; text-transform: uppercase; color: #ffffff;}
         .feature-item__description { margin: 0; line-height: 1.6; font-size: 0.9rem; color: rgba(255, 255, 255, 0.75); }
         
-        /* ============================================= */
-        /* === MOBILE "FIT-TO-SCREEN" REDESIGN === */
-        /* ============================================= */
+        /* MOBILE "FIT-TO-SCREEN" REFINEMENTS */
         @media (max-width: 992px) {
-            .panel-two {
-                padding: 20px; 
-                display: flex; 
-                flex-direction: column; 
-                justify-content: center; /* Vertically center the content */
-                align-items: center;
-            }
-            .why-us {
-                flex-direction: column;
-                gap: 30px; /* Reduced gap for compact view */
-            }
-            .why-us__main-content, .why-us__features {
-                flex-basis: auto;
-                width: 100%;
-            }
-            .why-us__main-content {
-                text-align: center;
-            }
-            .why-us__heading { 
-                font-size: clamp(1.8rem, 6vw, 2.2rem); 
-                margin-bottom: 15px;
-            }
-            .why-us__description {
-                font-size: 0.9rem;
-                line-height: 1.6;
-                margin: 0 auto;
-                max-width: 550px;
-            }
-            .features-stack {
-                gap: 15px; /* Tighter gap between cards */
-            }
-            .feature-item__content { 
-                padding: 15px; /* Reduced padding */
-                gap: 15px; 
-            }
-            .feature-item__icon-wrapper {
-                width: 40px; /* Smaller icon */
-                height: 40px;
-            }
-            .feature-item__heading {
-                font-size: 0.85rem;
-            }
-            .feature-item__description {
-                font-size: 0.8rem;
-                line-height: 1.5;
-            }
+            .panel-two { padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+            .why-us { flex-direction: column; gap: 5vh; }
+            .why-us__main-content, .why-us__features { flex-basis: auto; width: 100%; }
+            .why-us__main-content { text-align: center; }
+            .why-us__heading { font-size: clamp(1.8rem, 6vw, 2.2rem); margin-bottom: 15px; }
+            .why-us__description { font-size: 0.9rem; line-height: 1.6; margin: 0 auto; max-width: 550px; }
+            .features-stack { gap: 15px; }
+            .feature-item__content { padding: 15px; gap: 15px; }
+            .feature-item__icon-wrapper { width: 40px; height: 40px; }
+            .feature-item__heading { font-size: 0.85rem; }
+            .feature-item__description { font-size: 0.8rem; line-height: 1.5; }
         }
     </style>
 </head>
@@ -167,7 +130,7 @@
                                     <div class="feature-item-hover-wrapper">
                                         <div class="feature-item__content">
                                             <div class="feature-item__icon-wrapper"><svg class="feature-item__icon" viewBox="0 0 60 40" fill="black" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="9" rx="4.5" ry="5"></ellipse><path d="M22 23 C 22 15, 38 15, 38 23 L 38 26 L 22 26 Z"></path><ellipse cx="15" cy="18" rx="4" ry="4.5"></ellipse><path d="M8 32 C 8 25, 22 25, 22 32 L 22 35 L 8 35 Z"></path><ellipse cx="45" cy="18" rx="4" ry="4.5"></ellipse><path d="M38 32 C 38 25, 52 25, 52 32 L 52 35 L 38 35 Z"></path></svg></div>
-                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Committed Support</h3><p class="feature-item__description">Always there when you need us, ready to conquer any challenge.</p></div>
+                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Committed Support</h3><p class="feature-item__description">Think of us as your digital best friend, always ready to help you conquer any challenge.</p></div>
                                         </div>
                                     </div>
                                 </div>
@@ -205,12 +168,21 @@
 
             function updateAnimation() {
                 isTicking = false;
+
                 const rect = scrollContainer.getBoundingClientRect();
                 const scrollableHeight = scrollContainer.offsetHeight - window.innerHeight;
+                
+                // This progress value is key. It goes from 0 to 1 as you scroll through the container.
                 const progress = Math.min(1, Math.max(0, -rect.top / scrollableHeight));
+                
+                // 1. Horizontal Scroll
                 const translateX = progress * (panelsContainer.offsetWidth - window.innerWidth);
                 panelsContainer.style.transform = `translateX(-${translateX}px)`;
+                
+                // 2. Intro Text Fade
                 intro.classList.toggle('is-scrolling', progress > 0.01);
+                
+                // 3. Spotlight Effect
                 const spotlightX = 50 + progress * 100;
                 document.body.style.setProperty('--spotlight-x', `${spotlightX}%`);
             }
@@ -247,8 +219,10 @@
                         const x = e.clientX - rect.left;
                         const y = e.clientY - rect.top;
                         const { width, height } = rect;
+                        
                         const rotateX = (y / height - 0.5) * -20;
                         const rotateY = (x / width - 0.5) * 20;
+                        
                         cardContent.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                     });
 
