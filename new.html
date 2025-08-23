@@ -71,24 +71,14 @@
         .why-us__description { line-height: 1.7; font-size: clamp(1rem, 2.5vw, 1.1rem); color: rgba(255, 255, 255, 0.8); }
         .features-stack { display: flex; flex-direction: column; gap: 20px; perspective: 1200px; }
 
-        .feature-item { 
-            border-radius: 16px; 
-            background-color: rgba(255, 255, 255, 0.07); 
-            border: 1px solid rgba(255, 255, 255, 0.15); 
-            -webkit-backdrop-filter: blur(10px); 
-            backdrop-filter: blur(10px); 
-            will-change: transform, opacity; 
-            /* Initial state set by JS */
-        }
+        .feature-item { border-radius: 16px; background-color: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.15); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: opacity 0.6s var(--ease-out-quint), transform 0.6s var(--ease-out-quint); opacity: 0; transform: translateY(50px); will-change: transform, opacity; }
+        .why-us.is-in-view .feature-item { opacity: 1; transform: translateY(0); }
+        .why-us.is-in-view .feature-item:nth-child(1) { transition-delay: 0.1s; }
+        .why-us.is-in-view .feature-item:nth-child(2) { transition-delay: 0.2s; }
+        .why-us.is-in-view .feature-item:nth-child(3) { transition-delay: 0.3s; }
         
-        .feature-item-hover-wrapper { 
-            transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint); 
-            border-radius: 16px; 
-        }
-        .feature-item-hover-wrapper:hover { 
-            transform: translateY(-8px) !important; 
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); 
-        }
+        .feature-item-hover-wrapper { transition: transform 0.3s var(--ease-out-quint), box-shadow 0.3s var(--ease-out-quint); border-radius: 16px; }
+        .feature-item-hover-wrapper:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); }
 
         .feature-item__content { display: flex; align-items: center; gap: 25px; padding: 25px; text-align: left; transform-style: preserve-3d; transition: transform 0.4s var(--ease-out-quint); }
         .feature-item__icon-wrapper { width: 50px; height: 50px; background-color: #fecb00; border-radius: 50%; display: flex; justify-content: center; align-items: center; flex-shrink: 0; transform: translateZ(30px); }
@@ -97,29 +87,57 @@
         .feature-item__heading { font-size: 1rem; font-weight: 900; margin: 0 0 8px 0; text-transform: uppercase; color: #ffffff;}
         .feature-item__description { margin: 0; line-height: 1.6; font-size: 0.9rem; color: rgba(255, 255, 255, 0.75); }
         
-        /* --- Mobile & Tablet Refinements --- */
+        /* ============================================= */
+        /* === MOBILE "FIT-TO-SCREEN" REDESIGN === */
+        /* ============================================= */
         @media (max-width: 992px) {
             .panel-two {
-                padding: 0 20px; 
+                padding: 0 20px; /* Enforce left/right padding */
                 display: flex; 
                 flex-direction: column; 
-                justify-content: center;
+                justify-content: center; /* Vertically center content */
                 align-items: center;
-                overflow: hidden;
+                overflow: hidden; /* THE DEFINITIVE FIX: Prevent internal scrolling */
             }
             .why-us {
                 flex-direction: column;
-                gap: 4vh;
+                gap: 4vh; /* Use viewport height for responsive spacing */
             }
-            .why-us__main-content, .why-us__features { flex-basis: auto; width: 100%; }
-            .why-us__main-content { text-align: center; }
-            .why-us__heading { font-size: clamp(1.8rem, 6vw, 2.2rem); margin-bottom: 2vh; }
-            .why-us__description { font-size: 0.9rem; line-height: 1.6; margin: 0 auto; max-width: 550px; }
-            .features-stack { gap: 15px; }
-            .feature-item__content { padding: 15px; gap: 15px; }
-            .feature-item__icon-wrapper { width: 40px; height: 40px; }
-            .feature-item__heading { font-size: 0.85rem; }
-            .feature-item__description { font-size: 0.8rem; line-height: 1.5; }
+            .why-us__main-content, .why-us__features {
+                flex-basis: auto;
+                width: 100%;
+            }
+            .why-us__main-content {
+                text-align: center;
+            }
+            .why-us__heading { 
+                font-size: clamp(1.8rem, 6vw, 2.2rem); 
+                margin-bottom: 2vh;
+            }
+            .why-us__description {
+                font-size: 0.9rem;
+                line-height: 1.6;
+                margin: 0 auto;
+                max-width: 550px;
+            }
+            .features-stack {
+                gap: 15px; /* Tighter gap between cards */
+            }
+            .feature-item__content { 
+                padding: 15px; 
+                gap: 15px; 
+            }
+            .feature-item__icon-wrapper {
+                width: 40px;
+                height: 40px;
+            }
+            .feature-item__heading {
+                font-size: 0.85rem;
+            }
+            .feature-item__description {
+                font-size: 0.8rem;
+                line-height: 1.5;
+            }
         }
     </style>
 </head>
@@ -182,44 +200,24 @@
             const scrollContainer = document.querySelector('.scroll-container');
             const panelsContainer = document.querySelector('.panels-container');
             const intro = document.querySelector('.intro');
-            const featureItems = document.querySelectorAll('.feature-item');
             
             let isTicking = false;
 
             function updateAnimation() {
                 isTicking = false;
+
                 const rect = scrollContainer.getBoundingClientRect();
                 const scrollableHeight = scrollContainer.offsetHeight - window.innerHeight;
+                
                 const progress = Math.min(1, Math.max(0, -rect.top / scrollableHeight));
                 
-                // --- MAIN ANIMATIONS ---
                 const translateX = progress * (panelsContainer.offsetWidth - window.innerWidth);
                 panelsContainer.style.transform = `translateX(-${translateX}px)`;
+                
                 intro.classList.toggle('is-scrolling', progress > 0.01);
+                
                 const spotlightX = 50 + progress * 100;
                 document.body.style.setProperty('--spotlight-x', `${spotlightX}%`);
-
-                // --- SCROLL-LINKED CARD ANIMATION ---
-                featureItems.forEach((item, index) => {
-                    // Define when each card's animation starts and ends based on the overall progress
-                    const startProgress = 0.4 + index * 0.08;
-                    const animationDuration = 0.4;
-                    const endProgress = startProgress + animationDuration;
-
-                    // Calculate the local progress for this specific card's animation
-                    let localProgress = 0;
-                    if (progress >= startProgress) {
-                        localProgress = Math.min(1, (progress - startProgress) / animationDuration);
-                    }
-                    
-                    // Map local progress (0 to 1) to CSS values
-                    const opacity = localProgress;
-                    const translateY = 50 - (localProgress * 50); // Animate from 50px to 0px
-
-                    // Apply styles directly. This is what prevents the "stuck" state.
-                    item.style.opacity = opacity;
-                    item.style.transform = `translateY(${translateY}px)`;
-                });
             }
 
             function onScroll() {
@@ -231,7 +229,19 @@
 
             window.addEventListener('scroll', onScroll, { passive: true });
 
-            // --- 3D PARALLAX HOVER EFFECT ---
+            // ENTRANCE ANIMATION (STATEFUL OBSERVER)
+            const whyUsWrapper = document.querySelector('.why-us');
+            const entranceObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    entry.target.classList.toggle('is-in-view', entry.isIntersecting);
+                });
+            }, { threshold: 0.6 });
+            
+            if(whyUsWrapper) {
+                 entranceObserver.observe(whyUsWrapper);
+            }
+
+            // 3D PARALLAX HOVER EFFECT (for non-touch devices)
             if (!window.matchMedia("(pointer: coarse)").matches) {
                 const hoverWrappers = document.querySelectorAll('.feature-item-hover-wrapper');
                 hoverWrappers.forEach(wrapper => {
@@ -241,10 +251,13 @@
                         const x = e.clientX - rect.left;
                         const y = e.clientY - rect.top;
                         const { width, height } = rect;
+                        
                         const rotateX = (y / height - 0.5) * -20;
                         const rotateY = (x / width - 0.5) * 20;
+                        
                         cardContent.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
                     });
+
                     wrapper.addEventListener('mouseleave', () => {
                         cardContent.style.transform = 'rotateX(0deg) rotateY(0deg)';
                     });
