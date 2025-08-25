@@ -495,120 +495,234 @@
 
 
 
-<section class="trusted-section">
-  <h1>20+ Indexing Partners</h2>
 
-  <div class="logo-row">
-    <div class="logos">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
 
-      <!-- repeat for continuous scroll -->
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
-    </div>
-  </div>
-</section>
+
 
 <style>
-  .trusted-section {
-    /* Base styles (Mobile-first) - Applied from reference */
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 2rem;
+    /* --- Section: Indexing Partners --- */
 
-    /* Horizontal padding is now handled by width/margin */
-  }
+    .ip-section {
+        width: 100%;
+        padding: 0rem 1rem;
+        box-sizing: border-box;
+    }
 
-  .trusted-section h1 {
-    font-size: clamp(22px, 2.8vw, 32px);
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: #0f172a;
-    letter-spacing: 0.3px;
-    text-align: left;
-  }
+    .ip-container {
+        max-width: 1500px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    /* --- Keyframe Animations (Renamed for Uniqueness) --- */
+    @keyframes ip-reveal-up-animation {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes ip-vertical-scroll-animation {
+        0%   { transform: translateY(0); }
+        22%  { transform: translateY(0); }
+        33%  { transform: translateY(-64px); }
+        55%  { transform: translateY(-64px); }
+        66%  { transform: translateY(-128px); }
+        88%  { transform: translateY(-128px); }
+        100% { transform: translateY(-192px); }
+    }
+
+    /* --- Component Styling --- */
+
+    .ip-heading {
+        font-size: clamp(22px, 2.8vw, 32px);
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: #0f172a;
+        letter-spacing: 0.3px;
+        text-align: left;
+        opacity: 0;
+        animation: ip-reveal-up-animation 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation-delay: 0.1s;
+    }
     
-  .logo-row {
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
-
-  .logos {
-    display: inline-block;
-    animation: scroll-left 25s linear infinite;
-  }
-
-  .logos img {
-    width: 110px;
-    height: 50px;
-    object-fit: contain;
-    margin: 0 16px;
-    vertical-align: middle;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    filter: grayscale(100%) brightness(0.9);
-  }
-
-  .logos img:hover {
-    transform: scale(1.05);
-    filter: grayscale(0%) brightness(1);
-  }
-
-  @keyframes scroll-left {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* =================================================================== */
-  /* --- Responsive Design (Rules applied from reference) --- */
-  /* =================================================================== */
-
-  /* For large screens (desktops), use 80% width */
-  @media (min-width: 48rem) { /* 768px breakpoint */
-    .trusted-section {
-      width: 80%;
+    /* Added class to the span for full isolation */
+    .ip-heading-text {
+        /* This class can be used for specific text styles if needed */
     }
-  }
 
-  /* Responsive adjustments for content INSIDE the section */
-  @media (max-width: 768px) {
-    /* The padding rule for .trusted-section is removed from here */
-    .trusted-section h2 {
-      font-size: 1.1rem;
-      text-align: left;
+    /* Mobile-first styles for the grid (3 logos) */
+    .ip-logo-grid {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        max-width: 450px;
+        margin: 0 auto;
     }
-    .logos img {
-      width: 80px;
-      margin: 0 12px;
-    }
-  }
 
-  /* For very small screens, switch to full width with padding */
-  @media (max-width: 480px) {
-    .trusted-section {
-      width: 100%;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box; /* Ensures padding is included in the width */
+    .ip-logo-slot {
+        height: 64px;
+        width: calc(33.333% - 1.2rem); 
+        display: flex;
+        overflow: hidden;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(30px);
+        animation: ip-reveal-up-animation 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
-  }
+
+    .ip-logo-slot:nth-child(1) { animation-delay: 0.2s; }
+    .ip-logo-slot:nth-child(2) { animation-delay: 0.3s; }
+    .ip-logo-slot:nth-child(3) { animation-delay: 0.4s; }
+
+    .ip-logo-slot:nth-child(n + 4) {
+        display: none;
+    }
+
+    .ip-scrolling-column {
+        animation: ip-vertical-scroll-animation 9s ease-in-out infinite;
+    }
+
+    .ip-logo-slot:nth-child(1) .ip-scrolling-column { animation-delay: 0s; }
+    .ip-logo-slot:nth-child(2) .ip-scrolling-column { animation-delay: 0.3s; }
+    .ip-logo-slot:nth-child(3) .ip-scrolling-column { animation-delay: 0.6s; }
+    .ip-logo-slot:nth-child(4) .ip-scrolling-column { animation-delay: 0.9s; }
+    .ip-logo-slot:nth-child(5) .ip-scrolling-column { animation-delay: 1.2s; }
+    .ip-logo-slot:nth-child(6) .ip-scrolling-column { animation-delay: 1.5s; }
+    .ip-logo-slot:nth-child(7) .ip-scrolling-column { animation-delay: 1.8s; }
+    .ip-logo-slot:nth-child(8) .ip-scrolling-column { animation-delay: 2.1s; }
+
+    .ip-logo-wrapper {
+        height: 64px; width: 100%; display: flex; align-items: center;
+        justify-content: center; flex-shrink: 0;
+    }
+
+    .ip-logo-image {
+        max-width: 100%; max-height: 45px; filter: grayscale(1);
+        opacity: 0.6; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .ip-logo-slot:hover {
+        transform: scale(1.1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07); z-index: 10;
+    }
+    .ip-logo-slot:hover .ip-scrolling-column { animation-play-state: paused; }
+    .ip-logo-slot:hover .ip-logo-image { filter: grayscale(0); opacity: 1; }
+
+    /* --- Responsive Design for Desktop (8 Logos) --- */
+    @media (min-width: 1024px) {
+        .ip-logo-grid {
+            max-width: none;
+            justify-content: space-between; 
+            gap: 0; 
+            flex-wrap: nowrap;
+        }
+
+        .ip-logo-slot {
+            width: 110px; 
+        }
+        
+        .ip-logo-slot:nth-child(n + 4) {
+            display: flex;
+        }
+
+        .ip-logo-slot:nth-child(4) { animation-delay: 0.5s; }
+        .ip-logo-slot:nth-child(5) { animation-delay: 0.6s; }
+        .ip-logo-slot:nth-child(6) { animation-delay: 0.7s; }
+        .ip-logo-slot:nth-child(7) { animation-delay: 0.8s; }
+        .ip-logo-slot:nth-child(8) { animation-delay: 0.9s; }
+    }
 </style>
+
+<section class="ip-section">
+    <div class="ip-container">
+        <div class="ip-content-wrapper">
+            <h1 class="ip-heading">
+                <span class="ip-heading-text">20+ Indexing Partners</span>
+            </h1>
+
+            <div class="ip-logo-grid">
+                <!-- First 3 logos (Visible on Mobile & Desktop) -->
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_dedatech_18e7e6253b.svg" alt="Dedatech" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/wayfair_a7aacce828.svg" alt="Wayfair" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_dedatech_18e7e6253b.svg" alt="Dedatech" class="ip-logo-image"></div>
+                    </div>
+                </div>
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/onfleet_04f3069030_deae93e739.svg" alt="Onfleet" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_mistral_ai_cf1ceddcce.svg" alt="Mistral AI" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
+                    </div>
+                </div>
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/microsoft_a60b0da7d8.svg" alt="Microsoft" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twilio_da524dc3a2_5d4fd55110.svg" alt="Twilio" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/zendesk_136788a158_6d4c59b139.svg" alt="Zendesk" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/microsoft_a60b0da7d8.svg" alt="Microsoft" class="ip-logo-image"></div>
+                    </div>
+                </div>
+
+                <!-- Last 5 logos (HIDDEN on mobile, VISIBLE on desktop) -->
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/paddle_e74541f6b3_40953a0f7f.svg" alt="Paddle" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_delivery_hero_2f29c05551.svg" alt="Delivery Hero" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone" class="ip-logo-image"></div>
+                    </div>
+                </div>
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_dedatech_18e7e6253b.svg" alt="Dedatech" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/wayfair_a7aacce828.svg" alt="Wayfair" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_dedatech_18e7e6253b.svg" alt="Dedatech" class="ip-logo-image"></div>
+                    </div>
+                </div>
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/onfleet_04f3069030_deae93e739.svg" alt="Onfleet" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_mistral_ai_cf1ceddcce.svg" alt="Mistral AI" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
+                    </div>
+                </div>
+                <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/microsoft_a60b0da7d8.svg" alt="Microsoft" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/twilio_da524dc3a2_5d4fd55110.svg" alt="Twilio" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/zendesk_136788a158_6d4c59b139.svg" alt="Zendesk" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/microsoft_a60b0da7d8.svg" alt="Microsoft" class="ip-logo-image"></div>
+                    </div>
+                </div>
+                 <div class="ip-logo-slot">
+                    <div class="ip-scrolling-column">
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/paddle_e74541f6b3_40953a0f7f.svg" alt="Paddle" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_delivery_hero_2f29c05551.svg" alt="Delivery Hero" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_vodafone_6deed71a6c.svg" alt="Vodafone" class="ip-logo-image"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -623,7 +737,7 @@
       font-family: 'IBM Plex Sans', sans-serif;
       background: #ffffff;
       color: #0f172a;
-      padding: 50px 0;
+      padding: 50px 0px 100px 0px;
     }
 
     .x5hero {
@@ -918,7 +1032,7 @@
         .why-us { width: 100%; max-width: 1200px; display: flex; align-items: center; gap: clamp(40px, 6vw, 100px); }
         .why-us__main-content { flex-basis: 45%; flex-shrink: 0; }
         .why-us__features { flex-basis: 55%; flex-shrink: 0; }
-        .why-us__pre-heading { font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; color: #33c375; margin-bottom: 20px; text-shadow: 0 0 15px rgba(254, 203, 0, 0.3); }
+        .why-us__pre-heading { font-weight: 700; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; color: #33c375; margin-top: 50px; margin-bottom: 20px; text-shadow: 0 0 15px rgba(254, 203, 0, 0.3); }
         .why-us__heading { font-family: 'IBM Plex Sans', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 500; line-height: 1.2; margin: 0 0 25px 0; }
         .why-us__description { line-height: 1.7; font-size: clamp(1rem, 2.5vw, 1.1rem); color: rgba(255, 255, 255, 0.8); }
         .features-stack { display: flex; flex-direction: column; gap: 20px; perspective: 1200px; }
