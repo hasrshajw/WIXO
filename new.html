@@ -617,9 +617,7 @@
 
 
 
-
-
-  <style>
+<style>
     .x5body {
       margin: 0;
       font-family: 'IBM Plex Sans', sans-serif;
@@ -667,16 +665,39 @@
       border: 1px solid rgba(0, 0, 0, 0.08);
       padding: 32px;
       text-align: left;
+      /* --- Animation Setup --- */
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease-in-out;
+    }
+
+    /* --- Class added by JavaScript when element is in view --- */
+    .x5card.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* --- Card Hover Animation --- */
+    .x5card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
     }
 
     .x5iconwrap {
       margin-bottom: 20px;
+      color: #33c375; /* Sets the SVG icon color */
     }
 
     .x5iconimg {
       width: 50px;
       height: 50px;
       display: block;
+      transition: transform 0.3s ease-in-out; /* Icon animation transition */
+    }
+
+    /* Move icon up on card hover */
+    .x5card:hover .x5iconimg {
+      transform: translateY(-6px);
     }
 
     .x5h3 {
@@ -762,9 +783,12 @@
   </section>
 
   <div class="x5cards">
-    <div class="x5card">
+    <!-- Card 1 with animation delay -->
+    <div class="x5card" style="transition-delay: 0ms;">
       <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 12" />
+        </svg>
       </div>
       <h3 class="x5h3">Website Design & Development</h3>
       <p class="x5desc">Custom, fast, and mobile-friendly websites that convert visitors into paying customers.</p>
@@ -776,9 +800,12 @@
       </a>
     </div>
 
-    <div class="x5card">
+    <!-- Card 2 with animation delay -->
+    <div class="x5card" style="transition-delay: 100ms;">
       <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.5 4.5 0 0 0 2.25 15Z" />
+        </svg>
       </div>
       <h3 class="x5h3">Hosting & Domain Management</h3>
       <p class="x5desc">Fast, secure hosting with full domain setup and zero downtime.</p>
@@ -790,9 +817,12 @@
       </a>
     </div>
 
-    <div class="x5card">
+    <!-- Card 3 with animation delay -->
+    <div class="x5card" style="transition-delay: 200ms;">
       <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+        </svg>
       </div>
       <h3 class="x5h3">SEO & Google Ranking Setup</h3>
       <p class="x5desc">Get found by the right customers with SEO strategies built in from day one.</p>
@@ -803,10 +833,14 @@
         </svg>
       </a>
     </div>
-
-    <div class="x5card">
+    
+    <!-- Card 4 with animation delay -->
+    <div class="x5card" style="transition-delay: 300ms;">
       <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
+        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-.95.542.057.955.542.955 1.11v.058c.345.115.67.278.97.48a1.001 1.001 0 0 0 1.415-.492l.058-.058c.41-.41.998-.48 1.487-.17a1.001 1.001 0 0 0 .492 1.414l-.058.058c-.34.34-.48.77-.48 1.178v.058a12.03 12.03 0 0 0 .478.97 1.005 1.005 0 0 0 1.414.492l.058-.058c.488-.307 1.076-.237 1.487.17.41.41.48 1 .17 1.487l-.058.058a1.005 1.005 0 0 0-.492 1.414 12.03 12.03 0 0 0 .478.97v.058c0 .408.14.838.48 1.178l.058.058c.307.488.237 1.076-.17 1.487-.41.41-1 .48-1.487.17l-.058-.058a1.005 1.005 0 0 0-1.414-.492 12.03 12.03 0 0 0-.97.478v.058c-.057.542-.542.955-1.11.955-.568 0-1.02-.413-1.11-.955v-.058a12.03 12.03 0 0 0-.97-.478 1.005 1.005 0 0 0-1.414.492l-.058.058c-.488.307-1.076.237-1.487-.17-.41-.41-.48-1-.17-1.487l.058-.058a1.005 1.005 0 0 0 .492-1.414 12.03 12.03 0 0 0-.478-.97v-.058c0-.408-.14-.838-.48-1.178l-.058-.058c-.307-.488-.237-1.076.17-1.487.41-.41 1-.48 1.487-.17l.058.058a1.005 1.005 0 0 0 1.414-.492 12.03 12.03 0 0 0 .97-.478v-.058Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+        </svg>
       </div>
       <h3 class="x5h3">Ongoing Maintenance & Updates</h3>
       <p class="x5desc">We keep your site secure, fast, and always up-to-date — without you lifting a finger.</p>
@@ -818,7 +852,35 @@
       </a>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const cards = document.querySelectorAll('.x5card');
+
+      // Set up the Intersection Observer
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          // If the element is in the viewport
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            // Stop observing the element so the animation doesn't re-trigger
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1 // Trigger when 10% of the element is visible
+      });
+
+      // Observe each card
+      cards.forEach(card => {
+        observer.observe(card);
+      });
+    });
+  </script>
+
 </div>
+
+
 
 
 
@@ -938,7 +1000,7 @@
                                     <div class="feature-item-hover-wrapper">
                                         <div class="feature-item__content">
                                             <div class="feature-item__icon-wrapper"><svg class="feature-item__icon" viewBox="0 0 60 40" fill="black" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="9" rx="4.5" ry="5"></ellipse><path d="M22 23 C 22 15, 38 15, 38 23 L 38 26 L 22 26 Z"></path><ellipse cx="15" cy="18" rx="4" ry="4.5"></ellipse><path d="M8 32 C 8 25, 22 25, 22 32 L 22 35 L 8 35 Z"></path><ellipse cx="45" cy="18" rx="4" ry="4.5"></ellipse><path d="M38 32 C 38 25, 52 25, 52 32 L 52 35 L 38 35 Z"></path></svg></div>
-                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Committed Support</h3><p class="feature-item__description">Think of us as your digital best friend, always ready to help you conquer any challenge.</p></div>
+                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Committed Support</h3><p class="feature-item__description">Think of us as your digital best friend, always ready to help you conquer</p></div>
                                         </div>
                                     </div>
                                 </div>
@@ -946,15 +1008,23 @@
                                     <div class="feature-item-hover-wrapper">
                                         <div class="feature-item__content">
                                             <div class="feature-item__icon-wrapper"><svg class="feature-item__icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="translate(35 35) rotate(-15)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g><g transform="translate(68 62) scale(0.7) rotate(20)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g></svg></div>
-                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Transparent Reporting</h3><p class="feature-item__description">We run campaigns that resonate and give you the unfiltered data to prove our success.</p></div>
+                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Transparent Reporting</h3><p class="feature-item__description">We run campaigns that resonate and give you the unfiltered data to prove</p></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="feature-item">
+                                                                <div class="feature-item">
                                     <div class="feature-item-hover-wrapper">
                                         <div class="feature-item__content">
-                                            <div class="feature-item__icon-wrapper"><svg class="feature-item__icon" viewBox="0 0 100 100" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><path d="M75 85 C 85 85, 85 75, 75 75 L 75 25 C 85 25, 85 15, 75 15 L 25 15 C 15 15, 15 25, 25 25"></path><path d="M25 25 L 25 85"></path><rect x="35" y="30" width="30" height="8"></rect><rect x="35" y="45" width="15" height="5"></rect><rect x="55" y="45" width="10" height="5"></rect><rect x="35" y="55" width="20" height="5"></rect><rect x="35" y="65" width="25" height="5"></rect><path d="M30 10 L 60 10 L 65 15 L 60 20 L 30 20 L 25 15 Z"></path><line x1="80" y1="30" x2="80" y2="45" stroke-width="3"></line><circle cx="80" cy="52" r="1.5" fill="black" stroke="none"></circle></svg></div>
-                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Timely Results</h3><p class="feature-item__description">We deliver faster than a viral algorithm without ever compromising on the quality.</p></div>
+                                            <div class="feature-item__icon-wrapper"><svg class="feature-item__icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="translate(35 35) rotate(-15)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g><g transform="translate(68 62) scale(0.7) rotate(20)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g></svg></div>
+                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Transparent Reporting</h3><p class="feature-item__description">We run campaigns that resonate and give you the unfiltered data to prove</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                                <div class="feature-item">
+                                    <div class="feature-item-hover-wrapper">
+                                        <div class="feature-item__content">
+                                            <div class="feature-item__icon-wrapper"><svg class="feature-item__icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g transform="translate(35 35) rotate(-15)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g><g transform="translate(68 62) scale(0.7) rotate(20)"><path d="M0-25L-4-20L4-20ZM0 25L-4 20L4 20ZM-25 0L-20-4L-20 4ZM25 0L20-4L20 4ZM-17.7-17.7L-14.1-19.9L-19.9-14.1ZM17.7 17.7L14.1 19.9L19.9 14.1ZM-17.7 17.7L-19.9 14.1L-14.1 19.9ZM17.7-17.7L19.9-14.1L14.1-19.9Z" fill="black"></path><circle r="22" fill="black"></circle><circle r="8" fill="#002726"></circle></g></svg></div>
+                                            <div class="feature-item__text-wrapper"><h3 class="feature-item__heading">Transparent Reporting</h3><p class="feature-item__description">We run campaigns that resonate and give you the unfiltered data to prove</p></div>
                                         </div>
                                     </div>
                                 </div>
