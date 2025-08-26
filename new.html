@@ -503,9 +503,12 @@
     /* --- Section: Indexing Partners --- */
 
     .ip-section {
-        width: 100%;
-        padding: 0rem 1rem;
-        box-sizing: border-box;
+        /* Base styles (Mobile-first) - Applied from reference */
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-top: 0; /* Vertical padding can be adjusted here if needed */
+        padding-bottom: 0;
     }
 
     .ip-container {
@@ -544,7 +547,6 @@
         animation-delay: 0.1s;
     }
     
-    /* Added class to the span for full isolation */
     .ip-heading-text {
         /* This class can be used for specific text styles if needed */
     }
@@ -601,12 +603,17 @@
         max-width: 100%; max-height: 45px; filter: grayscale(1);
         opacity: 0.6; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
+    
+    /* =================================================================== */
+    /* --- Responsive Design (Rules applied from reference) --- */
+    /* =================================================================== */
 
-    .ip-logo-slot:hover {
-        transform: scale(1.1); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07); z-index: 10;
+    /* For large screens (desktops), use 80% width */
+    @media (min-width: 48rem) { /* 768px breakpoint */
+        .ip-section {
+            width: 80%;
+        }
     }
-    .ip-logo-slot:hover .ip-scrolling-column { animation-play-state: paused; }
-    .ip-logo-slot:hover .ip-logo-image { filter: grayscale(0); opacity: 1; }
 
     /* --- Responsive Design for Desktop (8 Logos) --- */
     @media (min-width: 1024px) {
@@ -631,17 +638,27 @@
         .ip-logo-slot:nth-child(7) { animation-delay: 0.8s; }
         .ip-logo-slot:nth-child(8) { animation-delay: 0.9s; }
     }
+
+    /* For very small screens, switch to full width with padding */
+    @media (max-width: 480px) {
+        .ip-section {
+            width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-sizing: border-box; /* Ensures padding is included in the width */
+        }
+    }
 </style>
 
 <section class="ip-section">
     <div class="ip-container">
         <div class="ip-content-wrapper">
             <h1 class="ip-heading">
-                <span class="ip-heading-text">20+ Indexing Partners</span>
+                <span class="ip-heading-text">Trusted By</span>
             </h1>
 
             <div class="ip-logo-grid">
-                <!-- First 3 logos (Visible on Mobile & Desktop) -->
+                <!-- Logos -->
                 <div class="ip-logo-slot">
                     <div class="ip-scrolling-column">
                         <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_dedatech_18e7e6253b.svg" alt="Dedatech" class="ip-logo-image"></div>
@@ -652,7 +669,7 @@
                 </div>
                 <div class="ip-logo-slot">
                     <div class="ip-scrolling-column">
-                        <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
+                        <div class="ip-logo-wrapper"><img src="httpsa://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
                         <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/onfleet_04f3069030_deae93e739.svg" alt="Onfleet" class="ip-logo-image"></div>
                         <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/re_mistral_ai_cf1ceddcce.svg" alt="Mistral AI" class="ip-logo-image"></div>
                         <div class="ip-logo-wrapper"><img src="https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/unbabel_1392f8b8ac_cca31eda86.svg" alt="Unbabel" class="ip-logo-image"></div>
@@ -900,9 +917,10 @@
     <!-- Card 1 with animation delay -->
     <div class="x5card" style="transition-delay: 0ms;">
       <div class="x5iconwrap">
-        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 12" />
-        </svg>
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 8-4 4 4 4m8 0 4-4-4-4m-2-3-4 14"/>
+</svg>
+
       </div>
       <h3 class="x5h3">Website Design & Development</h3>
       <p class="x5desc">Custom, fast, and mobile-friendly websites that convert visitors into paying customers.</p>
@@ -917,9 +935,10 @@
     <!-- Card 2 with animation delay -->
     <div class="x5card" style="transition-delay: 100ms;">
       <div class="x5iconwrap">
-        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 0 0 4.5 4.5H18a3.75 3.75 0 0 0 1.332-7.257 3 3 0 0 0-3.758-3.848 5.25 5.25 0 0 0-10.233 2.33A4.5 4.5 0 0 0 2.25 15Z" />
-        </svg>
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h3a3 3 0 0 0 0-6h-.025a5.56 5.56 0 0 0 .025-.5A5.5 5.5 0 0 0 7.207 9.021C7.137 9.017 7.071 9 7 9a4 4 0 1 0 0 8h2.167M12 19v-9m0 0-2 2m2-2 2 2"/>
+</svg>
+
       </div>
       <h3 class="x5h3">Hosting & Domain Management</h3>
       <p class="x5desc">Fast, secure hosting with full domain setup and zero downtime.</p>
@@ -934,9 +953,10 @@
     <!-- Card 3 with animation delay -->
     <div class="x5card" style="transition-delay: 200ms;">
       <div class="x5iconwrap">
-        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-        </svg>
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4.5V19a1 1 0 0 0 1 1h15M7 14l4-4 4 4 5-5m0 0h-3.207M20 9v3.207"/>
+</svg>
+
       </div>
       <h3 class="x5h3">SEO & Google Ranking Setup</h3>
       <p class="x5desc">Get found by the right customers with SEO strategies built in from day one.</p>
@@ -951,10 +971,10 @@
     <!-- Card 4 with animation delay -->
     <div class="x5card" style="transition-delay: 300ms;">
       <div class="x5iconwrap">
-        <svg class="x5iconimg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-.95.542.057.955.542.955 1.11v.058c.345.115.67.278.97.48a1.001 1.001 0 0 0 1.415-.492l.058-.058c.41-.41.998-.48 1.487-.17a1.001 1.001 0 0 0 .492 1.414l-.058.058c-.34.34-.48.77-.48 1.178v.058a12.03 12.03 0 0 0 .478.97 1.005 1.005 0 0 0 1.414.492l.058-.058c.488-.307 1.076-.237 1.487.17.41.41.48 1 .17 1.487l-.058.058a1.005 1.005 0 0 0-.492 1.414 12.03 12.03 0 0 0 .478.97v.058c0 .408.14.838.48 1.178l.058.058c.307.488.237 1.076-.17 1.487-.41.41-1 .48-1.487.17l-.058-.058a1.005 1.005 0 0 0-1.414-.492 12.03 12.03 0 0 0-.97.478v.058c-.057.542-.542.955-1.11.955-.568 0-1.02-.413-1.11-.955v-.058a12.03 12.03 0 0 0-.97-.478 1.005 1.005 0 0 0-1.414.492l-.058.058c-.488.307-1.076.237-1.487-.17-.41-.41-.48-1-.17-1.487l.058-.058a1.005 1.005 0 0 0 .492-1.414 12.03 12.03 0 0 0-.478-.97v-.058c0-.408-.14-.838-.48-1.178l-.058-.058c-.307-.488-.237-1.076.17-1.487.41-.41 1-.48 1.487-.17l.058.058a1.005 1.005 0 0 0 1.414-.492 12.03 12.03 0 0 0 .97-.478v-.058Z" />
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-        </svg>
+        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M10 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h2m10 1a3 3 0 0 1-3 3m3-3a3 3 0 0 0-3-3m3 3h1m-4 3a3 3 0 0 1-3-3m3 3v1m-3-4a3 3 0 0 1 3-3m-3 3h-1m4-3v-1m-2.121 1.879-.707-.707m5.656 5.656-.707-.707m-4.242 0-.707.707m5.656-5.656-.707.707M12 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+</svg>
+
       </div>
       <h3 class="x5h3">Ongoing Maintenance & Updates</h3>
       <p class="x5desc">We keep your site secure, fast, and always up-to-date — without you lifting a finger.</p>
@@ -1712,29 +1732,48 @@
 
 
 
-    <style>
+
+    
+    
+    
+        <style>
         .faq-section {
-            width: 100%;
+            /* Base styles (Mobile-first) - Applied from reference */
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            
             max-width: 1500px;
             display: grid;
             grid-template-columns: 1fr 1.25fr;
             gap: 48px;
             align-items: start;
-            padding: 4rem 2rem; 
-            margin: 0 auto;
+            /* Preserve vertical padding, remove horizontal */
+            padding-top: 4rem;
+            padding-bottom: 4rem; 
+            padding-left: 0;
+            padding-right: 0;
         }
 
-        /* --- Left Column --- */
+        /* --- Left Column - REFINED STICKY BEHAVIOR --- */
         .faq-info {
             position: sticky;
-            top: 4rem;
+            top: 6rem; 
         }
 
         .faq-title {
-            font-size: 48px;
+            font-size: 64px;
             font-weight: 700;
-            line-height: 1.1;
+            line-height: 1.05;
             margin: 0;
+        }
+
+        .faq-title span {
+            display: block;
+        }
+
+        .faq-title .highlight-text {
+            color: #33c375;
         }
 
         /* --- Right Column --- */
@@ -1744,14 +1783,26 @@
             gap: 16px;
         }
 
-        .accordion-item {
+        .accordion-item, .cta-box {
             background-color: #FFFFFF;
             border-radius: 16px;
             padding: 20px 24px;
-            transition: background-color 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.08);
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            
+            opacity: 0;
+            transform: translateY(30px);
+            filter: blur(5px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, filter 0.6s ease-out;
         }
         
+        .accordion-item.is-visible,
+        .cta-box.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
         .accordion-header {
             display: flex;
             justify-content: space-between;
@@ -1801,7 +1852,7 @@
 
         /* Active State */
         .accordion-item.active .accordion-icon {
-            background-color: #7C4DFF;
+            background-color: #012726;
             transform: rotate(180deg);
         }
 
@@ -1814,26 +1865,10 @@
             padding-top: 16px; 
         }
 
-        /* --- Animated CTA Box --- */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
         .cta-box {
             background-color: #d0f5e1;
-            border-radius: 16px;
             padding: 24px;
             margin-top: 16px;
-            opacity: 0;
-            animation: fadeInUp 0.6s ease-out forwards;
-            animation-delay: 0.8s;
         }
 
         .cta-box h2 {
@@ -1871,49 +1906,70 @@
             color: #ffffff;
         }
 
+        /* =================================================================== */
+        /* --- Responsive Design (Rules applied from reference) --- */
+        /* =================================================================== */
+
+        /* For large screens (desktops), use 80% width */
+        @media (min-width: 48rem) { /* 768px breakpoint */
+            .faq-section {
+                width: 80%;
+            }
+        }
+        
         @media (max-width: 992px) {
             .faq-section {
                 grid-template-columns: 1fr;
+                /* Remove horizontal padding; keep vertical */
+                padding-top: 4rem;
+                padding-bottom: 4rem; 
             }
             .faq-info {
-                position: static;
-                top: 0;
+                position: static; /* Disable sticky */
                 margin-bottom: -16px;
             }
             .faq-title {
-                font-size: 40px;
+                font-size: 64px;
                 margin-bottom: 32px;
             }
         }
         
         @media (max-width: 767px) {
             .faq-section {
-                padding: 2rem 1rem;
+                /* Remove horizontal padding; keep vertical */
+                padding-top: 2rem;
+                padding-bottom: 2rem;
             }
             .faq-title {
-                font-size: 32px;
+                /* --- MODIFIED: Decreased font size for mobile --- */
+                font-size: 40px;
             }
-
-            /* --- NEW CSS FOR MOBILE --- */
-            /* Hide accordion items from the 6th one onwards on mobile */
             .accordion .accordion-item:nth-child(n + 6) {
                 display: none;
             }
-            
-            /* Make the CTA appear faster on the shorter mobile list */
-            .cta-box {
-                animation-delay: 0.2s;
+        }
+
+        /* For very small screens, switch to full width with padding */
+        @media (max-width: 480px) {
+            .faq-section {
+                width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                box-sizing: border-box; /* Ensures padding is included in the width */
             }
         }
 
     </style>
     <section class="faq-section">
         <div class="faq-info">
-            <h1 class="faq-title">Frequently asked questions</h1>
+            <h1 class="faq-title">
+                Frequently asked
+                <span class="highlight-text">questions</span>
+            </h1>
         </div>
 
         <div class="accordion">
-            <!-- Item 1 -->
+            <!-- FAQ Items -->
             <div class="accordion-item active">
                 <div class="accordion-header">
                     <h3>What is finance analytics and how can it help my business?</h3>
@@ -1923,7 +1979,6 @@
                     <p>Finance analytics helps you understand your financial data better, so you can make smarter decisions, spot trends, and improve your business strategy.</p>
                 </div>
             </div>
-            <!-- Item 2 -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>How do I start using your finance analytics platform?</h3>
@@ -1933,7 +1988,6 @@
                     <p>Getting started is easy! Simply sign up for an account, connect your financial data sources, and our platform will guide you through the setup process step-by-step.</p>
                 </div>
             </div>
-            <!-- Item 3 -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>Is my financial data secure on your platform?</h3>
@@ -1943,7 +1997,6 @@
                     <p>Absolutely. We use bank-level 256-bit SSL encryption for all data transmission and storage. Your security and privacy are our top priorities.</p>
                 </div>
             </div>
-            <!-- Item 4 -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>Can I integrate this with other software like QuickBooks?</h3>
@@ -1953,7 +2006,6 @@
                     <p>Yes, our platform offers seamless integrations with popular accounting software including QuickBooks, Xero, and FreshBooks, as well as various bank accounts and payment gateways.</p>
                 </div>
             </div>
-            <!-- Item 5 -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>What kind of support do you offer?</h3>
@@ -1963,7 +2015,6 @@
                     <p>We provide 24/7 email support, comprehensive documentation, and live chat support for our premium plan subscribers during business hours.</p>
                 </div>
             </div>
-            <!-- Item 6 (Now hidden on mobile) -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>How is the pricing structured?</h3>
@@ -1973,7 +2024,6 @@
                     <p>We offer a tiered pricing model based on the features you need and the volume of your financial transactions. We have plans for small businesses, growing mid-sized companies, and large enterprises.</p>
                 </div>
             </div>
-            <!-- Item 7 (Now hidden on mobile) -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>Can I cancel my subscription at any time?</h3>
@@ -1983,7 +2033,6 @@
                     <p>Yes, you can cancel your subscription at any time directly from your account dashboard. There are no hidden fees or long-term contracts.</p>
                 </div>
             </div>
-             <!-- Item 8 (Now hidden on mobile) -->
              <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>Do you offer a free trial?</h3>
@@ -1993,7 +2042,6 @@
                     <p>Yes, we offer a 14-day free trial with no credit card required. You can explore all the features of our premium plan to see if it's the right fit for your business.</p>
                 </div>
             </div>
-            <!-- Item 9 (Now hidden on mobile) -->
             <div class="accordion-item">
                 <div class="accordion-header">
                     <h3>What types of reports can I generate?</h3>
@@ -2003,7 +2051,7 @@
                     <p>You can generate a wide variety of reports, including profit and loss statements, cash flow forecasts, balance sheets, burn rate analysis, and custom KPI dashboards.</p>
                 </div>
             </div>
-
+            
             <div class="cta-box">
                 <h2>Still have questions?</h2>
                 <p>Can't find the answer you're looking for? Please visit our full FAQ page for more information.</p>
@@ -2013,26 +2061,41 @@
     </section>
 
     <script>
+        // --- Accordion Toggle Functionality ---
         const accordionItems = document.querySelectorAll('.accordion-item');
-
         accordionItems.forEach(item => {
             const header = item.querySelector('.accordion-header');
             header.addEventListener('click', () => {
                 const currentlyActive = document.querySelector('.accordion-item.active');
-                
                 if (currentlyActive && currentlyActive !== item) {
                     currentlyActive.classList.remove('active');
                 }
-                
                 item.classList.toggle('active');
             });
         });
-    </script>
 
-    
-    
-    
-    
+        // --- Individual Scroll-triggered Animation ---
+        const animatedElements = document.querySelectorAll('.accordion-item, .cta-box');
+
+        const observerOptions = {
+            root: null, 
+            threshold: 0.2,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        animatedElements.forEach(el => {
+            observer.observe(el);
+        });
+    </script>
     
   
 
