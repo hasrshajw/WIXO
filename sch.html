@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Schedule Editor (Final Polished Version)</title>
+
+<!-- FIREBASE SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<style>
+    :root {
+        --primary-color: #0d6efd;
+        --border-color: #dee2e6;
+        --background-color: #f8f9fa;
+        --danger-color: #dc3545;
+        --warning-color: #ffc107;
+        --success-color: #198754;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--background-color);
+        padding: 20px;
+        color: #212529;
+    }
+    #global-toolbar {
+        max-width: 1000px;
+        margin: 0 auto 20px auto;
+        padding: 15px 25px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        display: flex;
+        align-items: center;
+    }
+    #addScheduleBtn { background-color: var(--primary-color); color: white; }
+    
+    .master-container {
+        max-width: 1000px;
+        margin: 0 auto 25px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .schedule-block {
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid var(--border-color);
+    }
+    .schedule-block:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .schedule-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    .schedule-title {
+        font-size: 1.75em;
+        font-weight: 600;
+        margin: 0;
+        flex-grow: 1;
+        border: 1px solid transparent;
+        padding: 5px;
+        border-radius: 4px;
+    }
+    .schedule-title:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background-color: #f0f8ff;
+    }
+    .status-indicator { font-size: 14px; font-weight: bold; transition: color 0.3s; }
+    .toolbar { display: flex; align-items: center; margin-bottom: 15px; }
+    .toolbar button {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+        border-radius: 6px;
+        margin-right: 8px;
+    }
+    .toolbar button:hover:not(:disabled) { background-color: #e2e6ea; }
+    .toolbar button:disabled { cursor: not-allowed; opacity: 0.5; }
+    .toolbar button svg { width: 16px; height: 16px; }
+    .toolbar .delete-btn { margin-left: auto; border-color: var(--danger-color); }
+    .toolbar .delete-btn:hover:not(:disabled) { background-color: var(--danger-color); color: white; }
+    
+    table { width: 100%; border-collapse: collapse; border: 2px solid #4B0082; }
+    th, td { border: 1px solid #333; padding: 10px; text-align: left; vertical-align: middle; position: relative; }
+    [contenteditable="true"]:focus { background-color: #fffbe5; }
+    
+    tbody tr > th:first-child,
+    tbody tr > td:first-child {
+        position: relative;
+        padding-left: 35px;
+    }
+
+    .row-handle {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #aaa;
+        user-select: none;
+    }
+
+    .row-handle-icon {
+        opacity: 0;
+        transition: opacity 0.2s;
+        font-size: 18px;
+    }
+
+    tr:hover .row-handle-icon {
+        opacity: 1;
+    }
+    
+    td.cell-selected, th.cell-selected {
+        outline: 2px solid var(--primary-color) !important;
+        outline-offset: -2px;
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+    
+    .context-menu { position: fixed; display: none; background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 1001; padding: 6px 0; min-width: 200px; }
+    .context-menu-item { display: flex; align-items: center; gap: 10px; padding: 9px 15px; cursor: pointer; font-size: 14px; }
+    .context-menu-item:hover { background: #f0f0f0; }
+    .context-menu-item.disabled { color: #aaa; cursor: not-allowed; background: #fff; }
+    .context-menu-item.delete { color: var(--danger-color); }
+    .context-menu-item.active { background-color: #e9ecef; font-weight: bold; }
+    
+    /* --- FIX: Taller icons that fill cell height without increasing row height --- */
+    .cell-icon {
+        float: left; /* Float left to allow text to wrap beside it */
+        height: calc(1em + 18px); /* Fill the content height + most of the padding */
+        margin-top: -9px; /* Pull up into padding space */
+        margin-bottom: -9px; /* Pull down into padding space */
+        margin-right: 10px;
+        object-fit: contain;
+    }
+    .header-row .cell-icon {
+        filter: brightness(0) invert(1);
+    }
+
+    .header-content-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+</head>
+<body>
+
+<div id="global-toolbar">
+    <button id="addScheduleBtn" class="toolbar-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg>
+        Add New Schedule
+    </button>
+</div>
+
+<div class="master-container">
+    <div id="schedules-wrapper"></div>
+</div>
+
+<template id="schedule-template">
+    <div class="schedule-block">
+        <div class="schedule-header">
+            <h2 class="schedule-title" contenteditable="true"></h2>
+            <div class="status-indicator"></div>
+        </div>
+        <div class="toolbar">
+            <button class="undo-btn" disabled><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.38 10.33 17.28 8 12.5 8z"/></svg> Undo</button>
+            <button class="redo-btn" disabled><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.78 0-8.88 3.67-9.87 8.5l2.37.78C5.05 13.31 8.04 11 11.5 11c1.96 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/></svg> Redo</button>
+            <button class="reset-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg> Reset</button>
+            <button class="delete-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Delete Schedule</button>
+        </div>
+        <table>
+            <!-- --- FIX: Adjusted column widths to shift center line right --- -->
+            <colgroup>
+                <col style="width: 60%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+            </colgroup>
+            <tbody class="schedule-table-body"></tbody>
+        </table>
+    </div>
+</template>
+
+<div id="rowContextMenu" class="context-menu"></div>
+<div id="cellContextMenu" class="context-menu"></div>
+
+<script>
+(function() {
+    'use strict';
+    // --- FIREBASE SETUP ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLK5f4C-nfG6fz0ajqqay1q9TTN6rxgmQ",
+      authDomain: "schedule-harsha.firebaseapp.com",
+      projectId: "schedule-harsha",
+      storageBucket: "schedule-harsha.firebasestorage.app",
+      messagingSenderId: "965478014820",
+      appId: "1:965478014820:web:1c36c5d890a27e599aa471"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const schedulesCollection = db.collection("schedules");
+    const LOCAL_STORAGE_KEY = 'firebaseSchedulesCache_v6';
+    
+    // --- TEMPLATES & DEFAULTS (with images and centered headers) ---
+    const DEFAULT_TABLE_HTML = `<tr class="no-actions"><th style="background-color: rgb(240, 248, 255); font-weight: bold; text-align: center;" contenteditable="true"><span class="row-handle"></span>బైబిలు అధ్యాయం, ప్రసంగి 11-12</th><th style="background-color: rgb(240, 248, 255);" contenteditable="true">తేదీ:</th><th style="background-color: rgb(240, 248, 255);" contenteditable="true">29-10-2025</th></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon">పాట: 155</td><td style="text-align: right;" contenteditable="true">చైర్మన్</td><td contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span>ఆరంభ మాటలు (1 నిమి.)</td><td style="text-align: right;" contenteditable="true">ప్రార్థన:</td><td contenteditable="true"></td></tr><tr class="header-row no-actions" data-section="treasures"><td colspan="3" style="background-color: rgb(70, 132, 153); text-align: center;" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>దేవుని వాక్యంలో ఉన్న సంపద</span></div></td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>1. ఆరోగ్యంగా ఉండండి, లైఫ్‌ని ఎంజాయ్‌ చేయండి. (10 నిమి.)</td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>2. దేవుని వాక్యంలో రత్నాలు (10 నిమి.)</td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>3. చదవాల్సిన బైబిలు భాగం: (4 నిమి.)</td></tr><tr class="header-row no-actions" data-section="ministry"><td colspan="3" style="background-color: rgb(212, 162, 42); text-align: center;" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>చక్కగా సువార్త ప్రకటించాలి</span></div></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>4. మళ్ళీ కలిసినప్పుడు (3 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>5. మళ్ళీ కలిసినప్పుడు (4 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>6. ప్రసంగం (5 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr class="header-row no-actions" data-section="living"><td colspan="3" style="background-color: rgb(192, 66, 53); text-align: center;" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>మన క్రైస్తవ జీవితం</span></div></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon">పాట: 111</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>7. స్థానిక అవసరాలు (15 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>8. సంఘ బైబిలు అధ్యయనం: (30 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span>ముగింపు మాటలు (3 నిమి.)</td><td style="text-align: right;" contenteditable="true">చైర్మన్</td><td contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon">పాట: 8</td><td style="text-align: right;" contenteditable="true">ముగింపు ప్రార్థన:</td><td contenteditable="true"></td></tr>`.trim();
+
+    // --- GLOBAL STATE & ELEMENTS ---
+    const schedulesWrapper = document.getElementById('schedules-wrapper');
+    const scheduleTemplate = document.getElementById('schedule-template');
+    const rowContextMenu = document.getElementById('rowContextMenu');
+    const cellContextMenu = document.getElementById('cellContextMenu');
+    let activeSchedules = {};
+    let activeContextScheduleId = null;
+
+    const debounce = (func, delay) => {
+        let timeout;
+        return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), delay); };
+    };
+
+    /**
+     * The main class for managing a single schedule's state and UI
+     */
+    class Schedule {
+        constructor(id, initialData) {
+            this.id = id;
+            this.undoHistory = [];
+            this.redoHistory = [];
+            this.selectedCells = [];
+            this.activeRow = null;
+            this.isUpdatingFromRemote = false;
+
+            this.initDOM();
+            this.render(initialData);
+            this.setupEventListeners();
+        }
+
+        initDOM() {
+            const templateClone = scheduleTemplate.content.cloneNode(true);
+            this.element = templateClone.querySelector('.schedule-block');
+            this.element.dataset.id = this.id;
+            this.titleEl = this.element.querySelector('.schedule-title');
+            this.tableBody = this.element.querySelector('.schedule-table-body');
+            this.statusIndicator = this.element.querySelector('.status-indicator');
+            this.undoBtn = this.element.querySelector('.undo-btn');
+            this.redoBtn = this.element.querySelector('.redo-btn');
+            schedulesWrapper.appendChild(this.element);
+        }
+
+        render(data) {
+            this.isUpdatingFromRemote = true;
+            if (document.activeElement !== this.titleEl) {
+                this.titleEl.textContent = data.name;
+            }
+            if (!this.tableBody.contains(document.activeElement)) {
+                this.tableBody.innerHTML = data.content;
+                this.pushState(data.content, false);
+            }
+            this.updateStatus('Synced', 'success');
+            this.isUpdatingFromRemote = false;
+        }
+
+        pushState(content, shouldSave = true) {
+            if (this.undoHistory.length > 0 && this.undoHistory[this.undoHistory.length - 1] === content) return;
+            this.undoHistory.push(content);
+            this.redoHistory = [];
+            this.updateUndoRedoButtons();
+            if (shouldSave) {
+                this.saveToLocalStorage();
+                this.debouncedSaveToFirestore();
+            }
+        }
+        
+        saveToLocalStorage() {
+            const cache = getLocalStorageCache();
+            cache[this.id] = { name: this.titleEl.textContent, content: this.tableBody.innerHTML };
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cache));
+        }
+        
+        saveToFirestore() {
+            if (this.isUpdatingFromRemote) return;
+            this.updateStatus('Syncing...', 'warning');
+            const payload = { name: this.titleEl.textContent, content: this.tableBody.innerHTML };
+            schedulesCollection.doc(this.id).set(payload, { merge: true })
+                .catch(err => this.updateStatus('Error', 'danger'));
+        }
+        
+        debouncedSaveToFirestore = debounce(() => this.saveToFirestore(), 1500);
+
+        updateUndoRedoButtons() {
+            this.undoBtn.disabled = this.undoHistory.length <= 1;
+            this.redoBtn.disabled = this.redoHistory.length === 0;
+        }
+
+        updateStatus(text, type) {
+            this.statusIndicator.textContent = text;
+            this.statusIndicator.style.color = `var(--${type}-color)`;
+        }
+
+        clearCellSelection() {
+            this.selectedCells.forEach(c => c.classList.remove('cell-selected'));
+            this.selectedCells = [];
+        }
+
+        setupEventListeners() {
+            this.element.addEventListener('click', (e) => this.handleElementClick(e));
+            this.element.addEventListener('contextmenu', (e) => this.handleContextMenu(e));
+            this.titleEl.addEventListener('input', () => {
+                this.saveToLocalStorage();
+                this.debouncedSaveToFirestore();
+            });
+            this.tableBody.addEventListener('input', () => this.pushState(this.tableBody.innerHTML));
+        }
+
+        handleElementClick(e) {
+            const target = e.target;
+            const handle = target.closest('.row-handle');
+            
+            if (target.closest('.undo-btn')) this.undo();
+            else if (target.closest('.redo-btn')) this.redo();
+            else if (target.closest('.reset-btn')) this.reset();
+            else if (target.closest('.delete-btn')) this.delete();
+            else if (handle && !handle.closest('tr').classList.contains('no-actions')) {
+                e.preventDefault();
+                activeContextScheduleId = this.id;
+                this.activeRow = handle.closest('tr');
+                showRowContextMenu(e);
+            }
+            else {
+                const cell = target.closest('td, th');
+                if (cell && (e.ctrlKey || e.metaKey)) {
+                    e.preventDefault();
+                    cell.classList.toggle('cell-selected');
+                    this.selectedCells = Array.from(this.tableBody.querySelectorAll('.cell-selected'));
+                } else if (cell) {
+                    if (!cell.classList.contains('cell-selected')) this.clearCellSelection();
+                }
+            }
+        }
+
+        handleContextMenu(e) {
+            const cell = e.target.closest('td, th');
+            if (cell) {
+                e.preventDefault();
+                activeContextScheduleId = this.id;
+                if (!cell.classList.contains('cell-selected')) {
+                    this.clearCellSelection();
+                    cell.classList.add('cell-selected');
+                    this.selectedCells = [cell];
+                }
+                showCellContextMenu(e);
+            }
+        }
+        
+        undo() {
+            if (this.undoHistory.length <= 1) return;
+            this.redoHistory.push(this.undoHistory.pop());
+            const prevState = this.undoHistory[this.undoHistory.length - 1];
+            this.tableBody.innerHTML = prevState;
+            this.pushState(prevState);
+        }
+
+        redo() {
+            if (this.redoHistory.length === 0) return;
+            const nextState = this.redoHistory.pop();
+            this.tableBody.innerHTML = nextState;
+            this.pushState(nextState);
+        }
+
+        reset() {
+            if (confirm('Are you sure you want to reset this table?')) {
+                this.tableBody.innerHTML = DEFAULT_TABLE_HTML;
+                this.pushState(this.tableBody.innerHTML);
+            }
+        }
+        
+        delete() {
+             if (confirm('Are you sure you want to permanently delete this schedule?')) {
+                schedulesCollection.doc(this.id).delete();
+                const cache = getLocalStorageCache();
+                delete cache[this.id];
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cache));
+            }
+        }
+        
+        destroy() { this.element.remove(); }
+    }
+
+    // --- LOCAL STORAGE & INITIALIZATION ---
+    function getLocalStorageCache() {
+        try { return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {}; } catch { return {}; }
+    }
+
+    function initApp() {
+        setupGlobalUI();
+        const cache = getLocalStorageCache();
+        for (const id in cache) {
+            if (!activeSchedules[id]) {
+                const schedule = new Schedule(id, cache[id]);
+                schedule.updateStatus('Cached', 'warning');
+                activeSchedules[id] = schedule;
+            }
+        }
+        
+        schedulesCollection.orderBy("createdAt").onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                const id = change.doc.id;
+                const data = change.doc.data();
+                
+                if (change.type === 'added') {
+                    if (!activeSchedules[id]) activeSchedules[id] = new Schedule(id, data);
+                    else activeSchedules[id].render(data);
+                }
+                if (change.type === 'modified') {
+                    if (activeSchedules[id]) activeSchedules[id].render(data);
+                }
+                if (change.type === 'removed') {
+                    if (activeSchedules[id]) {
+                        activeSchedules[id].destroy();
+                        delete activeSchedules[id];
+                    }
+                }
+            });
+            const freshCache = {};
+            snapshot.docs.forEach(doc => { freshCache[doc.id] = doc.data(); });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(freshCache));
+
+        }, error => {
+            console.error("Firestore connection error. App is in offline mode.", error);
+            Object.values(activeSchedules).forEach(s => s.updateStatus('Offline', 'danger'));
+        });
+    }
+
+    // --- GLOBAL UI & CORE LOGIC FUNCTIONS ---
+    function setupGlobalUI() {
+        document.getElementById('addScheduleBtn').addEventListener('click', () => {
+            schedulesCollection.add({
+                name: "New Schedule",
+                content: DEFAULT_TABLE_HTML,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        });
+        
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.context-menu, .row-handle, [contenteditable]')) {
+                 rowContextMenu.style.display = 'none';
+                 cellContextMenu.style.display = 'none';
+            }
+            if (!e.target.closest('.master-container') && !e.ctrlKey && !e.metaKey) {
+                Object.values(activeSchedules).forEach(s => s.clearCellSelection());
+            }
+        });
+        
+        rowContextMenu.innerHTML = `<div class="context-menu-item" data-action="addAbove">Add row above</div><div class="context-menu-item" data-action="addBelow">Add row below</div><hr><div class="context-menu-item delete" data-action="delete">Delete row</div>`;
+        cellContextMenu.innerHTML = `<div class="context-menu-item" data-action="merge">Merge Cells</div><div class="context-menu-item" data-action="split">Split Cell</div><hr><div class="context-menu-item" data-action="align-left">Align Left</div><div class="context-menu-item" data-action="align-center">Align Center</div><div class="context-menu-item" data-action="align-right">Align Right</div>`;
+
+        rowContextMenu.addEventListener('click', handleContextMenuClick);
+        cellContextMenu.addEventListener('click', handleContextMenuClick);
+    }
+    
+    function handleContextMenuClick(e) {
+        const action = e.target.closest('[data-action]')?.dataset.action;
+        const schedule = activeSchedules[activeContextScheduleId];
+        if (!action || !schedule) return;
+        
+        let newRow;
+        if (schedule.activeRow) {
+            if (action === 'addAbove') newRow = insertNewRow(schedule.activeRow, 'beforebegin');
+            if (action === 'addBelow') newRow = insertNewRow(schedule.activeRow, 'afterend');
+            if (action === 'delete' && confirm('Delete row?')) schedule.activeRow.remove();
+        }
+        
+        if (schedule.selectedCells.length > 0) {
+            if (action.startsWith('align-')) setCellAlignment(schedule, action.split('-')[1]);
+            else if (action === 'merge') mergeCells(schedule);
+            else if (action === 'split') splitCell(schedule);
+        }
+        
+        schedule.pushState(schedule.tableBody.innerHTML);
+        if (newRow) newRow.cells[0].focus();
+        rowContextMenu.style.display = 'none';
+        cellContextMenu.style.display = 'none';
+    }
+    
+    function positionContextMenu(event, menuElement) {
+        const { clientX: mouseX, clientY: mouseY } = event;
+        const { innerWidth, innerHeight } = window;
+        const { offsetWidth: menuWidth, offsetHeight: menuHeight } = menuElement;
+
+        let x = mouseX + 5;
+        let y = mouseY + 5;
+
+        if (x + menuWidth > innerWidth) x = mouseX - menuWidth - 5;
+        if (y + menuHeight > innerHeight) y = mouseY - menuHeight - 5;
+        
+        menuElement.style.top = `${y}px`;
+        menuElement.style.left = `${x}px`;
+    }
+
+    function showRowContextMenu(e) {
+        cellContextMenu.style.display = 'none';
+        rowContextMenu.style.display = 'block';
+        positionContextMenu(e, rowContextMenu);
+    }
+
+    function showCellContextMenu(e) {
+        const schedule = activeSchedules[activeContextScheduleId];
+        if (!schedule) return;
+        cellContextMenu.querySelector('[data-action="merge"]').classList.toggle('disabled', !canMerge(schedule));
+        cellContextMenu.querySelector('[data-action="split"]').classList.toggle('disabled', schedule.selectedCells.length !== 1 || schedule.selectedCells[0].colSpan <= 1);
+        
+        cellContextMenu.querySelectorAll('[data-action^="align-"]').forEach(item => item.classList.remove('active'));
+        if (schedule.selectedCells.length === 1) {
+            const alignment = schedule.selectedCells[0].style.textAlign || 'left';
+            const activeItem = cellContextMenu.querySelector(`[data-action="align-${alignment}"]`);
+            if (activeItem) activeItem.classList.add('active');
+        }
+
+        rowContextMenu.style.display = 'none';
+        cellContextMenu.style.display = 'block';
+        positionContextMenu(e, cellContextMenu);
+    }
+    
+    function insertNewRow (targetRow, position) {
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `<td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>&nbsp;</td>`;
+        targetRow.insertAdjacentElement(position, newRow);
+        return newRow;
+    };
+    function setCellAlignment(schedule, alignment) {
+        schedule.selectedCells.forEach(cell => cell.style.textAlign = alignment);
+        schedule.clearCellSelection();
+    }
+    function canMerge(schedule) {
+        if (schedule.selectedCells.length < 2) return false;
+        const parentRow = schedule.selectedCells[0].parentElement;
+        const sortedCells = [...schedule.selectedCells].sort((a, b) => a.cellIndex - b.cellIndex);
+        for(let i = 0; i < sortedCells.length; i++) {
+            if (sortedCells[i].parentElement !== parentRow) return false;
+            if (i > 0 && (sortedCells[i-1].cellIndex + sortedCells[i-1].colSpan) !== sortedCells[i].cellIndex) return false;
+        }
+        return true;
+    }
+    function mergeCells(schedule) {
+        if (!canMerge(schedule)) return;
+        const sortedCells = [...schedule.selectedCells].sort((a, b) => a.cellIndex - b.cellIndex);
+        const firstCell = sortedCells[0];
+        let totalColSpan = 0;
+        const combinedContent = sortedCells.map(cell => {
+            const handle = cell.querySelector('.row-handle');
+            if(handle) handle.remove();
+            return cell.innerHTML.trim();
+        });
+
+        sortedCells.forEach((cell, index) => {
+            totalColSpan += cell.colSpan;
+            if (index > 0) cell.remove();
+        });
+        firstCell.colSpan = totalColSpan;
+        firstCell.innerHTML = `<span class="row-handle"><span class="row-handle-icon">⠿</span></span>` + combinedContent.join('<br>');
+        schedule.clearCellSelection();
+    }
+    function splitCell(schedule) {
+        if (schedule.selectedCells.length !== 1) return;
+        const cell = schedule.selectedCells[0];
+        const span = cell.colSpan;
+        if (span <= 1) return;
+        
+        const handle = cell.querySelector('.row-handle');
+        if(handle) handle.remove();
+
+        cell.colSpan = 1;
+        if(handle) cell.prepend(handle);
+        
+        for (let i = 1; i < span; i++) {
+            const newCell = document.createElement(cell.tagName);
+            newCell.setAttribute('contenteditable', 'true');
+            cell.insertAdjacentElement('afterend', newCell);
+        }
+        schedule.clearCellSelection();
+    }
+
+    // --- START THE APP ---
+    initApp();
+
+})();
+</script>
+</body>
+</html>
