@@ -9,6 +9,11 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
+<!-- Noto Sans Telugu Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@700&display=swap" rel="stylesheet">
+
 <style>
     :root {
         --primary-color: #0d6efd;
@@ -23,6 +28,8 @@
         background-color: var(--background-color);
         padding: 20px;
         color: #212529;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     .master-container {
         max-width: 1000px;
@@ -42,7 +49,6 @@
         margin-bottom: 0;
         padding-bottom: 0;
     }
-
     .schedule-header {
         display: flex;
         align-items: center;
@@ -57,6 +63,7 @@
         border: 1px solid transparent;
         padding: 5px;
         border-radius: 4px;
+        font-family: 'Noto Sans Telugu', sans-serif;
     }
     .schedule-title:focus {
         outline: none;
@@ -75,7 +82,6 @@
         border: 1px solid #ccc;
         background-color: #f0f0f0;
         border-radius: 6px;
-        margin-right: 0; /* Use gap for spacing */
     }
     .toolbar button:hover:not(:disabled) { background-color: #e2e6ea; }
     .toolbar button:disabled { cursor: not-allowed; opacity: 0.5; }
@@ -83,19 +89,29 @@
     .toolbar .delete-btn { margin-left: auto; border-color: var(--danger-color); }
     .toolbar .delete-btn:hover:not(:disabled) { background-color: var(--danger-color); color: white; }
     
-    table { width: 100%; border-collapse: collapse; border: 2px solid #4B0082; }
-    th, td { border: 1px solid #333; padding: 10px; text-align: left; vertical-align: middle; position: relative; }
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        border: 2px solid #4B0082; 
+        font-family: 'Noto Sans Telugu', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.25px;
+    }
+    /* --- FIX: Decreased standard cell height --- */
+    th, td { 
+        border: 1px solid #333; 
+        padding: 0 8px;
+        text-align: left; 
+        vertical-align: middle; 
+        position: relative; 
+        height: 32px; /* New standard row height */
+    }
     [contenteditable="true"]:focus { background-color: #fffbe5; }
     
-    tbody tr > th:first-child,
-    tbody tr > td:first-child {
-        position: relative;
-        padding-left: 35px;
-    }
-
     .row-handle {
         position: absolute;
-        left: 0;
+        left: -30px;
         top: 0;
         width: 30px;
         height: 100%;
@@ -106,16 +122,12 @@
         color: #aaa;
         user-select: none;
     }
-
     .row-handle-icon {
         opacity: 0;
         transition: opacity 0.2s;
         font-size: 18px;
     }
-
-    tr:hover .row-handle-icon {
-        opacity: 1;
-    }
+    tr:hover .row-handle-icon { opacity: 1; }
     
     td.cell-selected, th.cell-selected {
         outline: 2px solid var(--primary-color) !important;
@@ -129,26 +141,34 @@
     .context-menu-item.disabled { color: #aaa; cursor: not-allowed; background: #fff; }
     .context-menu-item.delete { color: var(--danger-color); }
     .context-menu-item.active { background-color: #e9ecef; font-weight: bold; }
-    
-    .cell-icon {
-        float: left;
-        height: calc(1em + 18px);
-        margin-top: -9px;
-        margin-bottom: -9px;
-        margin-right: 10px;
-        object-fit: contain;
+
+    .cell-content-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 100%;
     }
+    .cell-icon {
+        height: 70%;
+        max-height: 24px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
     .header-content-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 8px;
+        height: 100%;
+    }
+    .header-row td {
+        font-size: 14px;
+        color: #ffffff;
+        height: 42px; /* --- FIX: Header rows are slightly taller --- */
     }
 
-    /* --- FIX: New button container and styles --- */
-    #add-schedule-footer {
-        max-width: 1000px;
-        margin: -5px auto 25px auto;
-    }
+    #add-schedule-footer { max-width: 1000px; margin: 25px auto; }
     #addNewScheduleFooterBtn {
         width: 100%;
         padding: 15px;
@@ -170,7 +190,6 @@
         border-color: var(--primary-color);
         color: white;
     }
-
 </style>
 </head>
 <body>
@@ -179,7 +198,6 @@
     <div id="schedules-wrapper"></div>
 </div>
 
-<!-- --- FIX: New button added to the bottom --- -->
 <div id="add-schedule-footer">
     <button id="addNewScheduleFooterBtn">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg>
@@ -229,10 +247,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const schedulesCollection = db.collection("schedules");
-    const LOCAL_STORAGE_KEY = 'firebaseSchedulesCache_v6';
+    const LOCAL_STORAGE_KEY = 'firebaseSchedulesCache_v7';
     
-    // --- TEMPLATES & DEFAULTS (with images and centered headers) ---
-    const DEFAULT_TABLE_HTML = `<tr class="no-actions"><th style="background-color: rgb(240, 248, 255); font-weight: bold; text-align: center;" contenteditable="true"><span class="row-handle"></span>బైబిలు అధ్యాయం, ప్రసంగి 11-12</th><th style="background-color: rgb(240, 248, 255);" contenteditable="true">తేదీ:</th><th style="background-color: rgb(240, 248, 255);" contenteditable="true">29-10-2025</th></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon">పాట: 155</td><td style="text-align: right;" contenteditable="true">చైర్మన్</td><td contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span>ఆరంభ మాటలు (1 నిమి.)</td><td style="text-align: right;" contenteditable="true">ప్రార్థన:</td><td contenteditable="true"></td></tr><tr class="header-row no-actions" data-section="treasures"><td colspan="3" style="background-color: rgb(70, 132, 153); text-align: center;" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>దేవుని వాక్యంలో ఉన్న సంపద</span></div></td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>1. ఆరోగ్యంగా ఉండండి, లైఫ్‌ని ఎంజాయ్‌ చేయండి. (10 నిమి.)</td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>2. దేవుని వాక్యంలో రత్నాలు (10 నిమి.)</td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>3. చదవాల్సిన బైబిలు భాగం: (4 నిమి.)</td></tr><tr class="header-row no-actions" data-section="ministry"><td colspan="3" style="background-color: rgb(212, 162, 42); text-align: center;" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>చక్కగా సువార్త ప్రకటించాలి</span></div></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>4. మళ్ళీ కలిసినప్పుడు (3 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>5. మళ్ళీ కలిసినప్పుడు (4 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>6. ప్రసంగం (5 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr class="header-row no-actions" data-section="living"><td colspan="3" style="background-color: rgb(192, 66, 53); text-align: center;" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>మన క్రైస్తవ జీవితం</span></div></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon">పాట: 111</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>7. స్థానిక అవసరాలు (15 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>8. సంఘ బైబిలు అధ్యయనం: (30 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span>ముగింపు మాటలు (3 నిమి.)</td><td style="text-align: right;" contenteditable="true">చైర్మన్</td><td contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon">పాట: 8</td><td style="text-align: right;" contenteditable="true">ముగింపు ప్రార్థన:</td><td contenteditable="true"></td></tr>`.trim();
+    // --- TEMPLATES & DEFAULTS ---
+    const DEFAULT_TABLE_HTML = `<tr class="no-actions"><th style="background-color: rgb(240, 248, 255);" contenteditable="true"><span class="row-handle"></span>బైబిలు అధ్యాయం, ప్రసంగి 11-12</th><th style="background-color: rgb(240, 248, 255);" contenteditable="true">తేదీ:</th><th style="background-color: rgb(240, 248, 255);" contenteditable="true">29-10-2025</th></tr><tr class="no-actions"><td contenteditable="true"><div class="cell-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>పాట: 155</span></div></td><td style="text-align: right;" contenteditable="true">చైర్మన్</td><td contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span>ఆరంభ మాటలు (1 నిమి.)</td><td style="text-align: right;" contenteditable="true">ప్రార్థన:</td><td contenteditable="true"></td></tr><tr class="header-row no-actions" data-section="treasures"><td colspan="3" style="background-color: rgb(70, 132, 153);" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://wixo.in/1.png" class="cell-icon"><span>దేవుని వాక్యంలో ఉన్న సంపద</span></div></td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>1. ఆరోగ్యంగా ఉండండి, లైఫ్‌ని ఎంజాయ్‌ చేయండి. (10 నిమి.)</td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>2. దేవుని వాక్యంలో రత్నాలు (10 నిమి.)</td></tr><tr><td colspan="3" contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>3. చదవాల్సిన బైబిలు భాగం: (4 నిమి.)</td></tr><tr class="header-row no-actions" data-section="ministry"><td colspan="3" style="background-color: rgb(212, 162, 42);" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://via.placeholder.com/40/FFFFFF/d4a22a?text=M" class="cell-icon"><span>చక్కగా సువార్త ప్రకటించాలి</span></div></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>4. మళ్ళీ కలిసినప్పుడు (3 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>5. మళ్ళీ కలిసినప్పుడు (4 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>6. ప్రసంగం (5 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr class="header-row no-actions" data-section="living"><td colspan="3" style="background-color: rgb(192, 66, 53);" contenteditable="true"><div class="header-content-wrapper"><span class="row-handle"></span><img src="https://via.placeholder.com/40/FFFFFF/c04235?text=L" class="cell-icon"><span>మన క్రైస్తవ జీవితం</span></div></td></tr><tr><td contenteditable="true"><div class="cell-content-wrapper"><span class="row-handle"><span class="row-handle-icon">⠿</span></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon"><span>పాట: 111</span></div></td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>7. స్థానిక అవసరాలు (15 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr><td contenteditable="true"><span class="row-handle"><span class="row-handle-icon">⠿</span></span>8. సంఘ బైబిలు అధ్యయనం: (30 నిమి.)</td><td colspan="2" contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><span class="row-handle"></span>ముగింపు మాటలు (3 నిమి.)</td><td style="text-align: right;" contenteditable="true">చైర్మన్</td><td contenteditable="true"></td></tr><tr class="no-actions"><td contenteditable="true"><div class="cell-content-wrapper"><span class="row-handle"></span><img src="https://via.placeholder.com/40/8A2BE2/FFFFFF?text=♫" class="cell-icon"><span>పాట: 8</span></div></td><td style="text-align: right;" contenteditable="true">ముగింపు ప్రార్థన:</td><td contenteditable="true"></td></tr>`.trim();
 
     // --- GLOBAL STATE & ELEMENTS ---
     const schedulesWrapper = document.getElementById('schedules-wrapper');
@@ -462,7 +480,6 @@
 
     // --- GLOBAL UI & CORE LOGIC FUNCTIONS ---
     function setupGlobalUI() {
-        // --- FIX: Event listener moved to the new bottom button ---
         document.getElementById('addNewScheduleFooterBtn').addEventListener('click', () => {
             schedulesCollection.add({
                 name: "New Schedule",
