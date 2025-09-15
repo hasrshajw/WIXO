@@ -14,7 +14,7 @@
             --menu-new-bg: #ffffff;
             --menu-new-border: #eeeeee;
             --menu-new-hover: #f5f5f5;
-            --submenu-bg: #f1f1f1; /* Color for the dropdown area */
+            --submenu-bg: #f1f1f1;
             --icon-color: #757575;
             --dc-button-borderColor: rgba(18, 18, 18, 0.1);
         }
@@ -46,14 +46,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 50px;
+            height: 56px; /* Optimized height for mobile */
             padding: 0 15px 0 0; 
         }
 
         #mobileNavTopBar .mobileLogo {
             display: block;
-            width: 67px;
-            height: 50px;
+            width: 75px; /* Adjusted width for proportion */
+            height: 56px; /* Optimized height for mobile */
             background-image: url(https://www.jw.org/assets/ct/46605f23da/images/siteLogo-jworg-mobile.svg), none;
             background-repeat: no-repeat;
             background-size: contain;
@@ -75,7 +75,7 @@
         .header-icons {
             display: flex;
             align-items: center;
-            height: 50px;
+            height: 56px; /* Matched to navbar height */
             cursor: pointer;
         }
 
@@ -88,10 +88,10 @@
         /* --- Slide-Out Menu --- */
         .menu-overlay {
             position: fixed;
-            top: 50px;
+            top: 56px; /* Adjusted position */
             left: 0;
             width: 100%;
-            height: calc(100% - 50px);
+            height: calc(100% - 56px); /* Adjusted height */
             background-color: rgba(0, 0, 0, 0.6);
             z-index: 998;
             opacity: 0;
@@ -106,9 +106,9 @@
 
         .slide-menu {
             position: fixed;
-            top: 50px;
+            top: 56px; /* Adjusted position */
             right: 0;
-            height: calc(100vh - 50px);
+            height: calc(100vh - 56px); /* Adjusted height */
             width: 320px;
             max-width: 90%;
             background-color: var(--menu-new-bg);
@@ -209,7 +209,7 @@
             padding-left: 50px;
             background-color: var(--submenu-bg);
         }
-        
+
         /* --- Bottom Close Bar --- */
         .bottom-close-bar {
             height: 50px;
