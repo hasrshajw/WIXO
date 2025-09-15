@@ -122,6 +122,7 @@
             display: flex;
             flex-direction: column;
             border-left: 1px solid var(--menu-new-border);
+            overflow: hidden; /* This is the critical fix */
         }
 
         .slide-menu.is-open {
@@ -132,14 +133,12 @@
             list-style: none;
             margin: 0;
             padding: 0;
-            overflow-y: auto; /* Allow this area to scroll */
+            overflow-y: auto;
             flex-grow: 1;
-            /* Hide scrollbar for major browsers */
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         
-        /* Hide scrollbar for Chrome, Safari and Opera */
         .menu-links::-webkit-scrollbar {
             display: none;
         }
