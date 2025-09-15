@@ -85,19 +85,9 @@
             color: var(--text-light);
         }
 
-        /* Logic to switch between hamburger and X icon */
-        .header-icons .close-icon {
-            display: none;
-        }
-
-        body.menu-open .header-icons .hamburger-icon {
-            display: none;
-        }
-
-        body.menu-open .header-icons .close-icon {
-            display: block;
-        }
-
+        .header-icons .close-icon { display: none; }
+        body.menu-open .header-icons .hamburger-icon { display: none; }
+        body.menu-open .header-icons .close-icon { display: block; }
 
         /* --- Slide-Out Menu --- */
         .menu-overlay {
@@ -196,7 +186,6 @@
             transition: transform 0.3s ease-in-out;
         }
         
-        /* --- Submenu Styles --- */
         .submenu {
             list-style: none;
             padding: 0;
@@ -223,6 +212,56 @@
             height: 50px;
             padding: 12px 5px 12px 52px;
             background-color: var(--submenu-bg);
+        }
+
+        /* --- Profile Section --- */
+        .profile-section {
+            padding: 15px;
+            border-top: 1px solid var(--menu-new-border);
+            flex-shrink: 0; /* Prevents this section from shrinking */
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .profile-email {
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        .logout-button {
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #555;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .logout-button:hover {
+            background-color: #e0e0e0;
         }
 
     </style>
@@ -274,6 +313,16 @@
             </li>
             <li><a href="#"><i class="fas fa-user menu-icon"></i><span>లాగిన్‌</span></a></li>
         </ul>
+        <div class="profile-section">
+            <div class="profile-info">
+                 <img class="profile-image" src="https://placehold.co/40x40" alt="Profile">
+                 <div class="profile-text">
+                     <div class="profile-name">Vamsi Krishna</div>
+                     <div class="profile-email">vamsi.krishna@example.com</div>
+                 </div>
+            </div>
+            <button class="logout-button">Logout</button>
+        </div>
     </div>
 
     <script>
@@ -325,7 +374,7 @@
                 openMenu();
             }
         });
-
+        
         menuOverlay.addEventListener('click', closeMenu);
 
     </script>
