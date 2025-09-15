@@ -113,7 +113,8 @@
             position: fixed;
             top: 56px;
             right: 0;
-            height: calc(100vh - 56px);
+            /* THIS IS THE KEY FIX FOR MOBILE BROWSERS */
+            height: calc(100dvh - 56px);
             width: 320px;
             max-width: 90%;
             background-color: var(--menu-new-bg);
@@ -134,7 +135,7 @@
             margin: 0;
             padding: 0;
             overflow-y: auto;
-            flex-grow: 1; /* MODIFIED: Makes this section grow and scroll */
+            flex-grow: 1; /* Makes this section grow and scroll */
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -225,7 +226,6 @@
             border-top: 1px solid var(--menu-new-border);
             flex-shrink: 0; /* Ensures this section doesn't shrink */
             background-color: var(--menu-new-bg);
-            /* MODIFIED: margin-top: auto; was removed */
         }
 
         .profile-info {
