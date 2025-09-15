@@ -46,14 +46,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 56px; /* Optimized height for mobile */
+            height: 56px;
             padding: 0 15px 0 0; 
         }
 
         #mobileNavTopBar .mobileLogo {
             display: block;
-            width: 75px; /* Adjusted width for proportion */
-            height: 56px; /* Optimized height for mobile */
+            width: 75px;
+            height: 56px;
             background-image: url(https://www.jw.org/assets/ct/46605f23da/images/siteLogo-jworg-mobile.svg), none;
             background-repeat: no-repeat;
             background-size: contain;
@@ -75,23 +75,37 @@
         .header-icons {
             display: flex;
             align-items: center;
-            height: 56px; /* Matched to navbar height */
+            height: 56px;
             cursor: pointer;
         }
 
-        .header-icons .svg-inline--fa {
+        .header-icons svg {
             height: 24px;
             width: 24px;
             color: var(--text-light);
         }
+        
+        /* --- Icon Toggle Styles --- */
+        .header-icons .icon-close {
+            display: none;
+        }
+
+        body.menu-open .header-icons .icon-menu {
+            display: none;
+        }
+
+        body.menu-open .header-icons .icon-close {
+            display: block;
+        }
+
 
         /* --- Slide-Out Menu --- */
         .menu-overlay {
             position: fixed;
-            top: 56px; /* Adjusted position */
+            top: 56px;
             left: 0;
             width: 100%;
-            height: calc(100% - 56px); /* Adjusted height */
+            height: calc(100% - 56px);
             background-color: rgba(0, 0, 0, 0.6);
             z-index: 998;
             opacity: 0;
@@ -106,9 +120,9 @@
 
         .slide-menu {
             position: fixed;
-            top: 56px; /* Adjusted position */
+            top: 56px;
             right: 0;
-            height: calc(100vh - 56px); /* Adjusted height */
+            height: calc(100vh - 56px);
             width: 320px;
             max-width: 90%;
             background-color: var(--menu-new-bg);
@@ -137,8 +151,8 @@
             align-items: center;
             color: var(--menu-new-text);
             background-color: var(--menu-new-bg);
-            height: 50px;
-            padding: 12px 5px 12px 12px;
+            height: 56px;
+            padding: 15px 5px 15px 12px;
             box-sizing: border-box;
             text-decoration: none;
             font-size: 1rem;
@@ -206,36 +220,9 @@
         }
         
         .submenu li a {
-            padding-left: 50px;
+            height: 50px;
+            padding: 12px 5px 12px 52px;
             background-color: var(--submenu-bg);
-        }
-
-        /* --- Bottom Close Bar --- */
-        .bottom-close-bar {
-            height: 50px;
-            background-color: #757575;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0;
-            box-sizing: border-box;
-            flex-shrink: 0;
-        }
-        
-        .closePanel {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background-color: rgba(18, 18, 18, .2);
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .closePanel svg {
-            width: 24px;
-            height: 24px;
         }
 
     </style>
@@ -248,7 +235,10 @@
                 <span class="srText">JW.ORG</span>
             </a>
             <div class="header-icons" id="menu-toggle-button">
-                <svg class="svg-inline--fa jwi-menu fa-w-16" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22.5 7h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 13h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 19h-21a.5.5 0 010-1h21a.5.5 0 010 1z"></path></svg>
+                <svg class="icon-menu" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22.5 7h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 13h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 19h-21a.5.5 0 010-1h21a.5.5 0 010 1z"></path></svg>
+                <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12.707 12l6.146-6.146a.5.5 0 00-.707-.707L12 11.293 5.854 5.146a.5.5 0 00-.707.707L11.293 12l-6.147 6.146a.5.5 0 10.707.707L12 12.707l6.146 6.146a.5.5 0 00.707-.707z"></path>
+                </svg>
             </div>
         </div>
     </header>
@@ -284,18 +274,10 @@
             </li>
             <li><a href="#"><i class="fas fa-user menu-icon"></i><span>లాగిన్‌</span></a></li>
         </ul>
-        <div class="bottom-close-bar">
-            <div class="closePanel" id="bottom-close-btn" aria-label="Close menu">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M12.707 12l6.146-6.146a.5.5 0 00-.707-.707L12 11.293 5.854 5.146a.5.5 0 00-.707.707L11.293 12l-6.147 6.146a.5.5 0 10.707.707L12 12.707l6.146 6.146a.5.5 0 00.707-.707z"></path>
-                </svg>
-            </div>
-        </div>
     </div>
 
     <script>
         const menuToggleButton = document.getElementById('menu-toggle-button');
-        const closeMenuButton = document.getElementById('bottom-close-btn');
         const slideMenu = document.getElementById('slide-menu');
         const menuOverlay = document.getElementById('menu-overlay');
         const body = document.body;
@@ -336,8 +318,15 @@
             }
         }
 
-        menuToggleButton.addEventListener('click', openMenu);
-        closeMenuButton.addEventListener('click', closeMenu);
+        menuToggleButton.addEventListener('click', function() {
+            const isMenuOpen = slideMenu.classList.contains('is-open');
+            if (isMenuOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
         menuOverlay.addEventListener('click', closeMenu);
 
     </script>
