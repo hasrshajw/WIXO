@@ -84,17 +84,17 @@
             width: 24px;
             color: var(--text-light);
         }
-        
-        /* --- Icon Toggle Styles --- */
-        .header-icons .icon-close {
+
+        /* Logic to switch between hamburger and X icon */
+        .header-icons .close-icon {
             display: none;
         }
 
-        body.menu-open .header-icons .icon-menu {
+        body.menu-open .header-icons .hamburger-icon {
             display: none;
         }
 
-        body.menu-open .header-icons .icon-close {
+        body.menu-open .header-icons .close-icon {
             display: block;
         }
 
@@ -235,8 +235,8 @@
                 <span class="srText">JW.ORG</span>
             </a>
             <div class="header-icons" id="menu-toggle-button">
-                <svg class="icon-menu" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22.5 7h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 13h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 19h-21a.5.5 0 010-1h21a.5.5 0 010 1z"></path></svg>
-                <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <svg class="hamburger-icon" aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M22.5 7h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 13h-21a.5.5 0 010-1h21a.5.5 0 010 1zM22.5 19h-21a.5.5 0 010-1h21a.5.5 0 010 1z"></path></svg>
+                <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M12.707 12l6.146-6.146a.5.5 0 00-.707-.707L12 11.293 5.854 5.146a.5.5 0 00-.707.707L11.293 12l-6.147 6.146a.5.5 0 10.707.707L12 12.707l6.146 6.146a.5.5 0 00.707-.707z"></path>
                 </svg>
             </div>
@@ -318,9 +318,8 @@
             }
         }
 
-        menuToggleButton.addEventListener('click', function() {
-            const isMenuOpen = slideMenu.classList.contains('is-open');
-            if (isMenuOpen) {
+        menuToggleButton.addEventListener('click', () => {
+            if (body.classList.contains('menu-open')) {
                 closeMenu();
             } else {
                 openMenu();
