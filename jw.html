@@ -134,7 +134,7 @@
             margin: 0;
             padding: 0;
             overflow-y: auto;
-            /* Removed flex-grow and min-height for the new layout method */
+            flex-grow: 1; /* MODIFIED: Makes this section grow and scroll */
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -223,9 +223,9 @@
         .profile-section {
             padding: 20px 15px;
             border-top: 1px solid var(--menu-new-border);
-            flex-shrink: 0;
+            flex-shrink: 0; /* Ensures this section doesn't shrink */
             background-color: var(--menu-new-bg);
-            margin-top: auto; /* THE CRITICAL FIX: Pushes this section to the bottom */
+            /* MODIFIED: margin-top: auto; was removed */
         }
 
         .profile-info {
@@ -329,8 +329,8 @@
             <div class="profile-info">
                  <img class="profile-image" src="https://placehold.co/40x40" alt="Profile">
                  <div class="profile-text">
-                     <div class="profile-name">Vamsi Krishna</div>
-                     <div class="profile-email">vamsi.krishna@example.com</div>
+                      <div class="profile-name">Vamsi Krishna</div>
+                      <div class="profile-email">vamsi.krishna@example.com</div>
                  </div>
             </div>
             <button class="logout-button"><i class="fas fa-sign-out-alt"></i>Logout</button>
