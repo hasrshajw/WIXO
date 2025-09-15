@@ -123,7 +123,6 @@
             display: flex;
             flex-direction: column;
             border-left: 1px solid var(--menu-new-border);
-            overflow: hidden;
         }
 
         .slide-menu.is-open {
@@ -135,8 +134,7 @@
             margin: 0;
             padding: 0;
             overflow-y: auto;
-            flex-grow: 1;
-            min-height: 0; /* THE CRITICAL FIX: Allows this element to shrink properly */
+            /* Removed flex-grow and min-height for the new layout method */
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
@@ -155,7 +153,6 @@
             box-sizing: border-box;
             text-decoration: none;
             font-size: 1rem;
-            /* Removed border-bottom for a cleaner look */
             transition: background-color 0.2s;
         }
         
@@ -224,10 +221,11 @@
 
         /* --- Profile Section --- */
         .profile-section {
-            padding: 20px 15px; /* Increased padding */
+            padding: 20px 15px;
             border-top: 1px solid var(--menu-new-border);
             flex-shrink: 0;
             background-color: var(--menu-new-bg);
+            margin-top: auto; /* THE CRITICAL FIX: Pushes this section to the bottom */
         }
 
         .profile-info {
