@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deeps Beer Cafe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #4a6da7;
+            --accent-green: #4a6da7; /* Changed to new color */
+            --pure-white: #FFFFFF;
+            --light-gray: #f5f5f5;
+            --text-color: #333;
+            --text-light: #666;
+            --border-gray: #e0e0e0;
+            --color-danger: #dc2626;
+        }
+
+        *,
+        *::before,
+        *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; overflow: hidden; }
+        body { font-family: 'IBM Plex Sans', sans-serif; background-color: var(--pure-white); display: flex; justify-content: center; align-items: center; color: var(--text-color); }
+        .container { width: 100%; max-width: 420px; height: 100%; max-height: 900px; background-color: var(--pure-white); border-radius: 0; overflow: hidden; display: flex; flex-direction: column; }
+        .form-panel-wrapper { flex-grow: 1; position: relative; display: flex; flex-direction: column; overflow-y: auto; }
+        .info-panel { display: none; }
+
+        /* Auth Section - Now visible by default on mobile */
+        #auth-section { display: flex; flex-direction: column; padding: 4rem 2rem 2rem; flex-grow: 1; justify-content: flex-start; }
+        .form-toggle { display: flex; justify-content: center; background-color: var(--light-gray); border-radius: 12px; padding: 5px; margin-bottom: 2.5rem; flex-shrink: 0; }
+        .toggle-btn { width: 50%; padding: 0.75rem; border: none; background-color: transparent; color: var(--text-light); font-size: 0.9rem; font-weight: 600; border-radius: 9px; cursor: pointer; transition: all 0.3s ease; }
+        .toggle-btn.active { background-color: var(--pure-white); color: var(--primary-dark); box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+        .form-container form { display: none; }
+        .form-container form.active { display: block; }
+        .form-header h2 { font-size: 1.8rem; font-weight: 600; text-align: center; margin-bottom: 0.5rem; }
+        .form-header p { text-align: center; color: var(--text-light); margin-bottom: 2rem; font-size: 0.9rem; }
+        .input-group { margin-bottom: 1.25rem; }
+        .input-group label { display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-light); }
+        .input-group input { width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-gray); background-color: var(--light-gray); border-radius: 12px; font-size: 1rem; font-family: 'IBM Plex Sans', sans-serif; transition: all 0.3s ease; }
+        .input-group input:focus { outline: none; border-color: var(--accent-green); background-color: var(--pure-white); box-shadow: 0 0 0 4px rgba(74, 109, 167, 0.2); }
+        .form-options { display: flex; justify-content: flex-end; margin: -0.5rem 0 1.5rem 0; }
+        .form-options .forgot-password { font-size: 0.875rem; color: var(--text-color); text-decoration: none; font-weight: 500; }
+        .btn-submit { width: 100%; padding: 1rem; font-size: 1rem; font-weight: 600; color: var(--pure-white); background-color: var(--primary-dark); border: none; border-radius: 12px; cursor: pointer; margin-top: 0.5rem; transition: all 0.3s; }
+        .btn-submit:hover { background-color: #3e5a8e; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .divider { display: flex; align-items: center; text-align: center; color: var(--text-light); margin: 1.75rem 0; font-size: 0.8rem; font-weight: 500; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border-gray); }
+        .divider:not(:empty)::before { margin-right: .75em; }
+        .divider:not(:empty)::after { margin-left: .75em; }
+        .btn-google { width: 100%; padding: 0.9rem 1rem; font-size: 0.95rem; font-weight: 600; color: var(--text-color); background-color: var(--pure-white); border: 1px solid var(--border-gray); border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .btn-google:hover { background-color: var(--light-gray); }
+        .google-icon { width: 20px; height: 20px; margin-right: 0.75rem; }
+        .switch-form-text { text-align: center; margin-top: 2rem; font-size: 0.9rem; color: var(--text-light); }
+        .switch-form-text a { color: var(--text-color); font-weight: 600; text-decoration: none; cursor: pointer; }
+
+        /* Feedback Elements (Loader & Toast) */
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); }
+        .spinner { width: 48px; height: 48px; border: 5px solid rgba(74, 109, 167, 0.2); border-bottom-color: var(--accent-green); border-radius: 50%; animation: rotation 1s linear infinite; }
+        #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); padding: 15px 25px; border-radius: 12px; color: white; font-weight: 500; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 1001; }
+        #toast.show { bottom: 30px; }
+        #toast.success { background-color: var(--accent-green); color: var(--pure-white); }
+        #toast.error { background-color: var(--color-danger); }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Desktop View */
+        @media (min-width: 992px) {
+            html, body { height: auto; overflow: auto; }
+            body { background-color: #e9eef2; padding: 2rem; min-height: 100vh; }
+            .container { flex-direction: row; max-width: 1200px; height: 800px; max-height: 95vh; border-radius: 2rem; box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.2); }
+            .info-panel { display: flex; flex-direction: column; justify-content: space-between; flex-basis: 55%; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1586993451228-098a81de5d3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80') center center / cover; padding: 4rem; color: var(--pure-white); }
+            .info-panel-header { font-size: 1.5rem; font-weight: 700; }
+            .info-panel-text h2 { font-size: 3.5rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+            .info-panel-text p { font-size: 1rem; max-width: 450px; line-height: 1.6; opacity: 0.8; }
+            .form-panel-wrapper { flex-basis: 45%; display: flex; align-items: center; justify-content: center; padding: 3rem; overflow-y: auto; position: static; flex-grow: 0; }
+            #auth-section { position: static; height: auto; padding: 0; width: 100%; max-width: 400px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Desktop side panel -->
+        <div class="info-panel">
+            <div class="info-panel-header">Deeps Beer Cafe</div>
+            <div class="info-panel-text">
+                <h2>The best nights are usually unplanned.</h2>
+                <p>Join our community to discover exclusive events, new brews, and connect with fellow beer enthusiasts.</p>
+            </div>
+        </div>
+
+        <!-- Mobile-first content wrapper -->
+        <div class="form-panel-wrapper">
+            <div id="auth-section">
+                <div class="form-toggle">
+                    <button id="show-login-btn" class="toggle-btn active">Sign In</button>
+                    <button id="show-signup-btn" class="toggle-btn">Sign Up</button>
+                </div>
+                <div class="form-container">
+                    <form id="login-form" class="active">
+                        <div class="form-header">
+                            <h2>Welcome Back</h2>
+                            <p>Please enter your details to sign in.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" placeholder="Enter your password" required>
+                        </div>
+                        <div class="form-options">
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn-submit">Sign In</button>
+                        <div class="divider">OR</div>
+                        <button type="button" class="btn-google" id="google-signin-btn">
+                            <svg class="google-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.222,0-9.655-3.344-11.303-7.962l-6.571,4.819C9.656,40.909,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.089,5.571l6.19,5.238C42.012,36.494,44,30.638,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
+                            Sign in with Google
+                        </button>
+                        <p class="switch-form-text">
+                            Don't have an account? <a class="switch-to-signup">Sign Up</a>
+                        </p>
+                    </form>
+
+                    <form id="signup-form">
+                        <div class="form-header">
+                            <h2>Create Account</h2>
+                            <p>Join us! It only takes a minute.</p>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-username">Username</label>
+                            <input type="text" id="signup-username" placeholder="Choose a username" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-email">Email</label>
+                            <input type="email" id="signup-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-password">Password</label>
+                            <input type="password" id="signup-password" placeholder="Create a password" required>
+                        </div>
+                        <button type="submit" class="btn-submit">Create Account</button>
+                        <p class="switch-form-text">
+                            Already have an account? <a class="switch-to-login">Sign In</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feedback Elements -->
+    <div id="toast"></div>
+    <div id="loader"><div class="spinner"></div></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- HELPER FUNCTIONS ---
+            const showLoader = () => document.getElementById('loader').style.display = 'flex';
+            const hideLoader = () => document.getElementById('loader').style.display = 'none';
+            const showToast = (message, type = 'success') => {
+                const t = document.getElementById('toast');
+                t.textContent = message;
+                t.className = `show ${type}`;
+                setTimeout(() => {
+                    t.className = t.className.replace('show', '');
+                }, 3000);
+            }
+
+            // --- EVENT BINDING ---
+            const showLoginBtn = document.getElementById('show-login-btn');
+            const showSignupBtn = document.getElementById('show-signup-btn');
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const googleSigninBtn = document.getElementById('google-signin-btn');
+
+            // Toggle between Sign In and Sign Up forms
+            const goToLogin = () => {
+                signupForm.classList.remove('active');
+                showSignupBtn.classList.remove('active');
+                loginForm.classList.add('active');
+                showLoginBtn.classList.add('active');
+            };
+            const goToSignup = () => {
+                loginForm.classList.remove('active');
+                showLoginBtn.classList.remove('active');
+                signupForm.classList.add('active');
+                showSignupBtn.classList.add('active');
+            };
+            
+            showLoginBtn.addEventListener('click', goToLogin);
+            showSignupBtn.addEventListener('click', goToSignup);
+            document.querySelector('.switch-to-login').addEventListener('click', goToLogin);
+            document.querySelector('.switch-to-signup').addEventListener('click', goToSignup);
+
+            // Handle form submissions (simulation)
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = loginForm['login-email'].value;
+                const password = loginForm['login-password'].value;
+                
+                if (!email || !password) {
+                    showToast('Please fill in all fields.', 'error');
+                    return;
+                }
+                
+                showLoader();
+                setTimeout(() => {
+                    hideLoader();
+                    showToast('Signed in successfully!', 'success');
+                }, 1500); // Simulate network delay
+            });
+
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = signupForm['signup-username'].value;
+                const email = signupForm['signup-email'].value;
+                const password = signupForm['signup-password'].value;
+
+                if (!username || !email || !password) {
+                    showToast('Please fill in all fields.', 'error');
+                    return;
+                }
+                
+                showLoader();
+                setTimeout(() => {
+                    hideLoader();
+                    showToast('Account created successfully!', 'success');
+                    goToLogin(); // Switch to login form after successful signup
+                }, 1500); // Simulate network delay
+            });
+            
+            // Handle Google button click
+            googleSigninBtn.addEventListener('click', () => {
+                showToast('This feature is not available.', 'error');
+            });
+        });
+    </script>
+</body>
+</html>
