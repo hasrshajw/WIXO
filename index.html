@@ -594,12 +594,12 @@
             font-family: 'IBM Plex Sans', sans-serif;
             background: #ffffff;
             color: #0f172a;
-            padding: 50px 0; /* REDUCED FROM 100px */
+            padding: 30px 0; /* REDUCED FROM 100px */
         }
 
         .services-hero {
             text-align: left;
-            margin-bottom: 50px;
+            margin-bottom: 30px; /* REDUCED FROM 50px */
             max-width: 1500px;
             width: 90%;
             margin-left: auto;
@@ -740,7 +740,7 @@
         .sec3-section-wrapper {
             width: 90%;
             margin: 0 auto;
-            padding: 50px 0; /* REDUCED FROM 100px */
+            padding: 30px 0; /* REDUCED FROM 100px */
             max-width: 1500px;
             box-sizing: border-box;
         }
@@ -915,7 +915,7 @@
             /* This wrapper correctly sets the max-width and initial centering */
             margin: 0 auto;
             max-width: 1500px;
-            padding: 50px 0; /* REDUCED FROM 100px */
+            padding: 30px 0; /* REDUCED FROM 100px */
         }
 
         .FeatureGrid_grid__xJPcm {
@@ -1105,7 +1105,7 @@
 
         /* CONTACT US SECTION STYLES */
         .contact-section {
-            padding: 50px 0; /* REDUCED FROM 100px */
+            padding: 30px 0; /* REDUCED FROM 100px */
             background-color: #f8f9fa;
         }
 
@@ -1115,7 +1115,7 @@
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 60px;
+            gap: 40px; /* REDUCED FROM 60px */
         }
 
         @media (min-width: 48rem) {
@@ -1149,27 +1149,27 @@
         .contact-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 40px; /* REDUCED FROM 60px */
             align-items: start;
         }
 
         @media (max-width: 992px) {
             .contact-content {
                 grid-template-columns: 1fr;
-                gap: 40px;
+                gap: 30px; /* REDUCED FROM 40px */
             }
         }
 
         .contact-info {
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 30px; /* REDUCED FROM 40px */
         }
 
         .contact-methods {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 25px; /* REDUCED FROM 30px */
         }
 
         .contact-method {
@@ -1294,37 +1294,38 @@
         /* UPDATED MOBILE STYLES FOR CONTACT SECTION */
         @media (max-width: 768px) {
             .contact-section {
-                padding: 30px 0; /* REDUCED FROM 60px */
+                padding: 20px 0; /* REDUCED FROM 60px */
             }
             
             .contact-container {
                 width: 100%;
-                padding: 0 20px;
-                gap: 40px;
+                padding: 0 16px; /* REDUCED FROM 20px */
+                gap: 30px; /* REDUCED FROM 40px */
             }
             
             .contact-form-container {
-                padding: 30px 24px;
+                padding: 25px 20px; /* REDUCED FROM 30px 24px */
             }
             
             .contact-title {
-                font-size: 32px;
+                font-size: 28px; /* REDUCED FROM 32px */
+                margin-bottom: 15px; /* ADDED */
             }
             
             .contact-subtitle {
-                font-size: 16px;
+                font-size: 15px; /* REDUCED FROM 16px */
             }
             
             .contact-info {
-                gap: 30px;
+                gap: 20px; /* REDUCED FROM 30px */
             }
             
             .contact-methods {
-                gap: 24px;
+                gap: 20px; /* REDUCED FROM 24px */
             }
             
             .contact-method {
-                gap: 14px;
+                gap: 12px; /* REDUCED FROM 14px */
             }
             
             .contact-icon {
@@ -1337,7 +1338,8 @@
             }
             
             .contact-description {
-                font-size: 15px;
+                font-size: 14px; /* REDUCED FROM 15px */
+                display: none; /* HIDE DESCRIPTION ON MOBILE */
             }
             
             .form-input, .form-textarea {
@@ -1358,19 +1360,19 @@
 
         @media (max-width: 480px) {
             .contact-section {
-                padding: 25px 0; /* REDUCED FROM 50px */
+                padding: 15px 0; /* REDUCED FROM 50px */
             }
             
             .contact-container {
-                padding: 0 16px;
+                padding: 0 12px; /* REDUCED FROM 16px */
             }
             
             .contact-form-container {
-                padding: 24px 20px;
+                padding: 20px 16px; /* REDUCED FROM 24px 20px */
             }
             
             .contact-title {
-                font-size: 28px;
+                font-size: 24px; /* REDUCED FROM 28px */
             }
             
             .contact-method {
@@ -1562,7 +1564,7 @@
         
         @media (max-width: 767px) {
             .faq-section {
-                padding: 2rem 1rem;
+                padding: 1.5rem 1rem; /* REDUCED FROM 2rem */
             }
             .faq-title {
                 font-size: 32px;
@@ -2062,7 +2064,7 @@
                             </svg>
                             <div class="contact-details">
                                 <span class="contact-label">Phone</span>
-                                <span class="contact-value">+1 (555) 123-4567</span>
+                                <span class="contact-value">+91 77991 81716</span>
                             </div>
                         </div>
                         
@@ -2071,8 +2073,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                             <div class="contact-details">
-                                <span class="contact-label">Mobile</span>
-                                <span class="contact-value">+1 (555) 987-6543</span>
+                                <span class="contact-label">Email</span>
+                                <span class="contact-value">harshavardhanjw@gmail.com</span>
                             </div>
                         </div>
                         
@@ -2082,8 +2084,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                             <div class="contact-details">
-                                <span class="contact-label">Office</span>
-                                <span class="contact-value">123 Business Ave, Suite 100<br>San Francisco, CA 94107</span>
+                                <span class="contact-label">Alternate Phone</span>
+                                <span class="contact-value">+91 81426 08678</span>
                             </div>
                         </div>
                     </div>
@@ -2361,7 +2363,7 @@
             const bookButtons = document.querySelectorAll('.auth-button.submit, .mobile-auth-button, .mobile-menu-auth-button.submit, #heroBookButton');
             bookButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
-                    if (this.getAttribute('href') === '#contact-section') {
+                    if (this.getAttribute('href') === '#contact-section' || this.id === 'heroBookButton') {
                         e.preventDefault();
                         document.getElementById('contact-section').scrollIntoView({ 
                             behavior: 'smooth' 
