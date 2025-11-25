@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </script>
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-       <style>
-        /* Universal box-sizing */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wixo | Professional Web Development Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <style>
+        /* --- Google Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+        
+        /* --- Universal box-sizing --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Root variables */
+        /* --- Root variables --- */
         :root {
+            --primary-bg: #fefefe;
+            --secondary-bg: #f8f8f8;
+            --accent-color: #1a1a1a;
+            --text-primary: #121212;
+            --text-secondary: #666666;
+            --text-light: #888888;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            
             --spacing: 0.25rem;
             --color-gray-200: oklch(92.8% 0.006 264.531);
             --color-white: #fff;
             --color-black: #000;
             --color-dark-teal: #012726;
             --color-teal-hover: #004D4B;
-            --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             --font-weight-medium: 500;
             --font-weight-normal: 400;
             --font-weight-bold: 700;
@@ -34,998 +50,1340 @@
             --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Body styles */
+        /* --- Body styles --- */
         body {
             font-family: var(--font-sans);
             line-height: 1.6;
-            padding-top: 72px;
+            padding-top: 80px; /* Increased for fixed header - prevents overlap */
+            background-color: var(--primary-bg);
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            color: var(--text-primary);
+            transition: background-color 0.3s ease;
         }
-         </style>
-         </head>
-<body>
 
-
-
-
-
-
-
-
-<style>
-    /* Base styling */
-
-    /* The page container now just adds vertical spacing */
-    .page-container {
-        width: 100%;
-        padding: 2rem 0; /* Only top and bottom padding */
-        box-sizing: border-box;
-    }
-
-    /* The main card now controls its own width and centering */
-    .content-card {
-        width: 90%; 
-        max-width: 1500px; 
-        margin: auto; 
-        position: relative;
-        border-radius: 1.5rem; 
-        overflow: hidden;
-        background-color: #002726;
-        background-image: url('https://d31bwppm8yl9g2.cloudfront.net/learner/website/GS-Grid.png');
-        background-size: cover;
-        background-position: center;
-        padding: 5rem 2rem; /* INCREASED PADDING FOR MORE HEIGHT */
-        box-sizing: border-box;
-    }
-
-    /* Main flex container for the two-column layout */
-    .flex-container {
-        display: flex;
-        align-items: center;
-        gap: 2rem;
-    }
-
-    /* Left column for text content */
-    .left-column {
-        flex: 1.5;
-    }
-
-    /* Right column for the Lottie animation */
-    .right-column {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Heading style */
-    .heading {
-        font-size: 4rem; /* INCREASED FONT SIZE */
-        font-weight: 600;
-        color: #FFFFFF;
-        line-height: 1.25;
-        margin: 0 0 1.5rem 0; /* INCREASED BOTTOM MARGIN */
-    }
-
-    /* Paragraph style */
-    .paragraph {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 1.25rem; /* INCREASED FONT SIZE */
-        font-weight: 400;
-        line-height: 1.6;
-        margin: 0 0 2.5rem 0; /* INCREASED BOTTOM MARGIN */
-        max-width: 550px; /* INCREASED MAX-WIDTH */
-    }
-
-    /* Button style */
-    .explore-button {
-        background-color: #33C375;
-        color: #012726;
-        font-weight: 500;
-        font-size: 1.125rem; /* INCREASED FONT SIZE */
-        padding: 1rem 2rem; /* INCREASED PADDING */
-        border-radius: 0.75rem;
-        border: none;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        box-shadow: inset 0 0 0 1px rgba(0, 39, 38, 0.3);
-        transition: background-color 0.3s ease;
-    }
-
-    .explore-button:hover {
-        background-color: #6AD384;
-    }
-    
-    /* Responsive design for larger screens */
-    @media (min-width: 48rem) { /* 768px breakpoint */
-        .content-card {
-            width: 80%; 
+        /* Dark overlay when mobile menu is open - FIXED */
+        body.menu-open {
+            overflow: hidden; /* Prevent scrolling when menu is open */
         }
-    }
 
-    /* Responsive design for smaller screens */
-    @media (max-width: 992px) {
-        .content-card {
-             padding: 3rem 1.5rem;
+        /* Remove the body::before overlay and use only #menuOverlay */
+
+        /* --- Header styles --- */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            transition-property: all;
+            transition-duration: 0.3s;
+            transition-timing-function: var(--default-transition-timing-function);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
         }
-        .flex-container {
-            flex-direction: column;
+
+        /* Container */
+        .header-container {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1400px;
         }
-        .left-column {
-            order: 1; 
+
+        @media (min-width: 48rem) {
+            .header-container {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                width: 100%;
+            }
+            .nav-left, .nav-right {
+                margin: 0;
+                padding: 0;
+            }
+            .logo, .menu-button {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                padding-top: 70px; /* Adjusted for mobile */
+            }
+        }
+
+        /* Navigation */
+        .nav {
+            padding-top: calc(var(--spacing) * 3); /* Updated to 12px */
+            padding-bottom: calc(var(--spacing) * 3); /* Updated to 12px */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo and nav links container */
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 6);
+        }
+        
+        @media (max-width: 768px) {
+            .nav {
+                padding-top: calc(var(--spacing) * 3); /* Updated to 12px */
+                padding-bottom: calc(var(--spacing) * 3); /* Updated to 12px */
+            }
+            
+            /* Fix logo vertical alignment on mobile */
+            .nav-left {
+                align-items: center;
+            }
+            
+            .logo {
+                display: flex;
+                align-items: center;
+            }
+        }
+        
+        /* Logo image */
+        .logo {
+            margin-right: calc(var(--spacing) * 6);
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Nav links (hidden on mobile, flex on md) */
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: calc(var(--spacing) * 2);
+        }
+
+        @media (min-width: 48rem) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        /* Nav link hover effect */
+        .nav-link {
+            padding-left: calc(var(--spacing) * 4);
+            padding-right: calc(var(--spacing) * 4);
+            padding-top: calc(var(--spacing) * 2);
+            padding-bottom: calc(var(--spacing) * 2);
+            font-size: var(--text-base);
+            line-height: var(--text-base--line-height);
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            transition-property: color, background-color;
+            transition-duration: var(--default-transition-duration);
+            transition-timing-function: var(--default-transition-timing-function);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            position: relative;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 8px;
+            left: 50%;
+            background-color: var(--color-dark-teal);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        @media (hover: hover) {
+            .nav-link:hover {
+                color: var(--color-dark-teal);
+                background-color: transparent;
+            }
+            
+            .nav-link:hover:after {
+                width: 70%;
+            }
+        }
+
+        /* Right-side buttons container */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 4);
+        }
+
+        /* Mobile menu button */
+        .menu-button {
+            display: flex;
+            padding: calc(var(--spacing) * 1.5);
+            border: 1px solid var(--color-dark-teal);
+            border-radius: var(--radius-md);
+            color: var(--color-dark-teal);
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: var(--color-dark-teal);
+            color: white;
+        }
+
+        @media (min-width: 48rem) {
+            .menu-button {
+                display: none;
+            }
+        }
+
+        /* Mobile menu styles - COMPLETELY FIXED */
+        #mobileMenu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 85vw;
+            max-width: 320px;
+            height: 100vh;
+            background: #ffffff;
+            padding: 24px 16px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            z-index: 1002; /* Increased z-index */
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            width: 100%; 
-            margin-bottom: 2rem; 
+            overflow-y: auto;
         }
-        .right-column {
-            order: 2; 
+
+        #mobileMenu.active {
+            transform: translateX(0);
+        }
+
+        /* FIXED: Menu overlay - only covers content, not the menu */
+        #menuOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-        }
-        .heading {
-            font-size: 2.25rem;
-        }
-    }
-</style>
-    <div class="page-container">
-    <div class="content-card">
-        <div class="flex-container">
-
-            <!-- Left Column (Text Content) -->
-            <div class="left-column">
-                <h1 class="heading">Need a Website? <br>We Build It. You Own It.</h1>
-                <p class="paragraph">
-                    Whether you're a startup, institute, freelancer, or service provider — we build fast, modern websites that help you stand out and convert visitors into customers.
-                </p>
-                <button class="explore-button">
-                    <span>Book a Call</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
-                        <path d="M1 7.11108L6 12L11 7.11108" stroke="#002726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M1 1L6 5.88889L11 1" stroke="#002726" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Right Column (Lottie Animation) -->
-            <div class="right-column">
-                <lottie-player
-                    src="animation.json"
-                    background="transparent"
-                    speed="1"
-                    style="width: 100%; max-width: 420px;" /* INCREASED MAX-WIDTH */
-                    loop
-                    autoplay>
-                </lottie-player>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-
-
-<section class="trusted-section">
-  <h1>20+ Indexing Partners</h2>
-
-  <div class="logo-row">
-    <div class="logos">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
-
-      <!-- repeat for continuous scroll -->
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-1.svg" alt="Logo 1">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-2.svg" alt="Logo 2">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-3.svg" alt="Logo 3">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-4.svg" alt="Logo 4">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-5.svg" alt="Logo 5">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-6.svg" alt="Logo 6">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-7.svg" alt="Logo 7">
-      <img src="https://d31bwppm8yl9g2.cloudfront.net/hyper/hyper-scroll-8.svg" alt="Logo 8">
-    </div>
-  </div>
-</section>
-
-<style>
-  .trusted-section {
-    /* Base styles (Mobile-first) - Applied from reference */
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 2rem;
-
-    /* Horizontal padding is now handled by width/margin */
-  }
-
-  .trusted-section h1 {
-    font-size: clamp(22px, 2.8vw, 32px);
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: #0f172a;
-    letter-spacing: 0.3px;
-    text-align: left;
-  }
-    
-  .logo-row {
-    overflow: hidden;
-    white-space: nowrap;
-    position: relative;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
-
-  .logos {
-    display: inline-block;
-    animation: scroll-left 25s linear infinite;
-  }
-
-  .logos img {
-    width: 110px;
-    height: 50px;
-    object-fit: contain;
-    margin: 0 16px;
-    vertical-align: middle;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    filter: grayscale(100%) brightness(0.9);
-  }
-
-  .logos img:hover {
-    transform: scale(1.05);
-    filter: grayscale(0%) brightness(1);
-  }
-
-  @keyframes scroll-left {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* =================================================================== */
-  /* --- Responsive Design (Rules applied from reference) --- */
-  /* =================================================================== */
-
-  /* For large screens (desktops), use 80% width */
-  @media (min-width: 48rem) { /* 768px breakpoint */
-    .trusted-section {
-      width: 80%;
-    }
-  }
-
-  /* Responsive adjustments for content INSIDE the section */
-  @media (max-width: 768px) {
-    /* The padding rule for .trusted-section is removed from here */
-    .trusted-section h2 {
-      font-size: 1.1rem;
-      text-align: left;
-    }
-    .logos img {
-      width: 80px;
-      margin: 0 12px;
-    }
-  }
-
-  /* For very small screens, switch to full width with padding */
-  @media (max-width: 480px) {
-    .trusted-section {
-      width: 100%;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      box-sizing: border-box; /* Ensures padding is included in the width */
-    }
-  }
-</style>
-
-
-
-
-
-
-
-
-
-
-  <style>
-    .x5body {
-      margin: 0;
-      font-family: 'IBM Plex Sans', sans-serif;
-      background: #ffffff;
-      color: #0f172a;
-      padding: 50px 0;
-    }
-
-    .x5hero {
-      text-align: left;
-      margin-bottom: 50px;
-      max-width: 1500px;
-      width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .x5h1 {
-      font-size: clamp(22px, 2.8vw, 32px);
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-
-    .x5p {
-      font-size: clamp(14px, 1.9vw, 18px);
-      max-width: 800px;
-      line-height: 1.6;
-      color: #555;
-      margin: 0;
-    }
-
-    .x5cards {
-      width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 1500px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
-    }
-
-    .x5card {
-      background: white;
-      border-radius: 20px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 32px;
-      text-align: left;
-    }
-
-    .x5iconwrap {
-      margin-bottom: 20px;
-    }
-
-    .x5iconimg {
-      width: 50px;
-      height: 50px;
-      display: block;
-    }
-
-    .x5h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin: 0 0 12px;
-      color: #111827;
-    }
-
-    .x5desc {
-      font-size: 15px;
-      color: #6b7280;
-      margin: 0 0 18px;
-      line-height: 1.6;
-    }
-
-    .x5link {
-      font-size: 15px;
-      font-weight: 500;
-      color: #6759ff;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .x5link:hover .x5svg {
-      transform: translateX(2px);
-    }
-
-    .x5svg {
-      width: 15px;
-      height: 15px;
-      stroke-width: 2;
-      transition: transform 0.2s ease;
-    }
-
-    @media (min-width: 48rem) {
-      .x5cards,
-      .x5hero {
-        width: 80%;
-      }
-    }
-
-    @media (max-width: 1024px) {
-      .x5cards {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .x5cards {
-        grid-template-columns: 1fr;
-      }
-      .x5h1 { font-size: 20px; }
-      .x5p { font-size: 14px; }
-      .x5card { padding: 20px; border-radius: 14px; }
-      .x5iconimg { width: 40px; height: 40px; }
-      .x5h3 { font-size: 18px; margin-bottom: 8px; }
-      .x5desc { font-size: 14px; margin-bottom: 12px; }
-      .x5link { font-size: 14px; }
-      .x5svg { width: 13px; height: 13px; }
-    }
-
-    @media (max-width: 480px) {
-      .x5cards,
-      .x5hero {
-        width: 100%;
-        padding-left: 1rem;
-        padding-right: 1rem;
-        box-sizing: border-box;
-      }
-    }
-  </style>
-
-<div class="x5body">
-
-  <section class="x5hero">
-    <h1 class="x5h1">Our Web Services — Built for Growth, Designed for You</h1>
-    <p class="x5p">
-      From your first idea to a fully optimized online presence, we handle it all so you can focus on running your business.
-    </p>
-  </section>
-
-  <div class="x5cards">
-    <div class="x5card">
-      <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
-      </div>
-      <h3 class="x5h3">Website Design & Development</h3>
-      <p class="x5desc">Custom, fast, and mobile-friendly websites that convert visitors into paying customers.</p>
-      <a class="x5link" href="#">
-        Learn More
-        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </a>
-    </div>
-
-    <div class="x5card">
-      <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
-      </div>
-      <h3 class="x5h3">Hosting & Domain Management</h3>
-      <p class="x5desc">Fast, secure hosting with full domain setup and zero downtime.</p>
-      <a class="x5link" href="#">
-        Learn More
-        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </a>
-    </div>
-
-    <div class="x5card">
-      <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
-      </div>
-      <h3 class="x5h3">SEO & Google Ranking Setup</h3>
-      <p class="x5desc">Get found by the right customers with SEO strategies built in from day one.</p>
-      <a class="x5link" href="#">
-        Learn More
-        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </a>
-    </div>
-
-    <div class="x5card">
-      <div class="x5iconwrap">
-        <img class="x5iconimg" src="https://via.placeholder.com/50" alt="Service Icon">
-      </div>
-      <h3 class="x5h3">Ongoing Maintenance & Updates</h3>
-      <p class="x5desc">We keep your site secure, fast, and always up-to-date — without you lifting a finger.</p>
-      <a class="x5link" href="#">
-        Learn More
-        <svg class="x5svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="sec3-section-wrapper">
-    <div class="sec3-sticky-container">
-
-        <!-- WRAPPER 1: Handles the sticky behavior for the first card -->
-        <div class="sec3-card-sticky-wrapper">
-            <!-- Left Card (The Problem) - This is now the visible, smaller card -->
-            <div class="sec3-content-card sec3-card-light">
-                <div class="sec3-card-body">
-                    <h2 class="sec3-h2">Your Business Isn’t Invisible — But It Feels Like It</h2>
-                    <ul class="sec3-feature-list">
-                        <li class="sec3-feature-item">
-                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>You're not professional</span>
-                        </li>
-                        <li class="sec3-feature-item">
-                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>You're not open</span>
-                        </li>
-                        <li class="sec3-feature-item">
-                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>Or worse — you don’t exist</span>
-                        </li>
-                    </ul>
-                    <hr class="sec3-card-separator">
-                    <p class="sec3-concluding-text">
-                        <strong>Every day without a website = missed calls, missed trust, missed growth.</strong><br>
-                        Losing just 2–3 customers a week is thousands over a year.
-                    </p>
-                </div>
-                <div class="sec3-card-image">
-                    <img class="sec3-img" src="https://keyword.com/wp-content/uploads/Ranking-history-chart.png" alt="Chart showing declining business visibility">
-                </div>
-            </div>
-        </div>
-
-        <!-- WRAPPER 2: Handles the sticky behavior for the second card -->
-        <div class="sec3-card-sticky-wrapper">
-            <!-- Right Card (The Solution) - This is now the visible, smaller card -->
-            <div class="sec3-content-card sec3-card-dark">
-                <div class="sec3-card-body">
-                    <h2 class="sec3-h2">We Fix That — In Days, Not Months</h2>
-                    <ul class="sec3-feature-list">
-                        <li class="sec3-feature-item">
-                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>We craft fast, modern websites tailored for your business.</span>
-                        </li>
-                        <li class="sec3-feature-item">
-                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>You become visible, credible, and ready for growth.</span>
-                        </li>
-                        <li class="sec3-feature-item">
-                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                            <span>Customers find you, trust you, and reach out.</span>
-                        </li>
-                    </ul>
-                    <hr class="sec3-card-separator">
-                    <div class="sec3-card-footer">
-                        <p class="sec3-concluding-text">
-                            <strong>You’ll go from “Who’s this?” to “I want this.”</strong><br>
-                            Gain trust. Get leads. Grow faster.
-                        </p>
-                        <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-                    </div>
-                </div>
-                <div class="sec3-card-image">
-                    <img class="sec3-img" src="https://keyword.com/wp-content/uploads/Ranking-chart-1.png" alt="Chart showing positive business growth">
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<style>
-    html {
-        scroll-behavior: smooth;
-    }
-
-    .sec3-section-wrapper {
-        width: 90%;
-        margin: 0 auto;
-        padding: 30px 0;
-        max-width: 1500px;
-        box-sizing: border-box;
-    }
-    
-    .sec3-sticky-container {
-        position: relative;
-        /* The total scrollable height for the effect. 200vh means 1st card visible for 100vh, then 2nd card scrolls over it for 100vh. */
-        height: 200vh; 
-    }
-
-    /* --- NEW: THE STICKY WRAPPER --- */
-    /* This invisible container handles the sticky positioning and is 100vh tall.
-       It also centers the actual content card within itself. */
-    .sec3-card-sticky-wrapper {
-        height: 100vh; /* This wrapper occupies the full viewport height */
-        width: 100%;
-        position: sticky;
-        top: 0; /* Pins to the top */
-        
-        display: flex; /* Centers the actual card horizontally and vertically */
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Control stacking order for the overlay effect */
-    .sec3-sticky-container .sec3-card-sticky-wrapper:nth-child(1) { z-index: 1; } /* First card wrapper behind */
-    .sec3-sticky-container .sec3-card-sticky-wrapper:nth-child(2) { z-index: 2; } /* Second card wrapper on top */
-    
-    /* --- MODIFIED: THE ACTUAL CARD --- */
-    /* This is now just a styled container with a specific, smaller size.
-       It no longer handles sticky positioning. */
-    .sec3-content-card {
-        /* Define the visible size of the card */
-        width: 90%; /* Max width relative to its wrapper */
-        max-width: 1500px; /* Absolute max width to prevent it from getting too wide on large screens */
-        height: 70vh; /* FIXED HEIGHT: Both cards will be this exact height, making them equal */
-        
-        /* Layout for internal content (image & text side-by-side) */
-        display: flex;
-        flex-direction: row;
-        align-items: center; /* Vertically centers content within its row */
-        gap: 40px; /* Space between image and text */
-
-        border-radius: 24px;
-        padding: 40px;
-        box-sizing: border-box; 
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    /* Children of the card (body and image) take up 50% width each */
-    .sec3-card-body,
-    .sec3-card-image {
-        flex: 1;
-    }
-
-    /* --- ALTERNATING ORDER RULE --- */
-    /* This rule moves the image to the left for the light card */
-    .sec3-card-light .sec3-card-image {
-        order: -1;
-    }
-    
-    /* Card theming */
-    .sec3-card-light {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-    }
-    .sec3-card-light:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
-    }
-    .sec3-card-dark {
-        background-color: #1a1d21;
-        color: #d1d5db;
-    }
-    .sec3-card-dark:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
-    }
-    
-    /* --- CONTENT AREA: Allows scrolling if content exceeds fixed height --- */
-    .sec3-card-body { 
-        display: flex; 
-        flex-direction: column; 
-        flex-grow: 1; /* Allows it to take available space within the card */
-        
-        /* IMPORTANT for content fitting in fixed height card */
-        overflow-y: auto; /* Adds scrollbar if content is too tall */
-        -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS */
-    }
-
-    /* Standard content styles */
-    .sec3-content-card .sec3-h2 { font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: 24px; }
-    .sec3-card-light .sec3-h2 { color: #111827; }
-    .sec3-card-dark .sec3-h2 { color: #ffffff; }
-    .sec3-feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
-    .sec3-feature-item { display: flex; align-items: flex-start; gap: 12px; font-size: 17px; line-height: 1.6; }
-    .sec3-feature-item .sec3-icon { flex-shrink: 0; width: 22px; height: 22px; margin-top: 3px; }
-    .sec3-card-light .sec3-icon { color: #ef4444; }
-    .sec3-card-dark .sec3-icon { color: #22c55e; }
-    .sec3-card-separator { border: none; height: 1px; margin: auto 0 24px 0; background-color: #e9ecef; }
-    .sec3-card-dark .sec3-card-separator { background-color: rgba(255, 255, 255, 0.1); }
-    .sec3-concluding-text { font-size: 18px; line-height: 1.6; }
-    .sec3-card-light .sec3-concluding-text { color: #4b5563; }
-    .sec3-card-dark .sec3-concluding-text { color: #d1d5db; }
-    .sec3-card-footer { display: flex; justify-content: space-between; align-items: center; }
-    .sec3-card-footer .sec3-icon { width: 24px; height: 24px; color: #3b82f6; }
-    .sec3-card-image { padding-top: 0; }
-    .sec3-card-image .sec3-img { max-width: 100%; display: block; border-radius: 12px; margin-left: auto; margin-right: auto; }
-    
-    /* --- RESPONSIVE MEDIA QUERIES --- */
-
-    /* Desktop/Larger Screens */
-    @media (min-width: 48rem) {
-        .sec3-section-wrapper { width: 80%; }
-    }
-    
-    /* Tablet/Mobile Screens (Sticky effect remains. Only internal card layout and sizing adjust.) */
-    @media (max-width: 991px) {
-        /* sec3-card-sticky-wrapper continues to handle sticky behavior */
-
-        .sec3-content-card {
-            flex-direction: column; /* Stack image/text vertically on smaller screens */
-            padding: 24px; /* Adjust padding for mobile */
-            height: auto; /* Allow card height to adjust to content on mobile */
-            max-height: none; /* Remove max-height constraint for mobile */
-            width: 95%; /* Adjust width for mobile */
-            max-width: none; /* Remove max-width constraint for mobile */
-        }
-        
-        /* Ensure images are on top on mobile for consistency when stacked */
-        .sec3-card-light .sec3-card-image,
-        .sec3-card-dark .sec3-card-image {
-            order: -1; 
-        }
-        
-        /* Adjust image padding for stacked layout on mobile */
-        .sec3-card-image {
-            padding-top: 0; 
-            padding-bottom: 20px; /* Add space below image when stacked */
+            height: 100vh; /* Change this from 100% to 100vh */
+            background: rgba(0,0,0,0.7); /* Darker overlay */
+            z-index: 1001; /* Below mobile menu but above everything else */
+            display: none;
+            backdrop-filter: blur(5px); /* Optional blur effect */
         }
 
-        /* Allow content to fill naturally on mobile, avoid internal scrollbars unless really needed */
-        .sec3-card-body {
-            overflow-y: visible; 
-        }
-    }
-
-    /* Very small screens */
-    @media (max-width: 480px) {
-        .sec3-section-wrapper {
-            width: 100%;
-            padding: 1rem 0;
-        }
-        .sec3-content-card {
-            padding: 16px; /* Even smaller padding for tiny screens */
-            gap: 20px; /* Reduce gap between elements */
-        }
-        .sec3-content-card .sec3-h2 {
-            font-size: 28px; /* Slightly smaller heading */
-        }
-        .sec3-feature-item,
-        .sec3-concluding-text {
-            font-size: 16px; /* Slightly smaller text for better fit */
-        }
-    }
-
-</style>
-
-
-
-
-
-
-<style>
-    /* =================================================================== */
-    /* --- 2. Layout & Grid System --- */
-    /* =================================================================== */
-    .ContentWrapper_contentWrapper__CvQFo {
-        /* This wrapper correctly sets the max-width and initial centering */
-        margin: 0 auto;
-        max-width: 1500px;
-    }
-
-    .FeatureGrid_grid__xJPcm {
-        /* Base styles (Mobile-first) */
-        width: 90%; /* Default width for mobile and tablet */
-        margin-left: auto;
-        margin-right: auto;
-        display: grid;
-        grid-template-columns: repeat(8, 1fr);
-        gap: 16px;
-        padding: 24px 0; /* Vertical padding only */
-    }
-
-    /* =================================================================== */
-    /* --- 3. Card Component --- */
-    /* =================================================================== */
-    .FeatureGrid_container__GuRmV {
-        background: #f3f0ec;
-        border: 1px solid #e9e4e0;
-        border-radius: 20px;
-        padding: 28px 24px;
-        grid-column: span 5;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .FeatureGrid_container__GuRmV.FeatureGrid_green__wt3n6 {
-        background-color: #04da8d;
-    }
-
-    .FeatureGrid_container__GuRmV:first-child,
-    .FeatureGrid_container__GuRmV:nth-child(4) {
-        grid-column: span 3;
-    }
-
-    /* =================================================================== */
-    /* --- 4. Content & Vertical Alignment --- */
-    /* =================================================================== */
-    .RichText_rich_text_headers__y_K9t {
-        margin-bottom: 8px !important;
-    }
-
-    .RichText_rich_text_spacing__5RysE {
-        margin-bottom: 20px;
-    }
-
-    .CTA_CTAButtonContainer__pkQFp {
-        margin-top: auto;
-    }
-
-    p.RichText_rich_text_spacing__5RysE:last-of-type {
-        display: none;
-    }
-
-    /* =================================================================== */
-    /* --- 5. Button Component --- */
-    /* =================================================================== */
-    .CTA_CTALinkButton__uuWrs {
-        display: inline-block;
-        padding: 10px 24px;
-        border-radius: 9999px;
-        background-color: #1c1c1c;
-        text-decoration: none;
-        text-align: center;
-        transition: transform 0.2s ease-out, background-color 0.2s ease-out;
-    }
-
-    .CTA_CTALinkButton__uuWrs:hover,
-    .CTA_CTALinkButton__uuWrs:focus-visible {
-        background-color: #3a3a3a;
-        transform: translateY(-2px);
-    }
-
-    .CTA_CTALinkButton__uuWrs:active {
-        transform: translateY(0);
-    }
-
-    .CTA_WhiteButtonText__0azAO {
-        color: #ffffff;
-    }
-
-    /* =================================================================== */
-    /* --- 6. Typography (Using IBM Plex Fonts) --- */
-    /* =================================================================== */
-    .CDS_Typography_appearance-default__96c1da {
-        color: #2d2f29;
-    }
-
-    .CDS_Typography_prettyStyle__96c1da {
-        text-wrap: pretty;
-    }
-
-    .CDS_Typography_display-m__96c1da {
-        font-size: 22px;
-        font-weight: 700;
-        line-height: 1.25;
-    }
-
-    .CDS_Typography_body__96c1da,
-    .CDS_Typography_body-l__96c1da {
-        font-family: 'IBM Plex Sans', sans-serif;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.4;
-    }
-
-    .CDS_Typography_weight-heavy__96c1da {
-        font-weight: 200;
-    }
-
-    /* =================================================================== */
-    /* --- 7. Responsive Design --- */
-    /* =================================================================== */
-
-    /* For large screens (desktops), use 80% width */
-    @media (min-width: 48rem) { /* 768px breakpoint */
-        .FeatureGrid_grid__xJPcm {
-            width: 80%; 
-        }
-    }
-
-    /* For tablets and medium screens */
-    @media (max-width: 992px) {
-        .FeatureGrid_grid__xJPcm {
-            display: flex;
-            flex-direction: column;
-            /* REMOVED horizontal padding; width and margin now handle spacing */
-            padding-top: 3rem;
-            padding-bottom: 3rem;
-        }
-    }
-
-    /* For phones */
-    @media (max-width: 768px) {
-        .CTA_CTALinkButton__uuWrs.CTA_fullWidthOnMobile__7o1cH {
+        #menuOverlay.active {
             display: block;
-            width: 100%;
-            padding: 14px 1.5rem;
         }
-    }
 
-    /* For very small screens, switch to full width with padding */
-    @media (max-width: 480px) {
+        .mobile-menu-close {
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            transition: background 0.2s ease, transform 0.2s ease;
+            align-self: flex-end;
+            margin-bottom: 24px;
+            cursor: pointer;
+            z-index: 1003; /* Ensure close button is above everything */
+        }
+
+        .mobile-menu-close svg {
+            width: 24px;
+            height: 24px;
+            color: #4b5563;
+        }
+
+        .mobile-menu-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Add this */
+            min-height: 0; /* Add this for proper flexbox behavior */
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Updated from 8px to 12px */
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 16px 12px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #2d3436;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-link:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .mobile-menu-auth {
+            flex-shrink: 0;
+            padding-top: 20px;
+            margin-top: auto; /* Push to bottom */
+            padding-bottom: 80px; /* Add some bottom padding */
+        }
+
+        .mobile-menu-auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mobile-menu-auth-button {
+            padding: 14px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .mobile-menu-auth-button.submit {
+            background: linear-gradient(110deg, var(--color-dark-teal), var(--color-teal-hover) 45%, var(--color-dark-teal) 55%, var(--color-teal-hover));
+            background-size: 250% 100%;
+            color: var(--color-white);
+            position: relative;
+            overflow: hidden;
+            animation: gradient-shimmer 4s linear infinite;
+        }
+        
+        .mobile-menu-auth-button.submit::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 75%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+            transform: skewX(-25deg);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .mobile-menu-auth-button.submit:hover::before { 
+            left: 150%; 
+        }
+
+        .mobile-menu-auth-button.join {
+            border: 1px solid #d1d5db;
+            color: #4b5563;
+        }
+
+        @media (hover: hover) {
+            .mobile-menu-auth-button.submit:hover {
+                background: var(--color-teal-hover);
+            }
+            .mobile-menu-auth-button.join:hover {
+                background: #f3f4f6;
+            }
+        }
+
+        /* Auth buttons container */
+        .auth-buttons {
+            display: none;
+            align-items: center;
+            gap: calc(var(--spacing) * 4);
+        }
+
+        @media (min-width: 48rem) {
+            .auth-buttons {
+                display: flex;
+            }
+        }
+
+        /* Auth button */
+        .auth-button {
+            padding-left: calc(var(--spacing) * 5);
+            padding-right: calc(var(--spacing) * 5);
+            padding-top: calc(var(--spacing) * 2);
+            padding-bottom: calc(var(--spacing) * 2);
+            font-size: var(--text-base);
+            line-height: var(--text-base--line-height);
+            font-weight: var(--font-weight-medium);
+            border: 1px solid var(--color-dark-teal);
+            border-radius: var(--radius-md);
+            color: var(--color-dark-teal);
+            transition-property: color, background-color;
+            transition-duration: var(--default-transition-duration);
+            transition-timing-function: var(--default-transition-timing-function);
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .auth-button.submit {
+            background-color: var(--color-dark-teal);
+            color: var(--color-white);
+            border: none;
+        }
+
+        @media (hover: hover) {
+            .auth-button:hover {
+                color: var(--color-white);
+                background-color: var(--color-teal-hover);
+            }
+            .auth-button.submit:hover {
+                background-color: var(--color-teal-hover);
+            }
+        }
+
+        /* NEW STYLE FOR MOBILE-ONLY "BOOK US" BUTTON */
+        .mobile-auth-button {
+            display: inline-block;
+        }
+        
+        @media (min-width: 48rem) { /* 768px */
+            .mobile-auth-button {
+                display: none;
+            }
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background-color: var(--color-gray-200);
+        }
+
+        @media (max-width: 768px) {
+            .divider {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) { /* Mobile */
+            body {
+                padding-top: 65px; /* Adjusted for mobile to prevent overlap */
+            }
+        }
+
+        /* HERO SECTION STYLES */
+        /* The page container now just adds vertical spacing */
+        .page-container {
+            width: 100%;
+            padding: 2rem 0; /* Only top and bottom padding */
+            box-sizing: border-box;
+        }
+
+        /* The main card now controls its own width and centering */
+        .content-card {
+            width: 90%; 
+            max-width: 1500px; 
+            margin: auto; 
+            position: relative;
+            border-radius: 1.5rem; 
+            overflow: hidden;
+            background-color: #002726;
+            background-image: url('https://d31bwppm8yl9g2.cloudfront.net/learner/website/GS-Grid.png');
+            background-size: cover;
+            background-position: center;
+            padding: 5rem 2rem; /* INCREASED PADDING FOR MORE HEIGHT */
+            box-sizing: border-box;
+        }
+
+        /* Main flex container for the two-column layout */
+        .flex-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        /* Left column for text content */
+        .left-column {
+            flex: 1.5;
+        }
+
+        /* Right column for the Lottie animation */
+        .right-column {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Heading style */
+        .heading {
+            font-size: 4rem; /* INCREASED FONT SIZE */
+            font-weight: 600;
+            color: #FFFFFF;
+            line-height: 1.25;
+            margin: 0 0 1.5rem 0; /* INCREASED BOTTOM MARGIN */
+        }
+
+        /* Paragraph style */
+        .paragraph {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.25rem; /* INCREASED FONT SIZE */
+            font-weight: 400;
+            line-height: 1.6;
+            margin: 0 0 2.5rem 0; /* INCREASED BOTTOM MARGIN */
+            max-width: 550px; /* INCREASED MAX-WIDTH */
+        }
+
+        /* Button style */
+        .explore-button {
+            background-color: #33C375;
+            color: #012726;
+            font-weight: 500;
+            font-size: 1.125rem; /* INCREASED FONT SIZE */
+            padding: 1rem 2rem; /* INCREASED PADDING */
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: inset 0 0 0 1px rgba(0, 39, 38, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        .explore-button:hover {
+            background-color: #6AD384;
+        }
+        
+        /* Responsive design for larger screens */
+        @media (min-width: 48rem) { /* 768px breakpoint */
+            .content-card {
+                width: 80%; 
+            }
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 992px) {
+            .content-card {
+                 padding: 3rem 1.5rem;
+            }
+            .flex-container {
+                flex-direction: column;
+            }
+            .left-column {
+                order: 1; 
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%; 
+                margin-bottom: 2rem; 
+            }
+            .right-column {
+                order: 2; 
+                width: 100%;
+            }
+            .heading {
+                font-size: 2.25rem;
+            }
+        }
+
+        /* SERVICES SECTION STYLES */
+        .services-body {
+            margin: 0;
+            font-family: 'IBM Plex Sans', sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            padding: 50px 0; /* REDUCED FROM 100px */
+        }
+
+        .services-hero {
+            text-align: left;
+            margin-bottom: 50px;
+            max-width: 1500px;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services-h1 {
+            font-size: clamp(22px, 2.8vw, 32px);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .services-p {
+            font-size: clamp(14px, 1.9vw, 18px);
+            max-width: 800px;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+        }
+
+        .services-cards {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1500px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .services-card {
+            background: white;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 32px;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .services-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .services-iconwrap {
+            margin-bottom: 20px;
+        }
+
+        .services-iconimg {
+            width: 50px;
+            height: 50px;
+            display: block;
+            color: #012726;
+        }
+
+        .services-h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 12px;
+            color: #111827;
+        }
+
+        .services-desc {
+            font-size: 15px;
+            color: #6b7280;
+            margin: 0 0 18px;
+            line-height: 1.6;
+        }
+
+        .services-link {
+            font-size: 15px;
+            font-weight: 500;
+            color: #6759ff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .services-link:hover {
+            color: #012726;
+        }
+
+        .services-link:hover .services-svg {
+            transform: translateX(2px);
+        }
+
+        .services-svg {
+            width: 15px;
+            height: 15px;
+            stroke-width: 2;
+            transition: transform 0.2s ease;
+        }
+
+        @media (min-width: 48rem) {
+            .services-cards,
+            .services-hero {
+                width: 80%;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .services-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .services-cards {
+                grid-template-columns: 1fr;
+            }
+            .services-h1 { font-size: 20px; }
+            .services-p { font-size: 14px; }
+            .services-card { padding: 20px; border-radius: 14px; }
+            .services-iconimg { width: 40px; height: 40px; }
+            .services-h3 { font-size: 18px; margin-bottom: 8px; }
+            .services-desc { font-size: 14px; margin-bottom: 12px; }
+            .services-link { font-size: 14px; }
+            .services-svg { width: 13px; height: 13px; }
+        }
+
+        @media (max-width: 480px) {
+            .services-cards,
+            .services-hero {
+                width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                box-sizing: border-box;
+            }
+        }
+
+        /* PROBLEM-SOLUTION SECTION STYLES */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .sec3-section-wrapper {
+            width: 90%;
+            margin: 0 auto;
+            padding: 50px 0; /* REDUCED FROM 100px */
+            max-width: 1500px;
+            box-sizing: border-box;
+        }
+        
+        .sec3-sticky-container {
+            position: relative;
+            /* The total scrollable height for the effect. 200vh means 1st card visible for 100vh, then 2nd card scrolls over it for 100vh. */
+            height: 200vh; 
+        }
+
+        /* --- NEW: THE STICKY WRAPPER --- */
+        /* This invisible container handles the sticky positioning and is 100vh tall.
+           It also centers the actual content card within itself. */
+        .sec3-card-sticky-wrapper {
+            height: 100vh; /* This wrapper occupies the full viewport height */
+            width: 100%;
+            position: sticky;
+            top: 0; /* Pins to the top */
+            
+            display: flex; /* Centers the actual card horizontally and vertically */
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Control stacking order for the overlay effect */
+        .sec3-sticky-container .sec3-card-sticky-wrapper:nth-child(1) { z-index: 1; } /* First card wrapper behind */
+        .sec3-sticky-container .sec3-card-sticky-wrapper:nth-child(2) { z-index: 2; } /* Second card wrapper on top */
+        
+        /* --- MODIFIED: THE ACTUAL CARD --- */
+        /* This is now just a styled container with a specific, smaller size.
+           It no longer handles sticky positioning. */
+        .sec3-content-card {
+            /* Define the visible size of the card */
+            width: 90%; /* Max width relative to its wrapper */
+            max-width: 1500px; /* Absolute max width to prevent it from getting too wide on large screens */
+            height: 70vh; /* FIXED HEIGHT: Both cards will be this exact height, making them equal */
+            
+            /* Layout for internal content (image & text side-by-side) */
+            display: flex;
+            flex-direction: row;
+            align-items: center; /* Vertically centers content within its row */
+            gap: 40px; /* Space between image and text */
+
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Children of the card (body and image) take up 50% width each */
+        .sec3-card-body,
+        .sec3-card-image {
+            flex: 1;
+        }
+
+        /* --- ALTERNATING ORDER RULE --- */
+        /* This rule moves the image to the left for the light card */
+        .sec3-card-light .sec3-card-image {
+            order: -1;
+        }
+        
+        /* Card theming */
+        .sec3-card-light {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .sec3-card-light:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        .sec3-card-dark {
+            background-color: #1a1d21;
+            color: #d1d5db;
+        }
+        .sec3-card-dark:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* --- CONTENT AREA: Allows scrolling if content exceeds fixed height --- */
+        .sec3-card-body { 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1; /* Allows it to take available space within the card */
+            
+            /* IMPORTANT for content fitting in fixed height card */
+            overflow-y: auto; /* Adds scrollbar if content is too tall */
+            -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS */
+        }
+
+        /* Standard content styles */
+        .sec3-content-card .sec3-h2 { font-size: 32px; font-weight: 700; line-height: 1.3; margin-bottom: 24px; }
+        .sec3-card-light .sec3-h2 { color: #111827; }
+        .sec3-card-dark .sec3-h2 { color: #ffffff; }
+        .sec3-feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px; }
+        .sec3-feature-item { display: flex; align-items: flex-start; gap: 12px; font-size: 17px; line-height: 1.6; }
+        .sec3-feature-item .sec3-icon { flex-shrink: 0; width: 22px; height: 22px; margin-top: 3px; }
+        .sec3-card-light .sec3-icon { color: #ef4444; }
+        .sec3-card-dark .sec3-icon { color: #22c55e; }
+        .sec3-card-separator { border: none; height: 1px; margin: auto 0 24px 0; background-color: #e9ecef; }
+        .sec3-card-dark .sec3-card-separator { background-color: rgba(255, 255, 255, 0.1); }
+        .sec3-concluding-text { font-size: 18px; line-height: 1.6; }
+        .sec3-card-light .sec3-concluding-text { color: #4b5563; }
+        .sec3-card-dark .sec3-concluding-text { color: #d1d5db; }
+        .sec3-card-footer { display: flex; justify-content: space-between; align-items: center; }
+        .sec3-card-footer .sec3-icon { width: 24px; height: 24px; color: #3b82f6; }
+        .sec3-card-image { padding-top: 0; }
+        .sec3-card-image .sec3-img { max-width: 100%; display: block; border-radius: 12px; margin-left: auto; margin-right: auto; }
+        
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+
+        /* Desktop/Larger Screens */
+        @media (min-width: 48rem) {
+            .sec3-section-wrapper { width: 80%; }
+        }
+        
+        /* Tablet/Mobile Screens (Sticky effect remains. Only internal card layout and sizing adjust.) */
+        @media (max-width: 991px) {
+            /* sec3-card-sticky-wrapper continues to handle sticky behavior */
+
+            .sec3-content-card {
+                flex-direction: column; /* Stack image/text vertically on smaller screens */
+                padding: 24px; /* Adjust padding for mobile */
+                height: auto; /* Allow card height to adjust to content on mobile */
+                max-height: none; /* Remove max-height constraint for mobile */
+                width: 95%; /* Adjust width for mobile */
+                max-width: none; /* Remove max-width constraint for mobile */
+            }
+            
+            /* Ensure images are on top on mobile for consistency when stacked */
+            .sec3-card-light .sec3-card-image,
+            .sec3-card-dark .sec3-card-image {
+                order: -1; 
+            }
+            
+            /* Adjust image padding for stacked layout on mobile */
+            .sec3-card-image {
+                padding-top: 0; 
+                padding-bottom: 20px; /* Add space below image when stacked */
+            }
+
+            /* Allow content to fill naturally on mobile, avoid internal scrollbars unless really needed */
+            .sec3-card-body {
+                overflow-y: visible; 
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .sec3-section-wrapper {
+                width: 100%;
+                padding: 1rem 0;
+            }
+            .sec3-content-card {
+                padding: 16px; /* Even smaller padding for tiny screens */
+                gap: 20px; /* Reduce gap between elements */
+            }
+            .sec3-content-card .sec3-h2 {
+                font-size: 28px; /* Slightly smaller heading */
+            }
+            .sec3-feature-item,
+            .sec3-concluding-text {
+                font-size: 16px; /* Slightly smaller text for better fit */
+            }
+        }
+
+        /* FEATURE GRID SECTION STYLES */
+        /* =================================================================== */
+        /* --- 2. Layout & Grid System --- */
+        /* =================================================================== */
+        .ContentWrapper_contentWrapper__CvQFo {
+            /* This wrapper correctly sets the max-width and initial centering */
+            margin: 0 auto;
+            max-width: 1500px;
+            padding: 50px 0; /* REDUCED FROM 100px */
+        }
+
         .FeatureGrid_grid__xJPcm {
-            width: 100%;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            /* Base styles (Mobile-first) */
+            width: 90%; /* Default width for mobile and tablet */
+            margin-left: auto;
+            margin-right: auto;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 16px;
+            padding: 24px 0; /* Vertical padding only */
         }
-    }
 
-    /* For larger typography on bigger screens */
-    @media (min-width: 1024px) {
+        /* =================================================================== */
+        /* --- 3. Card Component --- */
+        /* =================================================================== */
+        .FeatureGrid_container__GuRmV {
+            background: #f3f0ec;
+            border: 1px solid #e9e4e0;
+            border-radius: 20px;
+            padding: 28px 24px;
+            grid-column: span 5;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .FeatureGrid_container__GuRmV:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .FeatureGrid_container__GuRmV.FeatureGrid_green__wt3n6 {
+            background-color: #012726;
+            color: white;
+        }
+
+        .FeatureGrid_container__GuRmV.FeatureGrid_green__wt3n6 .CDS_Typography_appearance-default__96c1da {
+            color: white;
+        }
+
+        .FeatureGrid_container__GuRmV:first-child,
+        .FeatureGrid_container__GuRmV:nth-child(4) {
+            grid-column: span 3;
+        }
+
+        /* =================================================================== */
+        /* --- 4. Content & Vertical Alignment --- */
+        /* =================================================================== */
+        .RichText_rich_text_headers__y_K9t {
+            margin-bottom: 8px !important;
+        }
+
+        .RichText_rich_text_spacing__5RysE {
+            margin-bottom: 20px;
+        }
+
+        .CTA_CTAButtonContainer__pkQFp {
+            margin-top: auto;
+        }
+
+        p.RichText_rich_text_spacing__5RysE:last-of-type {
+            display: none;
+        }
+
+        /* =================================================================== */
+        /* --- 5. Button Component --- */
+        /* =================================================================== */
+        .CTA_CTALinkButton__uuWrs {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            background-color: #1c1c1c;
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+        }
+
+        .CTA_CTALinkButton__uuWrs:hover,
+        .CTA_CTALinkButton__uuWrs:focus-visible {
+            background-color: #3a3a3a;
+            transform: translateY(-2px);
+        }
+
+        .CTA_CTALinkButton__uuWrs:active {
+            transform: translateY(0);
+        }
+
+        .CTA_WhiteButtonText__0azAO {
+            color: #ffffff;
+        }
+
+        .FeatureGrid_green__wt3n6 .CTA_CTALinkButton__uuWrs {
+            background-color: #33C375;
+            color: #012726;
+        }
+
+        .FeatureGrid_green__wt3n6 .CTA_CTALinkButton__uuWrs:hover {
+            background-color: #6AD384;
+        }
+
+        .FeatureGrid_green__wt3n6 .CTA_WhiteButtonText__0azAO {
+            color: #012726;
+            font-weight: 500;
+        }
+
+        /* =================================================================== */
+        /* --- 6. Typography (Using IBM Plex Fonts) --- */
+        /* =================================================================== */
+        .CDS_Typography_appearance-default__96c1da {
+            color: #2d2f29;
+        }
+
+        .CDS_Typography_prettyStyle__96c1da {
+            text-wrap: pretty;
+        }
+
         .CDS_Typography_display-m__96c1da {
-            font-size: 28px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.25;
         }
-    }
-</style>
 
-<div class="ContentWrapper_contentWrapper__CvQFo max_width FeatureGrid_grid__xJPcm" data-testid="content-wrapper">
-    <div class="FeatureGrid_container__GuRmV">
-        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Salesforce integration</h1>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Seamlessly integrate Salesforce with Trustpilot and turn your CRM into a reliable hub for trusted review data.</p>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
-        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
-            <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
-                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">Find out more</p>
-            </a>
-        </div>
-    </div>
-    <div class="FeatureGrid_container__GuRmV">
-        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Trustpilot is a founding member of the Coalition for Trusted reviews</h1>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Trustpilot, Amazon, Booking.com, Expedia Group, Glassdoor and Tripadvisor have formed the Coalition for Trusted Reviews. A shared commitment to protecting the integrity of online consumer reviews worldwide.</p>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
-        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
-            <a rel="" target="" class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
-                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">View all referral partners</p>
-            </a>
-        </div>
-    </div>
-    <div class="FeatureGrid_container__GuRmV">
-        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Find the right Pricing plan for your business</h1>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Whether you’re a new business or a household name, we have a range of plans to help you reach more customers than ever before.</p>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
-        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
-            <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
-                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">View our pricing plans</p>
-            </a>
-        </div>
-    </div>
-    <div class="FeatureGrid_container__GuRmV FeatureGrid_green__wt3n6">
-        <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Trustpilot’s Marketing widgets</h1>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"><b>73.6%</b> of Trustpilot visitors say they are more likely to make a purchase from a website that's displaying Trustpilot reviews on-site.</p>
-        <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
-        <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
-            <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
-                <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">Learn more</p>
-            </a>
-        </div>
-    </div>
-</div>
+        .CDS_Typography_body__96c1da,
+        .CDS_Typography_body-l__96c1da {
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.4;
+        }
 
+        .CDS_Typography_weight-heavy__96c1da {
+            font-weight: 200;
+        }
 
+        /* =================================================================== */
+        /* --- 7. Responsive Design --- */
+        /* =================================================================== */
 
+        /* For large screens (desktops), use 80% width */
+        @media (min-width: 48rem) { /* 768px breakpoint */
+            .FeatureGrid_grid__xJPcm {
+                width: 80%; 
+            }
+        }
 
+        /* For tablets and medium screens */
+        @media (max-width: 992px) {
+            .FeatureGrid_grid__xJPcm {
+                display: flex;
+                flex-direction: column;
+                /* REMOVED horizontal padding; width and margin now handle spacing */
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            
+            .FeatureGrid_container__GuRmV:first-child,
+            .FeatureGrid_container__GuRmV:nth-child(4) {
+                grid-column: span 5;
+            }
+        }
 
+        /* For phones */
+        @media (max-width: 768px) {
+            .CTA_CTALinkButton__uuWrs.CTA_fullWidthOnMobile__7o1cH {
+                display: block;
+                width: 100%;
+                padding: 14px 1.5rem;
+            }
+        }
 
+        /* For very small screens, switch to full width with padding */
+        @media (max-width: 480px) {
+            .FeatureGrid_grid__xJPcm {
+                width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
 
+        /* For larger typography on bigger screens */
+        @media (min-width: 1024px) {
+            .CDS_Typography_display-m__96c1da {
+                font-size: 28px;
+            }
+        }
 
+        /* CONTACT US SECTION STYLES */
+        .contact-section {
+            padding: 50px 0; /* REDUCED FROM 100px */
+            background-color: #f8f9fa;
+        }
 
+        .contact-container {
+            width: 90%;
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
 
-    <style>
+        @media (min-width: 48rem) {
+            .contact-container {
+                width: 80%;
+            }
+        }
+
+        .contact-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact-title {
+            font-size: clamp(28px, 3.5vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .contact-subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        @media (max-width: 992px) {
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            color: #012726;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .contact-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .contact-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .contact-description {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #6b7280;
+            max-width: 500px;
+        }
+
+        .contact-form-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input, .form-textarea {
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background-color: #f9fafb;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #012726;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(1, 39, 38, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-button {
+            background-color: #012726;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .contact-button:hover {
+            background-color: #004D4B;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(1, 39, 38, 0.2);
+        }
+
+        .contact-button:active {
+            transform: translateY(0);
+        }
+
+        .button-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* UPDATED MOBILE STYLES FOR CONTACT SECTION */
+        @media (max-width: 768px) {
+            .contact-section {
+                padding: 30px 0; /* REDUCED FROM 60px */
+            }
+            
+            .contact-container {
+                width: 100%;
+                padding: 0 20px;
+                gap: 40px;
+            }
+            
+            .contact-form-container {
+                padding: 30px 24px;
+            }
+            
+            .contact-title {
+                font-size: 32px;
+            }
+            
+            .contact-subtitle {
+                font-size: 16px;
+            }
+            
+            .contact-info {
+                gap: 30px;
+            }
+            
+            .contact-methods {
+                gap: 24px;
+            }
+            
+            .contact-method {
+                gap: 14px;
+            }
+            
+            .contact-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .contact-value {
+                font-size: 16px;
+            }
+            
+            .contact-description {
+                font-size: 15px;
+            }
+            
+            .form-input, .form-textarea {
+                padding: 12px 14px;
+                font-size: 15px;
+            }
+            
+            .contact-button {
+                padding: 14px 24px;
+                font-size: 16px;
+                width: 100%;
+            }
+            
+            .form-group {
+                gap: 6px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-section {
+                padding: 25px 0; /* REDUCED FROM 50px */
+            }
+            
+            .contact-container {
+                padding: 0 16px;
+            }
+            
+            .contact-form-container {
+                padding: 24px 20px;
+            }
+            
+            .contact-title {
+                font-size: 28px;
+            }
+            
+            .contact-method {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .contact-icon {
+                margin-top: 0;
+            }
+        }
+
+        /* FAQ SECTION STYLES */
         .faq-section {
             width: 100%;
             max-width: 1500px;
@@ -1033,7 +1391,7 @@
             grid-template-columns: 1fr 1.25fr;
             gap: 48px;
             align-items: start;
-            padding: 4rem 2rem; 
+            padding: 2rem 2rem; /* REDUCED FROM 4rem */
             margin: 0 auto;
         }
 
@@ -1048,6 +1406,7 @@
             font-weight: 700;
             line-height: 1.1;
             margin: 0;
+            color: #111827;
         }
 
         /* --- Right Column --- */
@@ -1063,6 +1422,7 @@
             padding: 20px 24px;
             transition: background-color 0.2s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
         
         .accordion-header {
@@ -1078,6 +1438,7 @@
             font-weight: 600;
             margin: 0;
             flex-grow: 1;
+            color: #111827;
         }
 
         .accordion-icon {
@@ -1094,7 +1455,7 @@
         .accordion-icon svg {
             width: 20px;
             height: 20px;
-            color: #7C4DFF;
+            color: #012726;
             transition: color 0.3s ease;
         }
 
@@ -1114,7 +1475,7 @@
 
         /* Active State */
         .accordion-item.active .accordion-icon {
-            background-color: #7C4DFF;
+            background-color: #012726;
             transform: rotate(180deg);
         }
 
@@ -1153,6 +1514,7 @@
             font-size: 20px;
             font-weight: 600;
             margin: 0 0 8px 0;
+            color: #111827;
         }
 
         .cta-box p {
@@ -1168,7 +1530,7 @@
             text-align: center;
             text-decoration: none;
             width: 100%;
-            background-color: #7C4DFF;
+            background-color: #012726;
             color: white;
             border: none;
             border-radius: 8px;
@@ -1180,7 +1542,7 @@
         }
 
         .cta-link-button:hover {
-            background-color: #6a3ee6;
+            background-color: #004D4B;
         }
 
         @media (max-width: 992px) {
@@ -1218,186 +1580,12 @@
             }
         }
 
-    </style>
-    <section class="faq-section">
-        <div class="faq-info">
-            <h1 class="faq-title">Frequently asked questions</h1>
-        </div>
-
-        <div class="accordion">
-            <!-- Item 1 -->
-            <div class="accordion-item active">
-                <div class="accordion-header">
-                    <h3>What is finance analytics and how can it help my business?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>Finance analytics helps you understand your financial data better, so you can make smarter decisions, spot trends, and improve your business strategy.</p>
-                </div>
-            </div>
-            <!-- Item 2 -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>How do I start using your finance analytics platform?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>Getting started is easy! Simply sign up for an account, connect your financial data sources, and our platform will guide you through the setup process step-by-step.</p>
-                </div>
-            </div>
-            <!-- Item 3 -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>Is my financial data secure on your platform?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>Absolutely. We use bank-level 256-bit SSL encryption for all data transmission and storage. Your security and privacy are our top priorities.</p>
-                </div>
-            </div>
-            <!-- Item 4 -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>Can I integrate this with other software like QuickBooks?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>Yes, our platform offers seamless integrations with popular accounting software including QuickBooks, Xero, and FreshBooks, as well as various bank accounts and payment gateways.</p>
-                </div>
-            </div>
-            <!-- Item 5 -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>What kind of support do you offer?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>We provide 24/7 email support, comprehensive documentation, and live chat support for our premium plan subscribers during business hours.</p>
-                </div>
-            </div>
-            <!-- Item 6 (Now hidden on mobile) -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>How is the pricing structured?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>We offer a tiered pricing model based on the features you need and the volume of your financial transactions. We have plans for small businesses, growing mid-sized companies, and large enterprises.</p>
-                </div>
-            </div>
-            <!-- Item 7 (Now hidden on mobile) -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>Can I cancel my subscription at any time?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>Yes, you can cancel your subscription at any time directly from your account dashboard. There are no hidden fees or long-term contracts.</p>
-                </div>
-            </div>
-             <!-- Item 8 (Now hidden on mobile) -->
-             <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>Do you offer a free trial?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>Yes, we offer a 14-day free trial with no credit card required. You can explore all the features of our premium plan to see if it's the right fit for your business.</p>
-                </div>
-            </div>
-            <!-- Item 9 (Now hidden on mobile) -->
-            <div class="accordion-item">
-                <div class="accordion-header">
-                    <h3>What types of reports can I generate?</h3>
-                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
-                </div>
-                <div class="accordion-content">
-                    <p>You can generate a wide variety of reports, including profit and loss statements, cash flow forecasts, balance sheets, burn rate analysis, and custom KPI dashboards.</p>
-                </div>
-            </div>
-
-            <div class="cta-box">
-                <h2>Still have questions?</h2>
-                <p>Can't find the answer you're looking for? Please visit our full FAQ page for more information.</p>
-                <a href="/faq" class="cta-link-button">View all FAQs</a>
-            </div>
-        </div>
-    </section>
-
-    <script>
-        const accordionItems = document.querySelectorAll('.accordion-item');
-
-        accordionItems.forEach(item => {
-            const header = item.querySelector('.accordion-header');
-            header.addEventListener('click', () => {
-                const currentlyActive = document.querySelector('.accordion-item.active');
-                
-                if (currentlyActive && currentlyActive !== item) {
-                    currentlyActive.classList.remove('active');
-                }
-                
-                item.classList.toggle('active');
-            });
-        });
-    </script>
-
-    
-    
-    
-    
-    
-<h2>Subscribe for ₹100/month (First Charge After 10 Days)</h2>
-  <button id="subscribe-btn">Start Subscription</button>
-
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script>
-    document.getElementById("subscribe-btn").onclick = async () => {
-      try {
-        const res = await fetch("/.netlify/functions/createSubscription");
-        const data = await res.json();
-
-        if (!data.id) {
-          alert("Error: " + (data.error || "Unable to create subscription"));
-          return;
-        }
-
-        var options = {
-          key: "rzp_live_R6hpO2LH5uIOyV", // Replace with actual Key ID
-          subscription_id: data.id,
-          name: "My Company",
-          description: "Monthly ₹100 Subscription - First Charge After 10 Days",
-          handler: function (response) {
-            console.log("Subscription Success:", response);
-            alert("Subscription Activated!");
-          },
-          theme: {
-            color: "#3399cc"
-          }
-        };
-
-        var rzp = new Razorpay(options);
-        rzp.open();
-      } catch (err) {
-        console.error(err);
-        alert("Something went wrong. Check console.");
-      }
-    };
-  </script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    <style>
+        /* FOOTER STYLES */
         /* --- Layout Containers --- */
         .upper-half {
             background-color: #ffffff;
             position: relative;
-            padding-top: 80px; 
+            padding-top: 40px; /* REDUCED FROM 80px */
             padding-bottom: 150px; 
         }
 
@@ -1525,7 +1713,7 @@
             .subscribe-info h2 { font-size: 2.2rem; }
             .subscribe-form { flex-direction: column; }
             .footer-links-container { justify-content: flex-start; }
-            .upper-half { padding-top: 60px; padding-bottom: 240px; }
+            .upper-half { padding-top: 30px; padding-bottom: 240px; } /* REDUCED FROM 60px */
             .lower-half { padding-top: 340px; padding-left: 20px; padding-right: 20px; padding-bottom: 40px; }
             .subscribe-form input[type="tel"]::placeholder { font-size: 0.9rem; }
 
@@ -1546,17 +1734,517 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* Animation for shimmer effect */
+        @keyframes gradient-shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="header">
+        <div class="header-container">
+            <nav class="nav">
+                <div class="nav-left">
+                    <a href="/">
+                        <img class="logo" src="https://photography-harsha.netlify.app/yellow.png" alt="Wixo Logo">
+                    </a>
+                    <div class="nav-links">
+                        <a class="nav-link" href="/home">Home</a>
+                        <a class="nav-link" href="/about">About</a>
+                        <a class="nav-link" href="/services">Services</a>
+                        <a class="nav-link" href="/portfolio">Portfolio</a>
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <!-- ADDED "BOOK US" BUTTON FOR MOBILE VIEW -->
+                    <a class="auth-button submit mobile-auth-button" href="#contact-section">Book a Call</a>
+                    
+                    <button class="menu-button" id="mobileMenuButton">
+                        <svg width="24" height="24" viewBox="0 0 24" fill="none">
+                            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- This container is for the desktop "Book Us" button -->
+                    <div class="auth-buttons">
+                        <a class="auth-button submit" href="#contact-section">Book a Call</a>
+                    </div>
+                </div>
+            </nav>
+            <!-- UPDATED MOBILE MENU WITH BOOK US BUTTON AT BOTTOM -->
+            <div id="mobileMenu">
+                <div class="mobile-menu-close" id="mobileMenuClose">
+                    <svg viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </div>
+                <div class="mobile-menu-content">
+                    <div class="mobile-nav-links">
+                        <a href="/home" class="mobile-nav-link">Home</a>
+                        <a href="/about" class="mobile-nav-link">About</a>
+                        <a href="/services" class="mobile-nav-link">Services</a>
+                        <a href="/portfolio" class="mobile-nav-link">Portfolio</a>
+                        <a href="/contact" class="mobile-nav-link">Contact</a>
+                    </div>
+                    <div class="mobile-menu-auth">
+                        <div class="mobile-menu-auth-buttons">
+                            <a href="#contact-section" class="mobile-menu-auth-button submit">Book a Call</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="menuOverlay"></div>
+            <div class="divider"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="page-container">
+        <div class="content-card">
+            <div class="flex-container">
+                <!-- Left Column (Text Content) -->
+                <div class="left-column">
+                    <h1 class="heading">Need a Website? <br>We Build It. You Own It.</h1>
+                    <p class="paragraph">
+                        Whether you're a startup, institute, freelancer, or service provider — we build fast, modern websites that help you stand out and convert visitors into customers.
+                    </p>
+                    <button class="explore-button" id="heroBookButton">
+                        <span>Book a Call</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
+                            <path d="M1 7.11108L6 12L11 7.11108" stroke="#002726" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M1 1L6 5.88889L11 1" stroke="#002726" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Right Column (Lottie Animation) -->
+                <div class="right-column">
+                    <!-- Using a placeholder Lottie animation for web development -->
+                    <lottie-player
+                        src="https://assets5.lottiefiles.com/packages/lf20_vybwn7df.json"
+                        background="transparent"
+                        speed="1"
+                        style="width: 100%; max-width: 420px;"
+                        loop
+                        autoplay>
+                    </lottie-player>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="services-body">
+        <section class="services-hero">
+            <h1 class="services-h1">Our Web Services — Built for Growth, Designed for You</h1>
+            <p class="services-p">
+                From your first idea to a fully optimized online presence, we handle it all so you can focus on running your business.
+            </p>
+        </section>
+
+        <div class="services-cards">
+            <div class="services-card">
+                <div class="services-iconwrap">
+                    <svg class="services-iconimg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9"></path>
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                    </svg>
+                </div>
+                <h3 class="services-h3">Website Design & Development</h3>
+                <p class="services-desc">Custom, fast, and mobile-friendly websites that convert visitors into paying customers.</p>
+                <a class="services-link" href="#">
+                    Learn More
+                    <svg class="services-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="services-card">
+                <div class="services-iconwrap">
+                    <svg class="services-iconimg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="7.5 4.21 12 6.81 16.5 4.21"></polyline>
+                        <polyline points="7.5 19.79 7.5 14.6 3 12"></polyline>
+                        <polyline points="21 12 16.5 14.6 16.5 19.79"></polyline>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <h3 class="services-h3">Hosting & Domain Management</h3>
+                <p class="services-desc">Fast, secure hosting with full domain setup and zero downtime.</p>
+                <a class="services-link" href="#">
+                    Learn More
+                    <svg class="services-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="services-card">
+                <div class="services-iconwrap">
+                    <svg class="services-iconimg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <h3 class="services-h3">SEO & Google Ranking Setup</h3>
+                <p class="services-desc">Get found by the right customers with SEO strategies built in from day one.</p>
+                <a class="services-link" href="#">
+                    Learn More
+                    <svg class="services-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="services-card">
+                <div class="services-iconwrap">
+                    <svg class="services-iconimg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <h3 class="services-h3">Ongoing Maintenance & Updates</h3>
+                <p class="services-desc">We keep your site secure, fast, and always up-to-date — without you lifting a finger.</p>
+                <a class="services-link" href="#">
+                    Learn More
+                    <svg class="services-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Problem-Solution Section -->
+    <div class="sec3-section-wrapper">
+        <div class="sec3-sticky-container">
+
+            <!-- WRAPPER 1: Handles the sticky behavior for the first card -->
+            <div class="sec3-card-sticky-wrapper">
+                <!-- Left Card (The Problem) - This is now the visible, smaller card -->
+                <div class="sec3-content-card sec3-card-light">
+                    <div class="sec3-card-body">
+                        <h2 class="sec3-h2">Your Business Isn't Invisible — But It Feels Like It</h2>
+                        <ul class="sec3-feature-list">
+                            <li class="sec3-feature-item">
+                                <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>You're not professional</span>
+                            </li>
+                            <li class="sec3-feature-item">
+                                <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>You're not open</span>
+                            </li>
+                            <li class="sec3-feature-item">
+                                <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>Or worse — you don't exist</span>
+                            </li>
+                        </ul>
+                        <hr class="sec3-card-separator">
+                        <p class="sec3-concluding-text">
+                            <strong>Every day without a website = missed calls, missed trust, missed growth.</strong><br>
+                            Losing just 2–3 customers a week is thousands over a year.
+                        </p>
+                    </div>
+                    <div class="sec3-card-image">
+                        <img class="sec3-img" src="https://via.placeholder.com/600x400/f8f9fa/374151?text=Declining+Business+Visibility" alt="Chart showing declining business visibility">
+                    </div>
+                </div>
+            </div>
+
+            <!-- WRAPPER 2: Handles the sticky behavior for the second card -->
+            <div class="sec3-card-sticky-wrapper">
+                <!-- Right Card (The Solution) - This is now the visible, smaller card -->
+                <div class="sec3-content-card sec3-card-dark">
+                    <div class="sec3-card-body">
+                        <h2 class="sec3-h2">We Fix That — In Days, Not Months</h2>
+                        <ul class="sec3-feature-list">
+                            <li class="sec3-feature-item">
+                                <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>We craft fast, modern websites tailored for your business.</span>
+                            </li>
+                            <li class="sec3-feature-item">
+                                <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>You become visible, credible, and ready for growth.</span>
+                            </li>
+                            <li class="sec3-feature-item">
+                                <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span>Customers find you, trust you, and reach out.</span>
+                            </li>
+                        </ul>
+                        <hr class="sec3-card-separator">
+                        <div class="sec3-card-footer">
+                            <p class="sec3-concluding-text">
+                                <strong>You'll go from "Who's this?" to "I want this."</strong><br>
+                                Gain trust. Get leads. Grow faster.
+                            </p>
+                            <svg class="sec3-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                        </div>
+                    </div>
+                    <div class="sec3-card-image">
+                        <img class="sec3-img" src="https://via.placeholder.com/600x400/1a1d21/d1d5db?text=Positive+Business+Growth" alt="Chart showing positive business growth">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Feature Grid Section -->
+    <div class="ContentWrapper_contentWrapper__CvQFo max_width FeatureGrid_grid__xJPcm" data-testid="content-wrapper">
+        <div class="FeatureGrid_container__GuRmV">
+            <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">E-commerce Integration</h1>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Seamlessly integrate e-commerce functionality with your website and turn your online presence into a powerful sales engine.</p>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+            <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+                <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                    <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">Find out more</p>
+                </a>
+            </div>
+        </div>
+        <div class="FeatureGrid_container__GuRmV">
+            <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Web Development Partnerships</h1>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Wixo partners with leading technology providers to deliver cutting-edge web solutions that drive business growth and digital transformation.</p>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+            <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+                <a rel="" target="" class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                    <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">View all partners</p>
+                </a>
+            </div>
+        </div>
+        <div class="FeatureGrid_container__GuRmV">
+            <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Find the right plan for your business</h1>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE">Whether you're a startup or established enterprise, we have flexible pricing plans to help you build the perfect website for your needs and budget.</p>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+            <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+                <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                    <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">View pricing plans</p>
+                </a>
+            </div>
+        </div>
+        <div class="FeatureGrid_container__GuRmV FeatureGrid_green__wt3n6">
+            <h1 class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_display-m__96c1da RichText_rich_text_headers__y_K9t">Website Performance Metrics</h1>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"><b>94%</b> of users say website performance directly impacts their trust in a business. Fast, responsive websites convert visitors into customers.</p>
+            <p class="CDS_Typography_appearance-default__96c1da CDS_Typography_prettyStyle__96c1da CDS_Typography_body__96c1da RichText_rich_text_spacing__5RysE"></p>
+            <div class="CTA_CTAButtonContainer__pkQFp CTA_fullWidthOnMobile__7o1cH" data-testid="cta">
+                <a class="CTA_CTALinkButton__uuWrs CTA_BlackPrimary__bs_f_ CTA_fullWidthOnMobile__7o1cH" href="#">
+                    <p class="CDS_Typography_prettyStyle__96c1da CDS_Typography_body-l__96c1da CDS_Typography_weight-heavy__96c1da CTA_WhiteButtonText__0azAO" weight="heavy">Learn more</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Us Section -->
+    <section class="contact-section" id="contact-section">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h2 class="contact-title">Ready to Transform Your Online Presence?</h2>
+                <p class="contact-subtitle">Let's discuss your project and create a website that drives results for your business.</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-description">
+                        <p>We're here to help you build a professional website that reflects your brand and drives growth. Whether you're just starting out or looking to upgrade your current site, we'll work with you to create the perfect solution.</p>
+                    </div>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <div class="contact-details">
+                                <span class="contact-label">Phone</span>
+                                <span class="contact-value">+1 (555) 123-4567</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <div class="contact-details">
+                                <span class="contact-label">Mobile</span>
+                                <span class="contact-value">+1 (555) 987-6543</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <svg class="contact-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <div class="contact-details">
+                                <span class="contact-label">Office</span>
+                                <span class="contact-value">123 Business Ave, Suite 100<br>San Francisco, CA 94107</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" id="name" class="form-input" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" class="form-input" placeholder="Enter your email address" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="Enter your phone number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company" class="form-label">Company (Optional)</label>
+                            <input type="text" id="company" class="form-input" placeholder="Enter your company name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message" class="form-label">Project Details</label>
+                            <textarea id="message" class="form-textarea" placeholder="Tell us about your project and goals..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="contact-button">
+                            <span>Send Message</span>
+                            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-info">
+            <h1 class="faq-title">Frequently asked questions</h1>
+        </div>
+
+        <div class="accordion">
+            <!-- Item 1 -->
+            <div class="accordion-item active">
+                <div class="accordion-header">
+                    <h3>How long does it take to build a website?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Most websites take between 2-6 weeks to complete, depending on complexity. Simple landing pages can be ready in 1-2 weeks, while e-commerce sites with custom functionality typically take 4-6 weeks.</p>
+                </div>
+            </div>
+            <!-- Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Do you provide website hosting and maintenance?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, we offer comprehensive hosting and maintenance packages. This includes secure hosting, regular backups, security updates, and technical support to keep your website running smoothly.</p>
+                </div>
+            </div>
+            <!-- Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Can you redesign my existing website?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Absolutely! We specialize in website redesigns that improve both aesthetics and functionality while preserving your existing content and SEO value.</p>
+                </div>
+            </div>
+            <!-- Item 4 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Will my website be mobile-friendly?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, all our websites are built with responsive design principles, ensuring they look and function perfectly on all devices - from smartphones to desktops.</p>
+                </div>
+            </div>
+            <!-- Item 5 -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Do you provide SEO services?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, we offer comprehensive SEO services including on-page optimization, technical SEO, content strategy, and local SEO to help your website rank higher in search results.</p>
+                </div>
+            </div>
+            <!-- Item 6 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>What's included in your website packages?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Our packages include custom design, responsive development, content implementation, basic SEO setup, training, and 30 days of post-launch support. Additional services like e-commerce, advanced SEO, and ongoing maintenance are available as add-ons.</p>
+                </div>
+            </div>
+            <!-- Item 7 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Can I update the website myself after it's built?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, we build websites with user-friendly content management systems (like WordPress) that allow you to easily update content, add blog posts, and manage your site without technical knowledge.</p>
+                </div>
+            </div>
+             <!-- Item 8 (Now hidden on mobile) -->
+             <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>Do you offer e-commerce solutions?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>Yes, we develop custom e-commerce websites with secure payment processing, inventory management, and customer account functionality using platforms like WooCommerce and Shopify.</p>
+                </div>
+            </div>
+            <!-- Item 9 (Now hidden on mobile) -->
+            <div class="accordion-item">
+                <div class="accordion-header">
+                    <h3>What happens after my website launches?</h3>
+                    <span class="accordion-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg></span>
+                </div>
+                <div class="accordion-content">
+                    <p>We provide 30 days of complimentary support to address any issues. After that, we offer ongoing maintenance plans to keep your site secure, updated, and performing optimally.</p>
+                </div>
+            </div>
+
+            <div class="cta-box">
+                <h2>Still have questions?</h2>
+                <p>Can't find the answer you're looking for? Please visit our full FAQ page for more information.</p>
+                <a href="/faq" class="cta-link-button">View all FAQs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
     <div class="page-container">
         <div class="upper-half">
             <div class="subscribe-card">
                 <div class="subscribe-info">
                     <h2>Need Assistance?</h2>
-                    <p>From web development to digital services, we’re here to turn your vision into reality. Let’s collaborate today.</p>
+                    <p>From web development to digital services, we're here to turn your vision into reality. Let's collaborate today.</p>
                 </div>
                 <div class="subscribe-form-area">
                     <label for="mobile">Request a callback</label>
-                    <form action="#" method="POST" class="subscribe-form">
+                    <form action="#" method="POST" class="subscribe-form" id="footerForm">
                         <div class="input-with-prefix">
                             <span class="prefix">+91</span>
                             <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required maxlength="10" pattern="\d{10}" autocomplete="off">
@@ -1571,7 +2259,7 @@
         <div class="lower-half">
             <div class="footer-bottom">
                 <div class="footer-logo-area">
-                    <img src="https://placehold.co/150x40/ffffff?text=Logo&font=ibmplexsans" alt="Company Logo">
+                    <img src="https://placehold.co/150x40/ffffff?text=WIXO&font=ibmplexsans" alt="Wixo Logo">
                     <p class="logo-tagline">Your vision, realized through technology.</p>
                 </div>
                 <div class="footer-links-container">
@@ -1607,5 +2295,155 @@
 
         </div>
     </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFL3QfcZNgAOm5on2e8S2SRQWt_Zfwr8k",
+            authDomain: "wixooo.firebaseapp.com",
+            projectId: "wixooo",
+            storageBucket: "wixooo.firebasestorage.app",
+            messagingSenderId: "255381729853",
+            appId: "1:255381729853:web:796605c0967bdfc463b054",
+            measurementId: "G-BJY5GJN5CM"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const menuOverlay = document.getElementById('menuOverlay');
+            
+            const openMenu = () => {
+                mobileMenu.classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.classList.add('menu-open');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+            };
+
+            const closeMenu = () => {
+                mobileMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = ''; // Restore scrolling
+            };
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', openMenu);
+            }
+            
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', closeMenu);
+            }
+            
+            if (menuOverlay) {
+                menuOverlay.addEventListener('click', closeMenu);
+            }
+            
+            // Close menu when clicking on menu links
+            const mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+            
+            // Book button functionality - redirect to contact section
+            const bookButtons = document.querySelectorAll('.auth-button.submit, .mobile-auth-button, .mobile-menu-auth-button.submit, #heroBookButton');
+            bookButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#contact-section') {
+                        e.preventDefault();
+                        document.getElementById('contact-section').scrollIntoView({ 
+                            behavior: 'smooth' 
+                        });
+                    }
+                });
+            });
+            
+            // Contact form submission
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        company: document.getElementById('company').value || 'Not provided',
+                        message: document.getElementById('message').value,
+                        timestamp: new Date(),
+                        source: 'contact-form'
+                    };
+                    
+                    // Save to Firestore
+                    db.collection('contact-submissions').add(formData)
+                        .then((docRef) => {
+                            console.log('Document written with ID: ', docRef.id);
+                            alert('Thank you for your message! We will get back to you soon.');
+                            contactForm.reset();
+                        })
+                        .catch((error) => {
+                            console.error('Error adding document: ', error);
+                            alert('There was an error submitting your form. Please try again.');
+                        });
+                });
+            }
+            
+            // Footer form submission
+            const footerForm = document.getElementById('footerForm');
+            if (footerForm) {
+                footerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = {
+                        mobile: document.getElementById('mobile').value,
+                        timestamp: new Date(),
+                        source: 'footer-form'
+                    };
+                    
+                    // Save to Firestore
+                    db.collection('callback-requests').add(formData)
+                        .then((docRef) => {
+                            console.log('Document written with ID: ', docRef.id);
+                            alert('Thank you! We will call you back shortly.');
+                            footerForm.reset();
+                        })
+                        .catch((error) => {
+                            console.error('Error adding document: ', error);
+                            alert('There was an error submitting your request. Please try again.');
+                        });
+                });
+            }
+            
+            // FAQ Accordion Functionality
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', () => {
+                    const currentlyActive = document.querySelector('.accordion-item.active');
+                    
+                    if (currentlyActive && currentlyActive !== item) {
+                        currentlyActive.classList.remove('active');
+                    }
+                    
+                    item.classList.toggle('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
