@@ -4,161 +4,882 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - WIXO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f8f9fa;
-            color: #333;
+        :root {
+            --primary-bg: #fefefe;
+            --secondary-bg: #f8f8f8;
+            --accent-color: #1a1a1a;
+            --text-primary: #121212;
+            --text-secondary: #666666;
+            --text-light: #888888;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            
+            --spacing: 0.25rem;
+            --color-gray-200: oklch(92.8% 0.006 264.531);
+            --color-white: #fff;
+            --color-black: #000;
+            --color-dark-teal: #012726;
+            --color-teal-hover: #004D4B;
+            --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-weight-medium: 500;
+            --font-weight-normal: 400;
+            --font-weight-bold: 700;
+            --text-base: 1rem;
+            --text-base--line-height: 1.5;
+            --radius-md: 0.375rem;
+            --default-transition-duration: 0.15s;
+            --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            padding-top: 80px;
         }
-        h1, h2 {
-            color: #212529;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            transition-property: all;
+            transition-duration: 0.3s;
+            transition-timing-function: var(--default-transition-timing-function);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
         }
-        h1 {
-            font-size: 2.5em;
-            text-align: center;
-            margin-bottom: 30px;
+
+        .header-container {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1400px;
         }
-        h2 {
-            font-size: 1.5em;
-            margin-top: 30px;
+
+        .nav {
+            padding-top: calc(var(--spacing) * 3);
+            padding-bottom: calc(var(--spacing) * 3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        p {
-            margin-bottom: 15px;
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 6);
         }
-        ul {
-            padding-left: 20px;
-            list-style: none; /* Removing default bullets */
+
+        .logo {
+            margin-right: calc(var(--spacing) * 6);
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s ease;
         }
-        ul li {
-            margin-bottom: 10px;
-            padding-left: 25px;
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: calc(var(--spacing) * 2);
+        }
+
+        @media (min-width: 48rem) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-link {
+            padding-left: calc(var(--spacing) * 4);
+            padding-right: calc(var(--spacing) * 4);
+            padding-top: calc(var(--spacing) * 2);
+            padding-bottom: calc(var(--spacing) * 2);
+            font-size: var(--text-base);
+            line-height: var(--text-base--line-height);
+            font-weight: var(--font-weight-medium);
+            color: var(--text-primary);
+            transition-property: color, background-color;
+            transition-duration: var(--default-transition-duration);
+            transition-timing-function: var(--default-transition-timing-function);
+            text-decoration: none;
+            border-radius: var(--radius-md);
             position: relative;
         }
-        /* Style for the checkmark list */
-        .checklist li::before {
-            content: '✅'; /* Using emoji as a list marker */
+
+        .nav-link:after {
+            content: '';
             position: absolute;
-            left: 0;
-            top: 0;
+            width: 0;
+            height: 2px;
+            bottom: 8px;
+            left: 50%;
+            background-color: var(--color-dark-teal);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
-        /* Style for the 'What We Do' list */
-        .services-list li::before {
-            content: '—'; /* Using a dash for this list */
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-weight: bold;
-            color: #007bff;
+
+        @media (hover: hover) {
+            .nav-link:hover {
+                color: var(--color-dark-teal);
+                background-color: transparent;
+            }
+            
+            .nav-link:hover:after {
+                width: 70%;
+            }
         }
-        a {
-            color: #007bff;
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: calc(var(--spacing) * 4);
+        }
+
+        .menu-button {
+            display: flex;
+            padding: calc(var(--spacing) * 1.5);
+            border: 1px solid var(--color-dark-teal);
+            border-radius: var(--radius-md);
+            color: var(--color-dark-teal);
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-button:hover {
+            background-color: var(--color-dark-teal);
+            color: white;
+        }
+
+        @media (min-width: 48rem) {
+            .menu-button {
+                display: none;
+            }
+        }
+
+        .auth-buttons {
+            display: none;
+            align-items: center;
+            gap: calc(var(--spacing) * 4);
+        }
+
+        @media (min-width: 48rem) {
+            .auth-buttons {
+                display: flex;
+            }
+        }
+
+        .auth-button {
+            padding-left: calc(var(--spacing) * 5);
+            padding-right: calc(var(--spacing) * 5);
+            padding-top: calc(var(--spacing) * 2);
+            padding-bottom: calc(var(--spacing) * 2);
+            font-size: var(--text-base);
+            line-height: var(--text-base--line-height);
+            font-weight: var(--font-weight-medium);
+            border: 1px solid var(--color-dark-teal);
+            border-radius: var(--radius-md);
+            color: var(--color-dark-teal);
+            transition-property: color, background-color;
+            transition-duration: var(--default-transition-duration);
+            transition-timing-function: var(--default-transition-timing-function);
             text-decoration: none;
+            background-color: transparent;
         }
-        a:hover {
-            text-decoration: underline;
+
+        .auth-button.submit {
+            background-color: var(--color-dark-teal);
+            color: var(--color-white);
+            border: none;
         }
+
+        @media (hover: hover) {
+            .auth-button:hover {
+                color: var(--color-white);
+                background-color: var(--color-teal-hover);
+            }
+            .auth-button.submit:hover {
+                background-color: var(--color-teal-hover);
+            }
+        }
+
+        .mobile-auth-button {
+            display: inline-block;
+        }
+        
+        @media (min-width: 48rem) {
+            .mobile-auth-button {
+                display: none;
+            }
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--color-gray-200);
+        }
+
+        /* Mobile Menu Styles */
+        #mobileMenu {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 85vw;
+            max-width: 320px;
+            height: 100vh;
+            background: #ffffff;
+            padding: 24px 16px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+            z-index: 1002;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #mobileMenu.active {
+            transform: translateX(0);
+        }
+
+        #menuOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        #menuOverlay.active {
+            display: block;
+        }
+
+        .mobile-menu-close {
+            padding: 8px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            transition: background 0.2s ease, transform 0.2s ease;
+            align-self: flex-end;
+            margin-bottom: 24px;
+            cursor: pointer;
+            z-index: 1003;
+        }
+
+        .mobile-menu-close svg {
+            width: 24px;
+            height: 24px;
+            color: #4b5563;
+        }
+
+        .mobile-menu-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 0;
+        }
+
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 16px 12px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #2d3436;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-link:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .mobile-menu-auth {
+            flex-shrink: 0;
+            padding-top: 20px;
+            margin-top: auto;
+            padding-bottom: 80px;
+        }
+
+        .mobile-menu-auth-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mobile-menu-auth-button {
+            padding: 14px;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .mobile-menu-auth-button.submit {
+            background: var(--color-dark-teal);
+            color: var(--color-white);
+        }
+        
+        .mobile-menu-auth-button.submit:hover {
+            background: var(--color-teal-hover);
+        }
+
+        /* About Us Content Styles */
+        .about-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+
+        .about-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 24px;
+            padding: 60px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-container {
+                padding: 30px 20px;
+            }
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            color: var(--color-dark-teal);
+        }
+
+        .about-title {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .about-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 40px 0 20px;
+            color: #111827;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+
+        .about-content ul {
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
+
+        .about-content li {
+            margin-bottom: 10px;
+            color: #4b5563;
+            line-height: 1.7;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .about-content strong {
+            color: #111827;
+        }
+
+        /* Custom list styles */
+        .services-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-dark-teal);
+            border-radius: 50%;
+        }
+
+        .checklist li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 18px;
+            height: 18px;
+            background-color: var(--color-dark-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checklist li::after {
+            content: '✓';
+            position: absolute;
+            left: 4px;
+            top: 4px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
         .promise {
             background-color: #f8f9fa;
-            border-left: 4px solid #007bff;
-            padding: 15px;
+            border-left: 4px solid var(--color-dark-teal);
+            padding: 20px;
             margin-top: 20px;
-            border-radius: 4px;
+            border-radius: 8px;
             font-style: italic;
+            color: #4b5563;
         }
+
         .cta-section {
             margin-top: 40px;
             padding: 30px;
-            background-color: #e9ecef;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #003d3b, #002726);
+            border-radius: 16px;
             text-align: center;
+            color: white;
         }
+
         .cta-section p {
             font-size: 1.2em;
             font-weight: 500;
-            color: #212529;
+            color: white;
             margin-bottom: 20px;
         }
+
         .cta-button {
             display: inline-block;
-            background-color: #007bff;
-            color: #ffffff;
-            padding: 12px 25px;
-            border-radius: 5px;
+            background-color: #33c375;
+            color: #012726;
+            padding: 14px 28px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             margin: 5px 10px;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
+
         .cta-button:hover {
-            background-color: #0056b3;
+            background-color: #6AD384;
             text-decoration: none;
             transform: translateY(-2px);
         }
+
         .cta-button.secondary {
-            background-color: #6c757d;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
         }
+
         .cta-button.secondary:hover {
-            background-color: #5a6268;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: #002726;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        .footer-logo-area {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .footer-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-tagline {
+            font-size: 0.95rem;
+            color: #d1d5db;
+            max-width: 300px;
+        }
+
+        .footer-links-container {
+            display: flex;
+            gap: 80px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-links-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 18px;
+        }
+
+        .footer-column ul li a {
+            text-decoration: none;
+            color: #d1d5db;
+            font-size: 1rem;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .footer-column ul li a:hover {
+            color: #33c375;
+        }
+
+        .footer-copyright-bar {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-copyright-bar {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+        .copyright-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .copyright-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px 20px;
+            }
+        }
+
+        .copyright-links a {
+            text-decoration: none;
+            color: #d1d5db;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .copyright-links a:hover {
+            color: #33c375;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .header-container {
+                padding-left: 16px;
+                padding-right: 16px;
+                width: 100%;
+            }
+            
+            .about-section {
+                padding: 40px 0;
+            }
+            
+            .about-container {
+                width: 100%;
+            }
+            
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>🌐 About Us</h1>
-
-        <h2>Who We Are</h2>
-        <p>At <strong>WIXO</strong>, we are passionate creators, problem-solvers, and digital innovators. We help businesses of all sizes build modern, scalable, and user-friendly websites that not only look great but also deliver measurable results.</p>
-
-        <h2>Our Mission</h2>
-        <p>To empower businesses with cutting-edge web solutions that drive growth, boost visibility, and create seamless online experiences.</p>
-
-        <h2>Our Vision</h2>
-        <p>To become a trusted digital partner for businesses worldwide by combining technology, creativity, and strategy into every project we deliver.</p>
-
-        <h2>What We Do</h2>
-        <p>We specialize in:</p>
-        <ul class="services-list">
-            <li><strong>Custom Web Development</strong> – from startups to enterprise-level platforms.</li>
-            <li><strong>UI/UX Design</strong> – clean, modern, and conversion-focused interfaces.</li>
-            <li><strong>E-Commerce & CMS Solutions</strong> – scalable platforms that grow with your business.</li>
-            <li><strong>SEO & Digital Marketing</strong> – helping you get found and stay ahead online.</li>
-            <li><strong>Web Hosting & Maintenance</strong> – keeping your website secure, fast, and reliable.</li>
-        </ul>
-
-        <h2>Why Choose Us?</h2>
-        <ul class="checklist">
-            <li><strong>Client-Centered Approach</strong> – We listen, understand, and build solutions tailored to your goals.</li>
-            <li><strong>Expert Team</strong> – Skilled developers, designers, and strategists who love what they do.</li>
-            <li><strong>Transparent Process</strong> – Clear communication, timelines, and deliverables.</li>
-            <li><strong>Long-Term Value</strong> – Websites built not just for today, but for tomorrow.</li>
-        </ul>
-
-        <h2>Our Promise</h2>
-        <div class="promise">
-            <p>Every project we deliver is built with precision, passion, and performance. When you work with us, you don’t just get a website — you get a digital partner committed to your success.</p>
+    <!-- Navbar -->
+    <header class="header">
+        <div class="header-container">
+            <nav class="nav">
+                <div class="nav-left">
+                    <a href="/">
+                        <img class="logo" src="https://photography-harsha.netlify.app/yellow.png" alt="Wixo Logo">
+                    </a>
+                    <div class="nav-links">
+                        <a class="nav-link" href="/home">Home</a>
+                        <a class="nav-link" href="/about">About</a>
+                        <a class="nav-link" href="/services">Services</a>
+                        <a class="nav-link" href="/portfolio">Portfolio</a>
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <!-- Mobile "Book Us" Button -->
+                    <a class="auth-button submit mobile-auth-button" href="/contact">Book a Call</a>
+                    
+                    <button class="menu-button" id="mobileMenuButton">
+                        <svg width="24" height="24" viewBox="0 0 24" fill="none">
+                            <path stroke="currentColor" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                    
+                    <!-- Desktop "Book Us" Button -->
+                    <div class="auth-buttons">
+                        <a class="auth-button submit" href="/contact">Book a Call</a>
+                    </div>
+                </div>
+            </nav>
+            <!-- Mobile Menu -->
+            <div id="mobileMenu">
+                <div class="mobile-menu-close" id="mobileMenuClose">
+                    <svg viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </div>
+                <div class="mobile-menu-content">
+                    <div class="mobile-nav-links">
+                        <a href="/home" class="mobile-nav-link">Home</a>
+                        <a href="/about" class="mobile-nav-link">About</a>
+                        <a href="/services" class="mobile-nav-link">Services</a>
+                        <a href="/portfolio" class="mobile-nav-link">Portfolio</a>
+                        <a href="/contact" class="mobile-nav-link">Contact</a>
+                    </div>
+                    <div class="mobile-menu-auth">
+                        <div class="mobile-menu-auth-buttons">
+                            <a href="/contact" class="mobile-menu-auth-button submit">Book a Call</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="menuOverlay"></div>
+            <div class="divider"></div>
         </div>
+    </header>
 
-        <!-- Call to Action Section -->
-        <div class="cta-section">
-            <p>Ready to take your business online the smart way? Let’s build something amazing together.</p>
-            <a href="#" class="cta-button">Get a Free Quote</a>
-            <a href="#" class="cta-button secondary">Contact Us</a>
+    <!-- About Us Content -->
+    <section class="about-section">
+        <div class="about-container">
+            <div class="about-header">
+                <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <h1 class="about-title">About Us</h1>
+            </div>
+
+            <div class="about-content">
+                <h2>Who We Are</h2>
+                <p>At <strong>WIXO</strong>, we are passionate creators, problem-solvers, and digital innovators. We help businesses of all sizes build modern, scalable, and user-friendly websites that not only look great but also deliver measurable results.</p>
+
+                <h2>Our Mission</h2>
+                <p>To empower businesses with cutting-edge web solutions that drive growth, boost visibility, and create seamless online experiences.</p>
+
+                <h2>Our Vision</h2>
+                <p>To become a trusted digital partner for businesses worldwide by combining technology, creativity, and strategy into every project we deliver.</p>
+
+                <h2>What We Do</h2>
+                <p>We specialize in:</p>
+                <ul class="services-list">
+                    <li><strong>Custom Web Development</strong> – from startups to enterprise-level platforms.</li>
+                    <li><strong>UI/UX Design</strong> – clean, modern, and conversion-focused interfaces.</li>
+                    <li><strong>E-Commerce & CMS Solutions</strong> – scalable platforms that grow with your business.</li>
+                    <li><strong>SEO & Digital Marketing</strong> – helping you get found and stay ahead online.</li>
+                    <li><strong>Web Hosting & Maintenance</strong> – keeping your website secure, fast, and reliable.</li>
+                </ul>
+
+                <h2>Why Choose Us?</h2>
+                <ul class="checklist">
+                    <li><strong>Client-Centered Approach</strong> – We listen, understand, and build solutions tailored to your goals.</li>
+                    <li><strong>Expert Team</strong> – Skilled developers, designers, and strategists who love what they do.</li>
+                    <li><strong>Transparent Process</strong> – Clear communication, timelines, and deliverables.</li>
+                    <li><strong>Long-Term Value</strong> – Websites built not just for today, but for tomorrow.</li>
+                </ul>
+
+                <h2>Our Promise</h2>
+                <div class="promise">
+                    <p>Every project we deliver is built with precision, passion, and performance. When you work with us, you don't just get a website — you get a digital partner committed to your success.</p>
+                </div>
+
+                <!-- Call to Action Section -->
+                <div class="cta-section">
+                    <p>Ready to take your business online the smart way? Let's build something amazing together.</p>
+                    <a href="/contact" class="cta-button">Get a Free Quote</a>
+                    <a href="/contact" class="cta-button secondary">Contact Us</a>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="https://photography-harsha.netlify.app/yellow.png" alt="Wixo Logo" class="footer-logo">
+                    <p class="logo-tagline">Your vision, realized through technology.</p>
+                </div>
+                <div class="footer-links-container">
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="/about">About Us</a></li>
+                            <li><a href="/contact">Contact Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="#">Web Development</a></li>
+                            <li><a href="#">Digital Marketing</a></li>
+                            <li><a href="#">App Development</a></li>
+                            <li><a href="#">UI/UX Design</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-copyright-bar">
+                <p class="copyright-text">&copy; Wixo. All rights reserved.</p>
+                <div class="copyright-links">
+                    <a href="/privacy-policy.html">Privacy Policy</a>
+                    <a href="/refund-policy.html">Refund Policy</a>
+                    <a href="/terms-and-conditions.html">Terms & Conditions</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const menuOverlay = document.getElementById('menuOverlay');
+            
+            const openMenu = () => {
+                mobileMenu.classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.classList.add('menu-open');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeMenu = () => {
+                mobileMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                document.body.style.overflow = '';
+            };
+
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', openMenu);
+            }
+            
+            if (mobileMenuClose) {
+                mobileMenuClose.addEventListener('click', closeMenu);
+            }
+            
+            if (menuOverlay) {
+                menuOverlay.addEventListener('click', closeMenu);
+            }
+            
+            // Close menu when clicking on menu links
+            const mobileMenuLinks = document.querySelectorAll('#mobileMenu a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // Close menu when pressing Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeMenu();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
