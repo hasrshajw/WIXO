@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Auth</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
+        <!-- 1. AUTH FORM -->
+        <div id="auth-container">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Login or Sign Up</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="name@company.com">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Password</label>
+                    <input type="password" id="password" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="••••••••">
+                </div>
+
+                <button onclick="handleEmailLogin()" id="login-btn" class="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition">
+                    Continue with Email
+                </button>
+
+                <div class="relative flex items-center py-2">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="flex-shrink mx-4 text-gray-400 text-sm">OR</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                <button onclick="handleGoogleLogin()" class="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md bg-white hover:bg-gray-50 transition">
+                    <img class="h-5 w-5 mr-2" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    <span class="text-gray-700 font-medium">Continue with Google</span>
+                </button>
+            </div>
+            
+            <p id="message" class="mt-4 text-center text-sm font-medium min-h-[1.25rem]"></p>
+        </div>
+
+        <!-- 2. SUCCESS STATE -->
+        <div id="success-container" class="hidden text-center">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold mb-2 text-gray-800">Login Successful!</h2>
+            <p id="user-display" class="text-gray-600 mb-6"></p>
+            <button onclick="handleLogout()" class="text-blue-600 hover:text-blue-800 font-medium underline">Sign Out</button>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        // Replace these with your actual Supabase Project details
+        const SUPABASE_URL = 'https://knfypqztuiemawullipi.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_yZhWBF9pFHHxn7jO-zr2Kw_-E-SSktb';
+
+        // Initialize the client (Using a unique name to avoid naming conflicts)
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const authContainer = document.getElementById('auth-container');
+        const successContainer = document.getElementById('success-container');
+        const messageEl = document.getElementById('message');
+        const userDisplay = document.getElementById('user-display');
+
+        // Check user session on load
+        async function checkUser() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            toggleUI(session);
+        }
+        checkUser();
+
+        // Listen for auth changes (login/logout)
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            console.log("Auth Event:", event);
+            toggleUI(session);
+        });
+
+        // EMAIL LOGIN/SIGNUP
+        async function handleEmailLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showMessage("Please enter both email and password", "red");
+                return;
+            }
+
+            showMessage("Processing...", "blue");
+
+            // Attempt Sign In
+            const { data, error: signInError } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            if (signInError) {
+                // If login fails, try to Sign Up (creates account if doesn't exist)
+                const { error: signUpError } = await supabaseClient.auth.signUp({ email, password });
+                
+                if (signUpError) {
+                    showMessage(signUpError.message, "red");
+                } else {
+                    showMessage("Account created! Please check your email for confirmation.", "blue");
+                }
+            }
+        }
+
+        // GOOGLE LOGIN
+        async function handleGoogleLogin() {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.href // Redirects back to this same page
+                }
+            });
+            if (error) showMessage(error.message, "red");
+        }
+
+        // LOGOUT
+        async function handleLogout() {
+            await supabaseClient.auth.signOut();
+            location.reload(); 
+        }
+
+        // UI HELPERS
+        function toggleUI(session) {
+            if (session) {
+                authContainer.classList.add('hidden');
+                successContainer.classList.remove('hidden');
+                userDisplay.innerText = session.user.email;
+            } else {
+                authContainer.classList.remove('hidden');
+                successContainer.classList.add('hidden');
+            }
+        }
+
+        function showMessage(msg, color) {
+            messageEl.innerText = msg;
+            messageEl.className = `mt-4 text-center text-sm font-medium text-${color}-600`;
+        }
+    </script>
+</body>
+</html>
