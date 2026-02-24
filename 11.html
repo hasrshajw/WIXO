@@ -8,11 +8,11 @@
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
         :root {
-            --color-dark-teal: #001a19; /* Slightly deeper for more contrast */
+            --color-dark-teal: #002726;
             --color-accent-green: #33C375;
-            --color-accent-hover: #45ef92;
+            --color-accent-hover: #52e094;
             --color-white: #ffffff;
-            --color-grid-lines: rgba(255, 255, 255, 0.03);
+            --color-grid-lines: rgba(255, 255, 255, 0.04);
             --font-main: 'IBM Plex Sans', sans-serif;
         }
 
@@ -25,52 +25,46 @@
 
         body {
             font-family: var(--font-main);
-            background-color: #f8f9fa;
+            background-color: #fcfcfc;
         }
 
         .page-container {
             width: 100%;
-            padding: 4rem 0; /* More breathing room */
+            padding: 1.2rem 0;
         }
 
         .content-card {
-            width: 94%; 
-            max-width: 1300px; 
+            width: 92%; 
+            max-width: 1400px; 
             margin: auto; 
             position: relative;
-            border-radius: 2.5rem; 
+            border-radius: 2rem; 
             overflow: hidden;
             background-color: var(--color-dark-teal);
             
-            /* Enhanced Multi-layer Background */
+            /* Combined 80px Grid + Noise Grain Texture Overlay */
             background-image: 
-                radial-gradient(circle at 0% 0%, rgba(51, 195, 117, 0.12) 0%, transparent 40%),
                 linear-gradient(var(--color-grid-lines) 1px, transparent 1px),
                 linear-gradient(90deg, var(--color-grid-lines) 1px, transparent 1px),
                 url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            background-size: 100% 100%, 70px 70px, 70px 70px, 150px 150px;
-            background-blend-mode: normal, normal, normal, overlay;
+            background-size: 80px 80px, 80px 80px, 120px 120px;
+            background-blend-mode: normal, normal, overlay;
             
-            padding: 5rem; 
-            min-height: 500px; 
+            padding: 3.5rem 4rem; 
+            min-height: 420px; 
             display: flex;
             align-items: center;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 100px -20px rgba(0, 26, 25, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* The Premium "Glass" Inner Border */
-        .content-card::after {
+        .content-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            border-radius: 2.5rem;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 50%, rgba(51, 195, 117, 0.1));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
+            top: -20%;
+            left: -10%;
+            width: 60%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(51, 195, 117, 0.07) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -78,126 +72,96 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 4rem;
+            gap: 3rem;
             width: 100%;
             position: relative;
-            z-index: 2;
+            z-index: 1;
         }
 
         .left-column {
-            flex: 1.2;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.5rem 1.25rem;
-            background: rgba(51, 195, 117, 0.1);
-            border: 1px solid rgba(51, 195, 117, 0.2);
-            border-radius: 100px;
-            color: var(--color-accent-green);
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            flex: 1.3;
+            text-align: left;
         }
 
         .heading {
-            font-size: 4rem; 
-            font-weight: 700;
+            font-size: 3.5rem; 
+            font-weight: 600;
             color: var(--color-white);
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.25rem;
+            text-align: left;
         }
 
-        .heading span.accent {
-            color: var(--color-accent-green);
-            /* Gradient text effect */
-            background: linear-gradient(to bottom right, #fff, var(--color-accent-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .heading span.top-text {
+            display: block;
         }
 
         .paragraph {
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.15rem;
             font-weight: 400;
-            max-width: 580px;
-            margin-bottom: 2.5rem;
-            line-height: 1.7;
+            max-width: 540px;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            text-align: left;
         }
 
         .explore-button {
             background-color: var(--color-accent-green);
             color: var(--color-dark-teal);
             font-weight: 600;
-            font-size: 1.05rem;
-            padding: 1.1rem 2.5rem;
-            border-radius: 100px;
+            font-size: 1rem;
+            padding: 1rem 2.2rem;
+            border-radius: 3rem;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            gap: 0.8rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             text-decoration: none;
-            box-shadow: 0 10px 20px rgba(51, 195, 117, 0.15);
         }
 
         .explore-button:hover {
             background-color: var(--color-accent-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(51, 195, 117, 0.3);
-            letter-spacing: 0.02em;
-        }
-
-        .explore-button svg {
-            transition: transform 0.3s ease;
-        }
-
-        .explore-button:hover svg {
-            transform: translateY(2px);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(51, 195, 117, 0.2);
         }
 
         .right-column {
-            flex: 0.8;
+            flex: 0.7;
             display: flex;
-            justify-content: center;
-            position: relative;
-        }
-
-        /* Glowing aura behind Lottie */
-        .right-column::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(51, 195, 117, 0.15) 0%, transparent 70%);
-            z-index: -1;
-            filter: blur(40px);
+            justify-content: flex-end;
         }
 
         @media (max-width: 992px) {
             .content-card {
-                padding: 4rem 2.5rem;
-                border-radius: 1.5rem;
-            }
-            .heading { 
-                font-size: 3rem; 
+                padding: 3rem 2rem;
             }
             .flex-container {
                 flex-direction: column;
-                text-align: center;
-                gap: 2rem;
+                align-items: flex-start;
+                text-align: left;
             }
             .left-column {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
+                text-align: left;
+                width: 100%;
+            }
+            .heading { 
+                font-size: 2.5rem; 
+                text-align: left;
             }
             .paragraph {
-                font-size: 1.1rem;
+                text-align: left;
+            }
+            .right-column { 
+                width: 100%; 
+                justify-content: center;
+                margin-top: 2rem;
             }
         }
     </style>
@@ -208,17 +172,16 @@
         <div class="content-card">
             <div class="flex-container">
                 <div class="left-column">
-                    <div class="badge">Accelerate your career</div>
                     <h1 class="heading">
-                        Become <span class="accent">Top 1%</span><br>
+                        <span class="top-text">Become Top 1%</span> 
                         in the AI-First World
                     </h1>
                     <p class="paragraph">
-                        Master Product, Growth, and Tech with the world's leading practitioners. SyncSkill is your gateway to elite industry expertise.
+                        Whether it is Product, Growth, Design, Business, Tech or Data, SyncSkill is the place to learn from top experts in the field to become the Top 1%.
                     </p>
                     <a href="#programs" class="explore-button">
                         <span>Explore Programs</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 12 13" fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
                             <path d="M1 7.11108L6 12L11 7.11108" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             <path d="M1 1L6 5.88889L11 1" stroke="currentColor" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
@@ -229,8 +192,8 @@
                     <lottie-player
                         src="./animation.json" 
                         background="transparent"
-                        speed="0.6"
-                        style="width: 100%; max-width: 400px; filter: drop-shadow(0 0 20px rgba(51, 195, 117, 0.2));"
+                        speed="0.8"
+                        style="width: 100%; max-width: 360px;"
                         loop
                         autoplay>
                     </lottie-player>
